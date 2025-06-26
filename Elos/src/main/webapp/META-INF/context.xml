@@ -1,0 +1,6 @@
+<Context>
+    <!-- Configuração para mapear o diretório externo -->
+    <Resources>
+        <PostResources base="C:\servidor\X" className="org.apache.catalina.webresources.DirResourceSet" webAppMount="/assets/img/x"/>
+    </Resources>
+</Context>
