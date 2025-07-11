@@ -8,9 +8,9 @@ public class ConnectionFactory {
 	
 	// Definição de variáveis de conexão com o banco de dados
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver"; // Driver JDBC para MySQL
-	private static final String URL = "";
+	private static final String URL = "jdbc:mysql://127.0.0.1/elos?useTimezone=true&serverTimezone=UTC";
 	private static final String USER = "root"; // Usuário do banco
-	private static final String PASSWORD = ""; // Senha do banco
+	private static final String PASSWORD = "tiago0424"; // Senha do banco
 
 	// Método para estabelecer a conexão com o banco de dados
 	public static Connection conectar() throws SQLException {
