@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+</head>
+
+<body>
+	<nav id="sidebar">
+		<ul>
+			<li class="active"><a href="dashboard"><span>Principal</span></a></li>
+			<li class="active"><a href="financeiro"><span>Finanças</span></a></li>
+			<li class="active"><a href="cadastros"><span>Cadastros</span></a></li>
+			<li class="active"><a href="estoque"><span>Estoque</span></a></li>
+			<li class="active"><a href="vendas"><span>Vendas</span></a></li>	
+			<li class="active"><a href="avaliacao"><span>Avaliação</span></a></li>
+		</ul>
+	</nav>
+
+	<main></main>
+</body>
+
+</html>
