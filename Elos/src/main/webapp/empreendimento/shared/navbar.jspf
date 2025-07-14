@@ -1,24 +1,151 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home</title>
-</head>
+<!-- navbar -->
+    <nav class="navbar">
+      <div class="logo_item">
+        <i class="bx bx-menu" id="sidebarOpen"></i>
+        <img src="${pageContext.request.contextPath}/empreendimento/assets/img/logo.png" alt="">Elos
+      </div>
 
-<body>
-	<nav id="sidebar">
-		<ul>
-			<li class="active"><a href="dashboard"><span>Principal</span></a></li>
-			<li class="active"><a href="financeiro"><span>Finanças</span></a></li>
-			<li class="active"><a href="cadastros"><span>Cadastros</span></a></li>
-			<li class="active"><a href="estoque"><span>Estoque</span></a></li>
-			<li class="active"><a href="vendas"><span>Vendas</span></a></li>	
-			<li class="active"><a href="avaliacao"><span>Avaliação</span></a></li>
-		</ul>
-	</nav>
+      <div class="navbar_content">
+        <i class="bi bi-grid"></i>
+        <i class='bx bx-sun' id="darkLight"></i>
+        <i class='bx bx-bell' ></i>
+        <img src="${pageContext.request.contextPath}/empreendimento/assets/img/profile.jpg" alt="" class="profile" />
+      </div>
+    </nav>
 
-	<main></main>
-</body>
+    <!-- sidebar -->
+    <nav class="sidebar">
+      <div class="menu_content">
 
-</html>
+        <ul class="menu_items">
+          <div class="menu_title menu_dahsboard"></div>
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-home-alt"></i>
+              </span>
+              <span class="navlink">Principal</span>
+            </div>
+          </li>
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-bar-chart-square"></i>
+              </span>
+              <span class="navlink">Financeiro</span>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="menu_items">
+          <div class="menu_title menu_insumo"></div>
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bxs-package"></i>
+              </span>
+              <span class="navlink">Insumos</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Listar Insumos</a>
+              <a href="#" class="nav_link sublink">Incluir Insumo</a>
+            </ul>
+          </li>
+
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-cart"></i>
+              </span>
+              <span class="navlink">Compras</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Listar Compras</a>
+              <a href="#" class="nav_link sublink">Registrar Compra</a>
+            </ul>
+          </li>
+        </ul>
+
+        <ul class="menu_items">
+          <div class="menu_title menu_produto"></div>
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-receipt"></i>
+              </span>
+              <span class="navlink">Vendas</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Listar Vendas</a>
+              <a href="#" class="nav_link sublink">Registar Venda</a>
+            </ul>
+          </li>
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-cube"></i>
+              </span>
+              <span class="navlink">Produtos</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Listar Produtos</a>
+              <a href="#" class="nav_link sublink">Incluir Produto</a>
+            </ul>
+          </li>
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-briefcase"></i>
+              </span>
+              <span class="navlink">Mão de Obra</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Listar</a>
+              <a href="#" class="nav_link sublink">Adicionar</a>
+            </ul>
+          </li>
+        </ul>
+
+        <ul class="menu_items">
+          <div class="menu_title menu_avaliacao"></div>
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-pie-chart-alt"></i>
+              </span>
+              <span class="navlink">Meu Indicador</span>
+            </div>
+          </li>
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-info-circle"></i>
+              </span>
+              <span class="navlink">Sobre</span>
+            </div>
+          </li>
+        </ul>
+
+        <!-- Sidebar Open / Close -->
+        <div class="bottom_content">
+          <div class="bottom expand_sidebar">
+            <span> Expandir</span>
+            <i class='bx bx-log-in' ></i>
+          </div>
+          <div class="bottom collapse_sidebar">
+            <span> Recolher</span>
+            <i class='bx bx-log-out'></i>
+          </div>
+        </div>
+      </div>
+    </nav>
