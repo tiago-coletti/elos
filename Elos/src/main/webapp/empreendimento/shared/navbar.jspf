@@ -57,7 +57,7 @@
           <li class="item">
             <div href="#" class="nav_link submenu_item">
               <span class="navlink_icon">
-                <i class="bx bx-cart"></i>
+                <i class="bx bx-receipt"></i>
               </span>
               <span class="navlink">Compras</span>
               <i class="bx bx-chevron-right arrow-left"></i>
@@ -75,7 +75,7 @@
           <li class="item">
             <div href="#" class="nav_link submenu_item">
               <span class="navlink_icon">
-                <i class="bx bx-receipt"></i>
+                <i class="bx bx-cart"></i>
               </span>
               <span class="navlink">Vendas</span>
               <i class="bx bx-chevron-right arrow-left"></i>

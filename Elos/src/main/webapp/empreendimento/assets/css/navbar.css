@@ -93,7 +93,7 @@
   content: "Painel";
 }
 .menu_insumo::before {
-  content: "Insumos";
+  content: "Estoque";
 }
 .menu_produto::before {
   content: "Produtos";

@@ -1,0 +1,59 @@
+.button-container {
+    margin-left: 280px;
+    margin-top: 40px;
+    display: flex;
+    gap: 50px; /* Novo espaçamento entre botões */
+    transition: all 0.3s ease;
+}
+
+body.sidebar-closed .button-container {
+    margin-left: 100px;
+    transition: all 0.3s ease;
+}
+
+body.sidebar-hovered .button-container {
+    margin-left: 280px;
+    transition: all 0.3s ease;
+}
+
+/* Para garantir que o form não adicione margens indesejadas */
+.button-container form {
+    margin: 0;
+}
+
+.square-button {
+    width: 230px;
+    height: 190px;
+    border: 2px solid var(--blue-color);
+    background-color: transparent;
+    border-radius: 20px;
+    color: var(--blue-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.square-button i {
+    font-size: 3rem;
+    color: var(--blue-color);
+    transition: all 0.3s ease;
+}
+
+.square-button:hover {
+    background-color: var(--blue-color);
+    color: var(--white-color);
+}
+
+.square-button:hover i {
+    color: var(--white-color);
+}
+
+.square-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
