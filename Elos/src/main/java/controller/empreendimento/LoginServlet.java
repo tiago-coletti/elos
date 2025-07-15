@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("");
             }
         } else {
-            // Matrícula não encontrada
+            // Login não encontrado
             logger.log(Level.WARNING, "Tentativa de login inválida: Login não encontrado: " + login);
             response.sendRedirect("");
         }
