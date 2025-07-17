@@ -5,25 +5,25 @@ public class Produto {
 	private String nome;
 	private double precoVenda;
 	private int empreendimentoId;
-	String created_at;
-	String updated_at;
-	String deleted_at;
+	private String createdAt;
+	private String updatedAt;
+	private String deletedAt;
 	
 	public Produto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Produto(int id, String nome, double precoVenda, int empreendimentoId, String created_at, String updated_at,
-			String deleted_at) {
+	public Produto(int id, String nome, double precoVenda, int empreendimentoId, String createdAt, String updatedAt,
+			String deletedAt) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.precoVenda = precoVenda;
 		this.empreendimentoId = empreendimentoId;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
-		this.deleted_at = deleted_at;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.deletedAt = deletedAt;
 	}
 
 	public int getId() {
@@ -58,27 +58,27 @@ public class Produto {
 		this.empreendimentoId = empreendimentoId;
 	}
 
-	public String getCreated_at() {
-		return created_at;
+	public String getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated_at(String created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(String created_at) {
+		this.createdAt = created_at;
 	}
 
-	public String getUpdated_at() {
-		return updated_at;
+	public String getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setUpdated_at(String updated_at) {
-		this.updated_at = updated_at;
+	public void setUpdatedAt(String updated_at) {
+		this.updatedAt = updated_at;
 	}
 
-	public String getDeleted_at() {
-		return deleted_at;
+	public String getDeletedAt() {
+		return deletedAt;
 	}
 
-	public void setDeleted_at(String deleted_at) {
-		this.deleted_at = deleted_at;
+	public void setDeletedAt(String deleted_at) {
+		this.deletedAt = deleted_at;
 	}
 }

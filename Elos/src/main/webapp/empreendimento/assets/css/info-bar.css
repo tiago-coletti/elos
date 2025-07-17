@@ -1,0 +1,69 @@
+.info-bar-container {
+    margin-top: 60px;
+    margin-left: 360px;
+    display: flex;
+    gap: 50px;
+    transition: all 0.3s ease;
+}
+
+body.sidebar-closed .info-bar-container {
+    margin-left: 180px;
+}
+
+body.sidebar-hovered .info-bar-container {
+    margin-left: 360px;
+}
+
+.info-bar {
+    flex: 1;
+    max-width: calc(230px * 2 + 50px);
+    height: 180px; /* aumentada a altura */
+    background-color: var(--blue-color);
+    border: none;
+    border-radius: 20px;
+    color: var(--white-color);
+    display: flex;
+    align-items: center;
+    gap: 35px; /* mais espaço entre ícone e conteúdo */
+    padding: 30px; /* padding um pouco maior */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.info-bar i {
+    font-size: 5rem; /* ícone maior */
+    color: var(--white-color);
+    transition: all 0.3s ease;
+}
+
+.info-bar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* espaçamento maior entre as linhas */
+    font-size: 1.6rem;
+    line-height: 1.5;
+}
+
+.info-bar-content span:first-child {
+    font-weight: 700;
+    font-size: 1.6rem;
+}
+
+.info-bar-content span:nth-child(2) {
+    font-weight: 700;
+    font-size: 2.2rem;
+}
+
+.info-bar-content span:last-child {
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+body.dark .info-bar {
+    background-color: #333;
+    color: var(--white-color);
+}
+
+body.dark .info-bar i {
+    color: var(--white-color);
+}

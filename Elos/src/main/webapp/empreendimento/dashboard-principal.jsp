@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/dashboard.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/botao.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/info-bar.css" />
 </head>
   
 <body>
@@ -48,10 +49,29 @@
 	
 	    <form action="ServletInvestimentos" method="post">
 	        <button type="submit" class="square-button">
-	            <i class='bxr bx-piggy-bank'></i>
+	            <i class='bxr bx-coin'></i>
 	            <span>Investimentos</span>
 	        </button>
 	    </form>
+	</div>
+	
+	<div class="info-bar-container">
+	    <div class="info-bar">
+	        <i class='bx bx-bar-chart-alt-2'></i>
+	        <div class="info-bar-content">
+	            <span>Total Vendido</span>
+	            <span>R$ 00.000,00</span>
+	            <span>(Mensal)</span>
+	        </div>
+	    </div>
+	    <div class="info-bar">
+	        <i class='bx bx-cube'></i>
+	        <div class="info-bar-content">
+	            <span>Insumos</span>
+	            <span>R$ 00.000,00</span>
+	            <span>(Em Estoque)</span>
+	        </div>
+	    </div>
 	</div>
 
 	<script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>

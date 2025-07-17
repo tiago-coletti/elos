@@ -1,22 +1,21 @@
 .button-container {
-    margin-left: 280px;
-    margin-top: 40px;
+    margin-left: 360px;
+    margin-top: 60px;
     display: flex;
-    gap: 50px; /* Novo espaçamento entre botões */
+    gap: 50px; 
     transition: all 0.3s ease;
 }
 
 body.sidebar-closed .button-container {
-    margin-left: 100px;
+    margin-left: 180px;
     transition: all 0.3s ease;
 }
 
 body.sidebar-hovered .button-container {
-    margin-left: 280px;
+    margin-left: 360px;
     transition: all 0.3s ease;
 }
 
-/* Para garantir que o form não adicione margens indesejadas */
 .button-container form {
     margin: 0;
 }
@@ -57,3 +56,12 @@ body.sidebar-hovered .button-container {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* dark mode */
+body.dark .square-button:hover i {
+	color: #1e1e1e;
+}
+
+body.dark .square-button:hover {
+	color: #1e1e1e;
+}	
