@@ -19,14 +19,14 @@
 
         <ul class="menu_items">
           <div class="menu_title menu_dahsboard"></div>
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-home-alt"></i>
-              </span>
-              <span class="navlink">Principal</span>
-            </div>
-          </li>
+		<li class="item">
+		  <a href="/Elos/empreendimento/dashboard-principal" class="nav_link submenu_item">
+		      <span class="navlink_icon">
+		        <i class="bx bx-home-alt"></i>
+		      </span>
+		      <span class="navlink">Principal</span>
+		  	</a>
+		  </li>
           <li class="item">
             <div href="#" class="nav_link submenu_item">
               <span class="navlink_icon">
@@ -49,7 +49,7 @@
             </div>
 
             <ul class="menu_items submenu">
-              <a href="#" class="nav_link sublink">Listar Insumos</a>
+              <a href="/Elos/empreendimento/insumo" class="nav_link sublink">Listar Insumos</a>
               <a href="#" class="nav_link sublink">Incluir Insumo</a>
             </ul>
           </li>

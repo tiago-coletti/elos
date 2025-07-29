@@ -40,7 +40,7 @@
 	        </button>
 	    </form>
 	
-	    <form action="ServletEstoque" method="post">
+	    <form action="/Elos/empreendimento/insumo" method="post">
 	        <button type="submit" class="square-button">
 	            <i class='bx bxs-package'></i>
 	            <span>Estoque</span>
