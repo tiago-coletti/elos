@@ -1,0 +1,216 @@
+.inclusao-container {
+    margin-top: 60px;
+    margin-left: 300px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+body.sidebar-closed .inclusao-container {
+    margin-left: 120px;
+}
+
+body.sidebar-hovered .inclusao-container {
+    margin-left: 300px;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--dark-color);
+    text-decoration: none;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+body.dark .back-button {
+    color: var(--white-color);
+}
+
+.back-button:hover {
+    color: var(--blue-color);
+}
+
+body.dark .back-button:hover {
+    color: #ccc;
+}
+
+.back-button i {
+    font-size: 2.2rem;
+}
+
+.inclusao-body {
+    background-color: var(--white-color);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+body.dark .inclusao-body {
+    background-color: #333;
+    color: var(--white-color);
+}
+
+.inclusao-body h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: var(--blue-color);
+}
+
+body.dark .inclusao-body h2 {
+    color: var(--white-color);
+}
+
+.inclusao-body form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    padding: 12px;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--white-color);
+    color: var(--dark-color);
+    transition: border-color 0.3s ease;
+}
+
+body.dark .form-group input {
+    background-color: #444;
+    border-color: #555;
+    color: var(--white-color);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--blue-color);
+}
+
+.form-actions {
+    margin-top: 20px;
+    align-self: flex-end;
+}
+
+.form-actions button {
+    padding: 12px 25px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--white-color);
+    background-color: var(--blue-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.form-actions button:hover {
+    background-color: #3060d8;
+}
+
+body.dark .form-actions button {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    border: 2px solid var(--white-color);
+}
+
+body.dark .form-actions button:hover {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+/* Adições para a página de edição */
+.form-actions-edicao {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.button-edicao {
+    padding: 12px 25px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--white-color);
+    background-color: var(--blue-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button-edicao:hover {
+    background-color: #3060d8;
+}
+
+body.dark .button-edicao {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    border: 2px solid var(--white-color);
+}
+
+body.dark .button-edicao:hover {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+/* Adições para a página de mão de obra */
+.input-prefix-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-prefix-container .prefix {
+    position: absolute;
+    left: 12px; 
+    font-size: 1.2rem;
+    color: var(--dark-color);
+}
+
+body.dark .input-prefix-container .prefix {
+    color: var(--white-color);
+}
+
+.input-prefix-container input[type="number"] {
+    padding-left: 40px; 
+    width: 100%; 
+}
+
+.input-prefix-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--white-color);
+    transition: border-color 0.3s ease;
+}
+
+body.dark .input-prefix-container {
+    background-color: #444;
+    border-color: #555;
+}
+
+.input-prefix-container:focus-within {
+    border-color: var(--blue-color);
+}
+
+.input-prefix-container input {
+    border: none;
+    background: transparent;
+}

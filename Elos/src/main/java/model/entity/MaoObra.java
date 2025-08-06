@@ -8,22 +8,18 @@ public class MaoObra {
 	private String createdAt;
 	private String updatedAt;
 	private String deletedAt;
-	
+
 	public MaoObra() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public MaoObra(int id, String nome, double custoHora, int empreendimentoId, String createdAt, String updatedAt,
-			String deletedAt) {
+
+	public MaoObra(int id, String nome, double custoHora, int empreendimentoId) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.custoHora = custoHora;
 		this.empreendimentoId = empreendimentoId;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
 	}
 
 	public int getId() {
@@ -81,5 +77,5 @@ public class MaoObra {
 	public void setDeletedAt(String deleted_at) {
 		this.deletedAt = deleted_at;
 	}
-	
+
 }

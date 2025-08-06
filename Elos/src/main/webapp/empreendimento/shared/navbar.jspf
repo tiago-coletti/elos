@@ -1,151 +1,152 @@
-<!-- navbar -->
-    <nav class="navbar">
-      <div class="logo_item">
+<nav class="navbar">
+    <div class="logo_item">
         <i class="bx bx-menu" id="sidebarOpen"></i>
         <img src="${pageContext.request.contextPath}/empreendimento/assets/img/logo.png" alt="">Elos
-      </div>
+    </div>
 
-      <div class="navbar_content">
+    <div class="navbar_content">
         <i class="bi bi-grid"></i>
         <i class='bx bx-sun' id="darkLight"></i>
-        <i class='bx bx-bell' ></i>
+        <i class='bx bx-bell'></i>
         <img src="${pageContext.request.contextPath}/empreendimento/assets/img/profile.jpg" alt="" class="profile" />
-      </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- sidebar -->
-    <nav class="sidebar">
-      <div class="menu_content">
+<nav class="sidebar">
+    <div class="menu_content">
 
         <ul class="menu_items">
-          <div class="menu_title menu_dahsboard"></div>
-		<li class="item">
-		  <a href="/Elos/empreendimento/dashboard-principal" class="nav_link submenu_item">
-		      <span class="navlink_icon">
-		        <i class="bx bx-home-alt"></i>
-		      </span>
-		      <span class="navlink">Principal</span>
-		  	</a>
-		  </li>
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-bar-chart-square"></i>
-              </span>
-              <span class="navlink">Financeiro</span>
-            </div>
-          </li>
+            <div class="menu_title menu_dahsboard"></div>
+            <li class="item">
+                <a href="/Elos/empreendimento/dashboard-principal" class="nav_link submenu_item">
+                    <span class="navlink_icon">
+                        <i class="bx bx-home-alt"></i>
+                    </span>
+                    <span class="navlink">Principal</span>
+                </a>
+            </li>
+            <li class="item">
+                <div href="#" class="nav_link submenu_item" data-submenu="financeiro">
+                    <span class="navlink_icon">
+                        <i class="bx bx-bar-chart-square"></i>
+                    </span>
+                    <span class="navlink">Financeiro</span>
+                </div>
+                <ul class="menu_items submenu">
+                    <a href="#" class="nav_link sublink">Painel</a>
+                    <a href="#" class="nav_link sublink">Relatórios</a>
+                </ul>
+            </li>
         </ul>
 
         <ul class="menu_items">
-          <div class="menu_title menu_insumo"></div>
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bxs-package"></i>
-              </span>
-              <span class="navlink">Insumos</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            </div>
+            <div class="menu_title menu_insumo"></div>
+            <li class="item">
+                <div href="#" class="nav_link submenu_item" data-submenu="insumos">
+                    <span class="navlink_icon">
+                        <i class="bx bxs-package"></i>
+                    </span>
+                    <span class="navlink">Insumos</span>
+                    <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
 
-            <ul class="menu_items submenu">
-              <a href="/Elos/empreendimento/insumo" class="nav_link sublink">Listar Insumos</a>
-              <a href="#" class="nav_link sublink">Incluir Insumo</a>
-            </ul>
-          </li>
+                <ul class="menu_items submenu">
+                    <a href="${pageContext.request.contextPath}/empreendimento/insumo/dashboard" class="nav_link sublink">Painel de Insumos</a>
+                    <a href="${pageContext.request.contextPath}/empreendimento/insumo/listagem" class="nav_link sublink">Listar Insumos</a>
+                </ul>
+            </li>
 
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-receipt"></i>
-              </span>
-              <span class="navlink">Compras</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            </div>
+            <li class="item">
+                <div href="#" class="nav_link submenu_item" data-submenu="compras">
+                    <span class="navlink_icon">
+                        <i class="bx bx-receipt"></i>
+                    </span>
+                    <span class="navlink">Compras</span>
+                    <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
 
-            <ul class="menu_items submenu">
-              <a href="#" class="nav_link sublink">Listar Compras</a>
-              <a href="#" class="nav_link sublink">Registrar Compra</a>
-            </ul>
-          </li>
+                <ul class="menu_items submenu">
+                    <a href="${pageContext.request.contextPath}/empreendimento/compra/dashboard" class="nav_link sublink">Painel de Compras</a>
+                    <a href="${pageContext.request.contextPath}/empreendimento/compra/incluir.jsp" class="nav_link sublink">Registrar Compra</a>
+                </ul>
+            </li>
         </ul>
 
         <ul class="menu_items">
-          <div class="menu_title menu_produto"></div>
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-cart"></i>
-              </span>
-              <span class="navlink">Vendas</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            </div>
+            <div class="menu_title menu_produto"></div>
+            <li class="item">
+                <div href="#" class="nav_link submenu_item" data-submenu="vendas">
+                    <span class="navlink_icon">
+                        <i class="bx bx-cart"></i>
+                    </span>
+                    <span class="navlink">Vendas</span>
+                    <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
 
-            <ul class="menu_items submenu">
-              <a href="#" class="nav_link sublink">Listar Vendas</a>
-              <a href="#" class="nav_link sublink">Registar Venda</a>
-            </ul>
-          </li>
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-cube"></i>
-              </span>
-              <span class="navlink">Produtos</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            </div>
+                <ul class="menu_items submenu">
+                    <a href="#" class="nav_link sublink">Listar Vendas</a>
+                    <a href="#" class="nav_link sublink">Registar Venda</a>
+                </ul>
+            </li>
+            <li class="item">
+                <div href="#" class="nav_link submenu_item" data-submenu="produtos">
+                    <span class="navlink_icon">
+                        <i class="bx bx-cube"></i>
+                    </span>
+                    <span class="navlink">Produtos</span>
+                    <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
 
-            <ul class="menu_items submenu">
-              <a href="#" class="nav_link sublink">Listar Produtos</a>
-              <a href="#" class="nav_link sublink">Incluir Produto</a>
-            </ul>
-          </li>
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-briefcase"></i>
-              </span>
-              <span class="navlink">Mão de Obra</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            </div>
+                <ul class="menu_items submenu">
+                    <a href="#" class="nav_link sublink">Listar Produtos</a>
+                    <a href="#" class="nav_link sublink">Incluir Produto</a>
+                </ul>
+            </li>
+            <li class="item">
+                <div href="#" class="nav_link submenu_item" data-submenu="mao-obra">
+                    <span class="navlink_icon">
+                        <i class="bx bx-briefcase"></i>
+                    </span>
+                    <span class="navlink">Mão de Obra</span>
+                    <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
 
-            <ul class="menu_items submenu">
-              <a href="#" class="nav_link sublink">Listar</a>
-              <a href="#" class="nav_link sublink">Adicionar</a>
-            </ul>
-          </li>
+                <ul class="menu_items submenu">
+                    <a href="${pageContext.request.contextPath}/empreendimento/mao-obra/dashboard" class="nav_link sublink">Painel de Serviços</a>
+                    <a href="${pageContext.request.contextPath}/empreendimento/mao-obra/listagem" class="nav_link sublink">Listar Serviços</a>
+                </ul>
+            </li>
         </ul>
 
         <ul class="menu_items">
-          <div class="menu_title menu_avaliacao"></div>
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-pie-chart-alt"></i>
-              </span>
-              <span class="navlink">Meu Indicador</span>
-            </div>
-          </li>
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-info-circle"></i>
-              </span>
-              <span class="navlink">Sobre</span>
-            </div>
-          </li>
+            <div class="menu_title menu_avaliacao"></div>
+            <li class="item">
+                <div href="#" class="nav_link submenu_item" data-submenu="indicador">
+                    <span class="navlink_icon">
+                        <i class="bx bx-pie-chart-alt"></i>
+                    </span>
+                    <span class="navlink">Meu Indicador</span>
+                </div>
+            </li>
+            <li class="item">
+                <div href="#" class="nav_link submenu_item" data-submenu="sobre">
+                    <span class="navlink_icon">
+                        <i class="bx bx-info-circle"></i>
+                    </span>
+                    <span class="navlink">Sobre</span>
+                </div>
+            </li>
         </ul>
 
-        <!-- Sidebar Open / Close -->
         <div class="bottom_content">
-          <div class="bottom expand_sidebar">
-            <span> Expandir</span>
-            <i class='bx bx-log-in' ></i>
-          </div>
-          <div class="bottom collapse_sidebar">
-            <span> Recolher</span>
-            <i class='bx bx-log-out'></i>
-          </div>
+            <div class="bottom expand_sidebar">
+                <span> Expandir</span>
+                <i class='bx bx-log-in'></i>
+            </div>
+            <div class="bottom collapse_sidebar">
+                <span> Recolher</span>
+                <i class='bx bx-log-out'></i>
+            </div>
         </div>
-      </div>
-    </nav>
+    </div>
+</nav>

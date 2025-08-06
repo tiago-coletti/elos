@@ -6,7 +6,16 @@ const sidebarOpen = document.querySelector("#sidebarOpen");
 const sidebarClose = document.querySelector(".collapse_sidebar");
 const sidebarExpand = document.querySelector(".expand_sidebar");
 
-// === Restaurar modo dark/light salvo ===
+// --- Mantenha o submenu ativo ao recarregar a página ---
+const getActiveSubmenu = localStorage.getItem("activeSubmenu");
+if (getActiveSubmenu) {
+    const activeSubmenuElement = document.querySelector(`.submenu_item[data-submenu="${getActiveSubmenu}"]`);
+    if (activeSubmenuElement) {
+        activeSubmenuElement.classList.add("show_submenu");
+    }
+}
+
+// === Restaurar modo dark/light salvo === 
 let savedMode = localStorage.getItem("mode");
 if (savedMode === "dark") {
     body.classList.add("dark");
@@ -15,7 +24,7 @@ if (savedMode === "dark") {
     darkLight.classList.replace("bx-moon", "bx-sun");
 }
 
-// === Restaurar estado do menu lateral salvo ===
+// === Restaurar estado do menu lateral salvo === 
 let savedSidebar = localStorage.getItem("sidebarStatus");
 if (savedSidebar === "close") {
     sidebar.classList.add("close");
@@ -27,7 +36,7 @@ if (savedSidebar === "close") {
     body.classList.remove("sidebar-closed");
 }
 
-// === Dark mode toggle ===
+// === Dark mode toggle === 
 darkLight.addEventListener("click", () => {
     body.classList.toggle("dark");
     if (body.classList.contains("dark")) {
@@ -39,7 +48,7 @@ darkLight.addEventListener("click", () => {
     }
 });
 
-// === Sidebar toggle ===
+// === Sidebar toggle === 
 sidebarOpen.addEventListener("click", () => {
     sidebar.classList.toggle("close");
     if (sidebar.classList.contains("close")) {
@@ -65,13 +74,14 @@ sidebarExpand.addEventListener("click", () => {
     localStorage.setItem("sidebarStatus", "open");
 });
 
-// === Sidebar hover behavior ===
+// === Sidebar hover behavior === 
 sidebar.addEventListener("mouseenter", () => {
     if (sidebar.classList.contains("hoverable")) {
         sidebar.classList.remove("close");
         body.classList.add("sidebar-hovered");
     }
 });
+
 sidebar.addEventListener("mouseleave", () => {
     if (sidebar.classList.contains("hoverable")) {
         sidebar.classList.add("close");
@@ -79,19 +89,26 @@ sidebar.addEventListener("mouseleave", () => {
     }
 });
 
-// === Submenus ===
+// === Submenus === 
 submenuItems.forEach((item, index) => {
     item.addEventListener("click", () => {
-        item.classList.toggle("show_submenu");
-        submenuItems.forEach((item2, index2) => {
-            if (index !== index2) {
+        const submenuId = item.getAttribute('data-submenu');
+
+        if (item.classList.contains("show_submenu")) {
+            item.classList.remove("show_submenu");
+            localStorage.removeItem("activeSubmenu");
+        } else {
+            submenuItems.forEach((item2) => {
                 item2.classList.remove("show_submenu");
-            }
-        });
+            });
+
+            item.classList.add("show_submenu");
+            localStorage.setItem("activeSubmenu", submenuId);
+        }
     });
 });
 
-// === Mobile sidebar behavior ===
+// === Mobile sidebar behavior === 
 if (window.innerWidth < 768) {
     sidebar.classList.add("close");
 } else {

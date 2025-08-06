@@ -4,6 +4,7 @@ public class Insumo {
 	private int id;
 	private String nome;
 	private String unidadeMedida;
+	private Double quantidade;
 	private int empreendimentoId;
 	private String createdAt;
 	private String updatedAt;
@@ -14,16 +15,13 @@ public class Insumo {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Insumo(int id, String nome, String unidadeMedida, int empreendimentoId, String createdAt, String updatedAt,
-			String deletedAt) {
+	public Insumo(int id, String nome, String unidadeMedida, double quantidade, int empreendimentoId) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.unidadeMedida = unidadeMedida;
+		this.quantidade = quantidade;
 		this.empreendimentoId = empreendimentoId;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
 	}
 
 	public int getId() {
@@ -48,6 +46,14 @@ public class Insumo {
 
 	public void setUnidadeMedida(String unidadeMedida) {
 		this.unidadeMedida = unidadeMedida;
+	}
+	
+	public Double getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Double quantidade) {
+		this.quantidade = quantidade;
 	}
 
 	public int getEmpreendimentoId() {

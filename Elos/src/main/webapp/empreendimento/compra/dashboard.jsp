@@ -1,19 +1,32 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	<!DOCTYPE html><html><head>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="model.entity.Insumo"%>
+<%@ page import="java.util.ArrayList"%>
+<% @SuppressWarnings("unchecked") ArrayList<Insumo> insumos = (ArrayList<Insumo>) request.getAttribute("insumos"); %>
+
+<!DOCTYPE html>
+<html>
+
+<head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <title>Elos</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/tabela.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/carrossel.css" />
-</head><body>
+</head>
+
+<body>
 	<%@ include file="/empreendimento/shared/navbar.jspf"%>
 
     <main class="container">
+        <div class="dashboard-title">
+            <h2>Painel de Insumos</h2>
+        </div>
+
         <section class="carousel-container">
-            <%-- O botão anterior foi removido daqui --%>
+        
             <div class="carousel-wrapper">
                 <div class="carousel-track">
 
@@ -76,10 +89,53 @@
 
                 </div>
             </div>
-            <%-- Botão de próxima com ícone Boxicons --%>
-            <button class="carousel-button next-button"><i class='bx bx-chevron-right'></i></button>
+            <button class="carousel-button next-button"><i class='bx bx-chevron-right'></i></button>     
+				
         </section>
     </main>
+    
+    <div class="header">
+		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/insumo/incluir.jsp'">Incluir</button>
+	</div>
+	
+	<div class="divTable">
+		<table>		
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Medida</th>
+					<th>Quantidade</th>
+				</tr>
+			</thead>
+			
+			<tbody id="insumosTable">
+			<% 
+			int count = 0;
+			if (insumos != null && !insumos.isEmpty()) { 
+				for (Insumo insumo : insumos) { 
+					if(count >= 3) break;
+			%>
+					<tr>
+						<td><%=insumo.getNome()%></td>
+						<td><%=insumo.getUnidadeMedida()%></td>
+						<td style="text-align: left;"><%=insumo.getQuantidade()%></td>
+					</tr>
+			<% count++; 
+			
+			}} else { %>
+				<tr>
+					<td colspan="3">Nenhum insumo cadastrado</td>
+				</tr>
+			<% } %>
+							
+			</tbody>
+		</table>
+		
+		<% if (insumos != null && !insumos.isEmpty()) { %>
+			<a href="${pageContext.request.contextPath}/empreendimento/insumo/listagem" class="ver-todos-btn">Ver todos os insumos</a>
+		<% } %>
+
+	</div>
     
     <%@ include file="/empreendimento/shared/modals/insumo.jspf"%>
 

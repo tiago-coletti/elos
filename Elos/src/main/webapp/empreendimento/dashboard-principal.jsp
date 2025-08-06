@@ -12,42 +12,40 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/dashboard.css" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/botao.css" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/info-bar.css" />
 </head>
   
 <body>
 	<%@ include file="/empreendimento/shared/navbar.jspf"%>
 	<div class="welcome-container">
-    	<h2>Bom dia, Fulano!</h2>
+    	<h2>Bom dia!</h2>
     	<div class="info-box">
       		DATA: 00/00/00 &nbsp; HORÁRIO: 00:00
     	</div>
 	</div>
 	
 	<div class="button-container">
-	    <form action="ServletNovaVenda" method="post">
+	    <form action="${pageContext.request.contextPath}/empreendimento/venda/dashboard" method="get">
 	        <button type="submit" class="square-button">
 	            <i class='bx bx-cart'></i>
 	            <span>Nova Venda</span>
 	        </button>
 	    </form>
 	
-	    <form action="ServletNovaCompra" method="post">
+	    <form action="${pageContext.request.contextPath}/empreendimento/compra/incluir.jsp" method="get">
 	        <button type="submit" class="square-button">
 	            <i class='bx bx-receipt'></i>
 	            <span>Nova Compra</span>
 	        </button>
 	    </form>
 	
-	    <form action="/Elos/empreendimento/insumo" method="post">
+	    <form action="${pageContext.request.contextPath}/empreendimento/insumo/dashboard" method="get">
 	        <button type="submit" class="square-button">
 	            <i class='bx bxs-package'></i>
 	            <span>Estoque</span>
 	        </button>
 	    </form>
-	
-	    <form action="ServletInvestimentos" method="post">
+		
+	    <form action="${pageContext.request.contextPath}/empreendimento/investimento/dashboard" method="get">
 	        <button type="submit" class="square-button">
 	            <i class='bxr bx-coin'></i>
 	            <span>Investimentos</span>
