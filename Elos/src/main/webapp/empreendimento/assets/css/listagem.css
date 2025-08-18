@@ -254,3 +254,66 @@ body.dark .delete-icon:hover {
 body.dark #no-results td {
 	color: var(--grey-color-light);
 }
+
+.date-filter-container {
+	display: flex;
+	gap: 15px;
+	align-items: flex-end;
+	flex-wrap: wrap;
+}
+
+.filter-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.filter-group label {
+	margin-bottom: 5px;
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--dark-color);
+}
+
+.filter-group input[type="date"] {
+	background-color: #f1f1f1;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	padding: 8px;
+	color: var(--dark-color);
+	font-family: inherit;
+}
+
+#clearFilterBtn {
+	padding: 9px 15px;
+	background-color: #6c757d;
+	color: var(--white-color);
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-weight: 500;
+	transition: background-color 0.3s ease;
+}
+
+#clearFilterBtn:hover {
+	background-color: #5a6268;
+}
+
+body.dark .filter-group label {
+	color: var(--grey-color-light);
+}
+
+body.dark .filter-group input[type="date"] {
+	background-color: #333;
+	border-color: #555;
+	color: var(--white-color);
+	color-scheme: dark;
+}
+
+body.dark #clearFilterBtn {
+	background-color: #4f5b66;
+	border: 1px solid #555;
+}
+
+body.dark #clearFilterBtn:hover {
+	background-color: #626f7d;
+}

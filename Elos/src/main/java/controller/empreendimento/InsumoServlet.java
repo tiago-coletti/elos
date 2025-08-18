@@ -71,7 +71,6 @@ public class InsumoServlet extends HttpServlet {
 	}
 
 	// GET //
-
 	private void visualizarListagem(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
@@ -140,7 +139,6 @@ public class InsumoServlet extends HttpServlet {
 	}
 
 	// POST //
-
 	private void processarInclusao(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);

@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.entity.Insumo"%>
+<%@ page import="model.entity.Compra"%>
 <%@ page import="java.util.ArrayList"%>
-<% @SuppressWarnings("unchecked") ArrayList<Insumo> insumos = (ArrayList<Insumo>) request.getAttribute("insumos"); %>
+<%@ page import="java.text.SimpleDateFormat"%>
+<% 
+    @SuppressWarnings("unchecked") 
+    ArrayList<Compra> compras = (ArrayList<Compra>) request.getAttribute("compras"); 
+    SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat filterFormat = new SimpleDateFormat("yyyy-MM-dd");
+%>
 
 <!DOCTYPE html>
 <html>
@@ -9,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-    <title>Elos</title>
+    <title>Elos - Listagem de Compras</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/listagem.css" />
@@ -19,14 +25,22 @@
     <%@ include file="/empreendimento/shared/navbar.jspf"%>
 
     <div class="page-header">
-        <h1>Listagem de Insumos</h1>
-		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/insumo/incluir.jsp'">Incluir</button>
+        <h1>Listagem de Compras</h1>
+        <button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir.jsp'">Incluir Compra</button>
     </div>
 
+    <!-- Filtro por data -->
     <div class="search-wrapper">
-        <div class="search-container">
-            <i class='bx bx-search'></i>
-            <input type="text" id="searchInput" placeholder="Pesquisar por nome do insumo...">
+        <div class="date-filter-container">
+            <div class="filter-group">
+                <label for="startDateInput">Data Inicial:</label>
+                <input type="date" id="startDateInput">
+            </div>
+            <div class="filter-group">
+                <label for="endDateInput">Data Final:</label>
+                <input type="date" id="endDateInput">
+            </div>
+            <button id="clearFilterBtn">Limpar</button>
         </div>
     </div>
 
@@ -34,33 +48,31 @@
         <table>
             <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>Medida</th>
-                    <th>Quantidade</th>
+                    <th>Valor Total</th>
+                    <th>Data da Compra</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
             </thead>
-            <tbody id="insumosTable">
-            <% if (insumos != null && !insumos.isEmpty()) { 
-                for (Insumo insumo : insumos) { 
+            <tbody id="comprasTable">
+            <% if (compras != null && !compras.isEmpty()) { 
+                for (Compra compra : compras) { 
             %>
-                <tr>
-                    <td><%= insumo.getNome() %></td>
-                    <td><%= insumo.getUnidadeMedida() %></td>
-                    <td><%= insumo.getQuantidade() %></td>
+                <tr data-date="<%= filterFormat.format(compra.getCreatedAt()) %>">
+                    <td>R$ <%= String.format("%.2f", compra.getValorTotal()) %></td>
+                    <td><%= displayFormat.format(compra.getCreatedAt()) %></td>
                     <td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/insumo/editar" method="GET" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= insumo.getId() %>">
+                        <form action="${pageContext.request.contextPath}/empreendimento/compra/editar" method="GET" style="display:inline;">
+                            <input type="hidden" name="id" value="<%= compra.getId() %>">
                             <button type="submit" class="action-icon edit-icon" title="Editar">
                                 <i class='bx bxs-edit'></i>
                             </button>
                         </form>
                     </td>
                     <td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/insumo/excluir" method="POST" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= insumo.getId() %>">
-                            <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir o insumo <%= insumo.getNome() %>?');">
+                        <form action="${pageContext.request.contextPath}/empreendimento/compra/excluir" method="POST" style="display:inline;">
+                            <input type="hidden" name="id" value="<%= compra.getId() %>">
+                            <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir a compra de ID <%= compra.getId() %>?');">
                                 <i class='bx bxs-trash'></i>
                             </button>
                         </form>
@@ -71,7 +83,7 @@
             } else { 
             %>
                 <tr id="no-results">
-                    <td colspan="5">Nenhum insumo cadastrado</td>
+                    <td colspan="5">Nenhuma compra cadastrada</td>
                 </tr>
             <% } %>
             </tbody>
@@ -81,48 +93,67 @@
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('searchInput');
-            if (!searchInput) return;
-
-            const tableBody = document.getElementById('insumosTable');
+            const startDateInput = document.getElementById('startDateInput');
+            const endDateInput = document.getElementById('endDateInput');
+            const clearFilterBtn = document.getElementById('clearFilterBtn');
+            const tableBody = document.getElementById('comprasTable');
             const tableRows = tableBody.getElementsByTagName('tr');
-            const noResultsRow = document.getElementById('no-results');
-
-            if (noResultsRow && tableRows.length === 1) {
-                searchInput.disabled = true;
-                return;
-            } else if (noResultsRow) {
-                noResultsRow.style.display = 'none';
+            
+            let noResultsRow;
+            if (document.getElementById('no-results')) {
+                noResultsRow = document.getElementById('no-results');
+            } else {
+                noResultsRow = document.createElement('tr');
+                noResultsRow.id = 'no-results-js';
+                noResultsRow.innerHTML = '<td colspan="5">Nenhum resultado encontrado para o filtro aplicado.</td>';
+                tableBody.appendChild(noResultsRow);
             }
+            noResultsRow.style.display = 'none';
 
-            searchInput.addEventListener('keyup', function () {
-                const filter = searchInput.value.toLowerCase();
+            function applyFilter() {
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
                 let visibleRows = 0;
 
                 for (let i = 0; i < tableRows.length; i++) {
-                    if (tableRows[i].id === 'no-results') continue;
-                    
-                    const nameTd = tableRows[i].getElementsByTagName('td')[0];
-                    if (nameTd) {
-                        const nameText = nameTd.textContent || nameTd.innerText;
-                        if (nameText.toLowerCase().indexOf(filter) > -1) {
-                            tableRows[i].style.display = "";
-                            visibleRows++;
-                        } else {
-                            tableRows[i].style.display = "none";
-                        }
+                    const row = tableRows[i];
+                    if (row.id === 'no-results' || row.id === 'no-results-js') continue;
+
+                    const rowDate = row.getAttribute('data-date');
+                    let showRow = true;
+
+                    if (startDate && rowDate < startDate) {
+                        showRow = false;
                     }
-                }
-                
-                if (noResultsRow) {
-                    if (visibleRows === 0) {
-                        noResultsRow.style.display = 'table-row';
-                        noResultsRow.getElementsByTagName('td')[0].textContent = 'Nenhum resultado encontrado';
+
+                    if (endDate && rowDate > endDate) {
+                        showRow = false;
+                    }
+
+                    if (showRow) {
+                        row.style.display = "";
+                        visibleRows++;
                     } else {
-                        noResultsRow.style.display = 'none';
+                        row.style.display = "none";
                     }
                 }
-            });
+
+                if (visibleRows === 0 && (startDate || endDate)) {
+                    noResultsRow.style.display = 'table-row';
+                } else {
+                    noResultsRow.style.display = 'none';
+                }
+            }
+
+            function clearFilter() {
+                startDateInput.value = '';
+                endDateInput.value = '';
+                applyFilter();
+            }
+
+            startDateInput.addEventListener('change', applyFilter);
+            endDateInput.addEventListener('change', applyFilter);
+            clearFilterBtn.addEventListener('click', clearFilter);
         });
     </script>
 </body>

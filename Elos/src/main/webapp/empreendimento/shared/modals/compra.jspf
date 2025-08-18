@@ -1,0 +1,112 @@
+<div id="purchaseSuggestionModal" class="modal action-modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Lista de Compras Sugerida</h2>
+        <p>Com base no seu estoque atual e itens próximos ao vencimento, recomendamos a compra dos seguintes insumos para garantir a continuidade da produção.</p>
+        <h3>Baseado em Estoque Baixo:</h3>
+        <ul class="modal-list">
+            <li><strong>Farinha de Trigo:</strong> Quantidade Atual: 5kg (Mínimo: 10kg)</li>
+            <li><strong>Ovos (Dúzia):</strong> Quantidade Atual: 2 (Mínimo: 5)</li>
+            <li><strong>Fermento Biológico (500g):</strong> Quantidade Atual: 1 (Mínimo: 2)</li>
+            <li><strong>Embalagem para Bolo:</strong> Quantidade Atual: 15 un (Mínimo: 50 un)</li>
+        </ul>
+        <h3>Baseado em Vencimento Próximo (próximos 30 dias):</h3>
+        <ul class="modal-list">
+            <li><strong>Creme de Leite (Lata):</strong> Validade: 2025-09-10 (Estoque: 12 un)</li>
+            <li><strong>Manteiga (200g):</strong> Validade: 2025-09-15 (Estoque: 8 un)</li>
+        </ul>
+        <button class="modal-action-button">Criar Pedido de Compra</button>
+    </div>
+</div>
+
+<div id="recentPurchasesModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Últimas Compras Realizadas</h2>
+        <p>Detalhes das aquisições mais recentes para o seu empreendimento.</p>
+        <ul class="modal-list">
+            <li><strong>Compra #102 (12/08/2025)</strong>
+                <ul>
+                    <li>Fornecedor: Fornecedor A</li>
+                    <li>Valor Total: R$ 350,00</li>
+                    <li>Itens: 10kg Açúcar, 5L Óleo de Soja</li>
+                </ul>
+            </li>
+            <li><strong>Compra #101 (10/08/2025)</strong>
+                <ul>
+                    <li>Fornecedor: Cooperativa Local</li>
+                    <li>Valor Total: R$ 1.200,00</li>
+                    <li>Itens: 20kg Chocolate em Barra, 5kg Morangos Frescos</li>
+                </ul>
+            </li>
+             <li><strong>Compra #100 (05/08/2025)</strong>
+                <ul>
+                    <li>Fornecedor: Embalagens & Cia</li>
+                    <li>Valor Total: R$ 450,00</li>
+                    <li>Itens: 200x Embalagem para Torta, 500x Forminha para Brigadeiro</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="priceVariationModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Histórico de Variação de Preços</h2>
+        <p>Análise comparativa dos custos de insumos chave entre as últimas compras.</p>
+        <ul class="modal-list">
+            <li><strong>Farinha de Trigo (kg)</strong>
+                <ul>
+                    <li>Custo Atual (10/08/2025): R$ 4,50</li>
+                    <li>Custo Anterior (15/07/2025): R$ 4,15 <span style="color: #c0392b;">(Aumento de 8.4%)</span></li>
+                </ul>
+            </li>
+            <li><strong>Embalagem Pote (un)</strong>
+                <ul>
+                    <li>Custo Atual (05/08/2025): R$ 0,95</li>
+                    <li>Custo Anterior (01/07/2025): R$ 1,00 <span style="color: #27ae60;">(Redução de 5.0%)</span></li>
+                </ul>
+            </li>
+            <li><strong>Leite Condensado (lata)</strong>
+                <ul>
+                    <li>Custo Atual (10/08/2025): R$ 5,80</li>
+                    <li>Custo Anterior (15/07/2025): R$ 5,80 (Estável)</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="topExpensesModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Maiores Despesas com Insumos (Mês Atual)</h2>
+        <p>Relatório detalhado dos insumos que representaram o maior investimento no período, ajudando a entender a estrutura de custos.</p>
+        <ol class="modal-list">
+            <li><strong>Chocolate em Barra:</strong> R$ 950,00</li>
+            <li><strong>Leite Condensado:</strong> R$ 720,00</li>
+            <li><strong>Morangos Frescos:</strong> R$ 600,00</li>
+            <li><strong>Embalagem para Torta:</strong> R$ 450,00</li>
+            <li><strong>Farinha de Trigo:</strong> R$ 415,00</li>
+        </ol>
+    </div>
+</div>
+
+<div id="priceVariationHelpModal" class="modal help-modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>O que é Variação de Preços?</h2>
+        <p>A análise de variação de preços monitora as mudanças no custo de aquisição dos seus insumos ao longo do tempo. Acompanhar essa métrica é fundamental para:</p>
+        <ul>
+            <li><strong>Controle de Custos:</strong> Identificar rapidamente aumentos que impactam sua margem de lucro.</li>
+            <li><strong>Negociação com Fornecedores:</strong> Usar dados históricos para negociar melhores condições de compra.</li>
+            <li><strong>Planejamento Financeiro:</strong> Prever custos futuros com mais precisão e ajustar os preços de venda, se necessário.</li>
+        </ul>
+        <p>Uma gestão atenta à variação de preços fortalece a saúde financeira do seu empreendimento.</p>
+        <div class="multimedia-content">
+            <p>Assista a um vídeo sobre como a inflação afeta os custos:</p>
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>

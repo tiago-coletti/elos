@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.entity.Insumo"%>
+<%@ page import="model.entity.Compra"%>
 <%@ page import="java.util.ArrayList"%>
-<% @SuppressWarnings("unchecked") ArrayList<Insumo> insumos = (ArrayList<Insumo>) request.getAttribute("insumos"); %>
+<% @SuppressWarnings("unchecked") ArrayList<Compra> compras = (ArrayList<Compra>) request.getAttribute("compras"); %>
 
 <!DOCTYPE html>
 <html>
@@ -21,123 +21,131 @@
 	<%@ include file="/empreendimento/shared/navbar.jspf"%>
 
     <main class="container">
-        <div class="dashboard-title">
-            <h2>Painel de Insumos</h2>
-        </div>
-
-        <section class="carousel-container">
-        
-            <div class="carousel-wrapper">
-                <div class="carousel-track">
-
-                    <div class="card">
-                        <h3>Insumos com Estoque Baixo</h3>
-                        <p>Total de <span class="card-value">5</span> insumos abaixo do mínimo.</p>
-                        <ul>
-                            <li><strong>Parafuso M6:</strong> 15 unidades</li>
-                            <li><strong>Tinta Branca (Litro):</strong> 2 unidades</li>
-                        </ul>
-                        <button class="view-details-btn action-button" data-modal-target="lowStockModal">Solicitar Reposição</button>
-                    </div>
-
-                    <div class="card">
-                        <h3>Insumos Próximos do Vencimento</h3>
-                        <p>Itens a vencer nos próximos <strong>30, 60 e 90 dias</strong>.</p>
-                        <ul>
-                            <li><strong>30 Dias:</strong> 3 itens</li>
-                            <li><strong>60 Dias:</strong> 5 itens</li>
-                            <li><strong>90 Dias:</strong> 2 itens</li>
-                        </ul>
-                        <button class="view-details-btn" data-modal-target="expirationModal">Ver Detalhes</button>
-                    </div>
-
-                    <div class="card">
-                        <h3>Valor Total do Estoque</h3>
-                        <p class="card-value">R$ 150.000,00</p>
-                        <p>Valor monetário total de todos os insumos.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3>Insumos Mais Utilizados</h3>
-                        <p>Período: <select><option>Mês</option><option>Semana</option><option>Trimestre</option></select></p>
-                        <ul>
-                            <li><strong>Cimento CP II:</strong> 120 sacos</li>
-                            <li><strong>Areia Fina:</strong> 50 m³</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>Últimos Insumos Adicionados</h3>
-                        <ul>
-                            <li><strong>Madeira de Lei (5m):</strong> 2025-07-20</li>
-                            <li><strong>Cano PVC (100mm):</strong> 2025-07-18</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>Insumos com Estoque Parado <i class='bx bx-help-circle help-icon' data-modal-target="stagnantStockHelpModal"></i></h3>
-                        <p>5 insumos sem movimentação há mais de <strong>90 dias</strong>.</p>
-                        <button class="view-details-btn" data-modal-target="stagnantStockModal">Ver Todos</button>
-                    </div>
-
-                    <div class="card">
-                        <h3>Previsão de Consumo <i class='bx bx-help-circle help-icon' data-modal-target="consumptionForecastHelpModal"></i></h3>
-                        <p><strong>Cimento CP II:</strong> Acabará em ~35 dias</p>
-                        <p><strong>Tijolo Baiano:</strong> Acabará em ~60 dias</p>
-                        <button class="view-details-btn" data-modal-target="consumptionForecastModal">Ver Detalhes</button>
-                    </div>
-
-                </div>
-            </div>
-            <button class="carousel-button next-button"><i class='bx bx-chevron-right'></i></button>     
-				
-        </section>
-    </main>
+	    <div class="dashboard-title">
+	        <h2>Painel de Compras</h2>
+	    </div>
+	
+	    <section class="carousel-container">
+    
+	        <div class="carousel-wrapper">
+	            <div class="carousel-track">
+	
+	                <div class="card">
+	                    <h3>Total Gasto em Compras</h3>
+	                    <p>Período: <select><option>Este Mês</option><option>Últimos 3 meses</option><option>Ano</option></select></p>
+	                    <p class="card-value">R$ 4.850,00</p>
+	                    <p>Valor total investido na aquisição de insumos.</p>
+	                </div>
+	
+	                <div class="card">
+	                    <h3>Últimas Compras Realizadas</h3>
+	                    <p>Acompanhe as entradas de insumo mais recentes.</p>
+	                    <ul>
+	                        <li><strong>Compra #102:</strong> Fornecedor A (R$ 350,00)</li>
+	                        <li><strong>Compra #101:</strong> Cooperativa Local (R$ 1.200,00)</li>
+	                    </ul>
+	                    <button class="view-details-btn" data-modal-target="recentPurchasesModal">Ver Detalhes</button>
+	                </div>
+	
+	                <div class="card">
+	                    <h3>Variação de Preços <i class='bx bx-help-circle help-icon' data-modal-target="priceVariationHelpModal"></i></h3>
+	                    <p>Itens com maiores alterações de custo.</p>
+	                    <ul>
+	                        <li><strong>Farinha de Trigo:</strong> <span style="color: #c0392b;">▲ 8%</span> na última compra</li>
+	                        <li><strong>Embalagem Pote:</strong> <span style="color: #27ae60;">▼ 5%</span> na última compra</li>
+	                    </ul>
+	                    <button class="view-details-btn" data-modal-target="priceVariationModal">Analisar Histórico</button>
+	                </div>
+	
+	                <div class="card">
+	                    <h3>Sugestões de Compra</h3>
+	                    <p>Itens que precisam de reposição urgente.</p>
+	                    <ul>
+	                        <li><strong>Estoque Baixo:</strong> 4 itens</li>
+	                        <li><strong>Perto do Vencimento:</strong> 2 itens</li>
+	                    </ul>
+	                    <button class="view-details-btn action-button" data-modal-target="purchaseSuggestionModal">Ver Lista de Compras</button>
+	                </div>
+	
+	                <div class="card">
+	                    <h3>Maiores Despesas (Mês)</h3>
+	                    <p>Insumos que mais consumiram o orçamento de compras.</p>
+	                    <ul>
+	                        <li><strong>Chocolate em Barra:</strong> R$ 950,00</li>
+	                        <li><strong>Leite Condensado:</strong> R$ 720,00</li>
+	                    </ul>
+	                    <button class="view-details-btn" data-modal-target="topExpensesModal">Ver Relatório Completo</button>
+	                </div>
+	                
+	                <div class="card">
+	                    <h3>Principais Fornecedores</h3>
+	                    <p>Parceiros com maior volume de compras no mês.</p>
+	                    <ul>
+	                        <li><strong>Atacado Central:</strong> R$ 2.150,00</li>
+	                        <li><strong>Cooperativa Agrícola:</strong> R$ 1.800,00</li>
+	                    </ul>
+	                    <button class="view-details-btn" data-modal-target="topSuppliersModal">Ver Todos</button>
+	                </div>
+	
+	                <div class="card">
+	                    <h3>Contas a Pagar (Compras)</h3>
+	                    <p>Faturas de compras com vencimento próximo.</p>
+	                    <ul>
+	                        <li><strong>Próximos 7 dias:</strong> R$ 890,00</li>
+	                        <li><strong>Próximos 30 dias:</strong> R$ 2.450,00</li>
+	                    </ul>
+	                    <button class="view-details-btn" data-modal-target="accountsPayableModal">Gerenciar Faturas</button>
+	                </div>
+	
+	            </div>
+	        </div>
+	        <button class="carousel-button next-button"><i class='bx bx-chevron-right'></i></button>     
+            
+	    </section>
+	</main>
     
     <div class="header">
-		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/insumo/incluir.jsp'">Incluir</button>
+		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir.jsp'">Incluir</button>
 	</div>
 	
 	<div class="divTable">
 		<table>		
 			<thead>
 				<tr>
-					<th>Nome</th>
-					<th>Medida</th>
-					<th>Quantidade</th>
+					<th>Valor Total</th>
+					<th>Data</th>
 				</tr>
 			</thead>
 			
-			<tbody id="insumosTable">
+			<tbody id="comprasTable">
 			<% 
 			int count = 0;
-			if (insumos != null && !insumos.isEmpty()) { 
-				for (Insumo insumo : insumos) { 
+			if (compras != null && !compras.isEmpty()) { 
+				for (Compra compra : compras) { 
 					if(count >= 3) break;
 			%>
 					<tr>
-						<td><%=insumo.getNome()%></td>
-						<td><%=insumo.getUnidadeMedida()%></td>
-						<td style="text-align: left;"><%=insumo.getQuantidade()%></td>
+						<td><%=compra.getValorTotal()%></td>
+						<td><%=compra.getCreatedAt()%></td>
 					</tr>
 			<% count++; 
 			
 			}} else { %>
 				<tr>
-					<td colspan="3">Nenhum insumo cadastrado</td>
+					<td colspan="3">Nenhuma compra cadastrada</td>
 				</tr>
 			<% } %>
 							
 			</tbody>
 		</table>
 		
-		<% if (insumos != null && !insumos.isEmpty()) { %>
-			<a href="${pageContext.request.contextPath}/empreendimento/insumo/listagem" class="ver-todos-btn">Ver todos os insumos</a>
+		<% if (compras != null && !compras.isEmpty()) { %>
+			<a href="${pageContext.request.contextPath}/empreendimento/compra/listagem" class="ver-todos-btn">Ver todas as compras</a>
 		<% } %>
 
 	</div>
     
-    <%@ include file="/empreendimento/shared/modals/insumo.jspf"%>
+    <%@ include file="/empreendimento/shared/modals/compra.jspf"%>
 
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/carrossel.js"></script>
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
