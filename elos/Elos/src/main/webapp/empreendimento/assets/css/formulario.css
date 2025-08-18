@@ -1,0 +1,367 @@
+@import url("global.css");
+
+.inclusao-container {
+    margin-top: 60px;
+    margin-left: 300px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+body.sidebar-closed .inclusao-container {
+    margin-left: 120px;
+}
+
+body.sidebar-hovered .inclusao-container {
+    margin-left: 300px;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--dark-color);
+    text-decoration: none;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+body.dark .back-button {
+    color: var(--white-color);
+}
+
+.back-button:hover {
+    color: var(--blue-color);
+}
+
+body.dark .back-button:hover {
+    color: #ccc;
+}
+
+.back-button i {
+    font-size: 2.2rem;
+}
+
+.inclusao-body {
+    background-color: var(--white-color);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+body.dark .inclusao-body {
+    background-color: #333;
+    color: var(--white-color);
+}
+
+.inclusao-body h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: var(--blue-color);
+}
+
+body.dark .inclusao-body h2 {
+    color: var(--white-color);
+}
+
+.inclusao-body form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    padding: 12px;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--white-color);
+    color: var(--dark-color);
+    transition: border-color 0.3s ease;
+}
+
+body.dark .form-group input {
+    background-color: #444;
+    border-color: #555;
+    color: var(--white-color);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--blue-color);
+}
+
+.form-actions {
+    margin-top: 20px;
+    align-self: flex-end;
+}
+
+.form-actions button {
+    padding: 12px 25px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--white-color);
+    background-color: var(--blue-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.form-actions button:hover {
+    background-color: #3060d8;
+}
+
+body.dark .form-actions button {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    border: 2px solid var(--white-color);
+}
+
+body.dark .form-actions button:hover {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+.form-actions-edicao {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.button-edicao {
+    padding: 12px 25px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--white-color);
+    background-color: var(--blue-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button-edicao:hover {
+    background-color: #3060d8;
+}
+
+body.dark .button-edicao {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    border: 2px solid var(--white-color);
+}
+
+body.dark .button-edicao:hover {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+.input-prefix-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-prefix-container .prefix {
+    position: absolute;
+    left: 12px; 
+    font-size: 1.2rem;
+    color: var(--dark-color);
+}
+
+body.dark .input-prefix-container .prefix {
+    color: var(--white-color);
+}
+
+.input-prefix-container input[type="number"] {
+    padding-left: 40px; 
+    width: 100%; 
+}
+
+.input-prefix-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--white-color);
+    transition: border-color 0.3s ease;
+}
+
+body.dark .input-prefix-container {
+    background-color: #444;
+    border-color: #555;
+}
+
+.input-prefix-container:focus-within {
+    border-color: var(--blue-color);
+}
+
+.input-prefix-container input {
+    border: none;
+    background: transparent;
+}
+
+/* === NOVOS ESTILOS PARA INCLUSÃO DE COMPRA === */
+
+.compra-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+}
+
+.selecao-insumos, .itens-compra-container {
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+}
+
+body.dark .selecao-insumos, body.dark .itens-compra-container {
+    border-color: #555;
+}
+
+.selecao-insumos h3, .itens-compra-container h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+#searchInput {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.insumo-disponivel-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border-top: 1px solid #e0e0e0;
+}
+
+body.dark .insumo-disponivel-list {
+    border-top-color: #555;
+}
+
+.insumo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.2s ease;
+}
+
+.insumo-item:last-child {
+    border-bottom: none;
+}
+
+body.dark .insumo-item {
+    border-bottom-color: #555;
+}
+
+.insumo-item:hover {
+    background-color: #f5f5f5;
+}
+
+body.dark .insumo-item:hover {
+    background-color: #444;
+}
+
+.insumo-item.added {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+}
+
+body.dark .insumo-item.added {
+    background-color: #3a3a3a;
+}
+
+.insumo-item button {
+    padding: 5px 10px;
+    font-size: 1rem;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.insumo-item.added button {
+    background-color: #7f8c8d;
+}
+
+.itens-compra-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.itens-compra-table th, .itens-compra-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+body.dark .itens-compra-table th, body.dark .itens-compra-table td {
+    border-bottom-color: #555;
+}
+
+.itens-compra-table input[type="number"] {
+    width: 80px;
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+.item-actions button {
+    background: none;
+    border: none;
+    color: var(--red-color);
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+#itens-compra-vazio {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #777;
+}
+
+body.dark #itens-compra-vazio {
+    color: #aaa;
+}
+
+.compra-footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body.dark .compra-footer {
+    border-top-color: #555;
+}
+
+.total-compra-container {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+#valorTotal {
+    color: var(--blue-color);
+}
