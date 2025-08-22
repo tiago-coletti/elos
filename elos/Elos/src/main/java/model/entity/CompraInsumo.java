@@ -3,7 +3,8 @@ package model.entity;
 public class CompraInsumo {
 	private int id;
 	private double precoUnitario;
-	private double quantidade;
+	private double quantidadeComprada;
+	private double quantidadeRestante;
 	private int compraId;
 	private int insumoId;
 	
@@ -12,11 +13,12 @@ public class CompraInsumo {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public CompraInsumo(int id, double precoUnitario, double quantidade, int compraId, int insumoId) {
+	public CompraInsumo(int id, double precoUnitario, double quantidadeComprada, double quantidadeRestante, int compraId, int insumoId) {
 		super();
 		this.id = id;
 		this.precoUnitario = precoUnitario;
-		this.quantidade = quantidade;
+		this.quantidadeComprada = quantidadeComprada;
+		this.quantidadeRestante = quantidadeRestante;
 		this.compraId = compraId;
 		this.insumoId = insumoId;
 	}
@@ -33,11 +35,17 @@ public class CompraInsumo {
 	public void setPrecoUnitario(double precoUnitario) {
 		this.precoUnitario = precoUnitario;
 	}
-	public double getQuantidade() {
-		return quantidade;
+	public double getQuantidadeComprada() {
+		return quantidadeComprada;
 	}
-	public void setQuantidade(double quantidade) {
-		this.quantidade = quantidade;
+	public void setQuantidadeComprada(double quantidadeComprada) {
+		this.quantidadeComprada = quantidadeComprada;
+	}
+	public double getQuantidadeRestante() {
+		return quantidadeRestante;
+	}
+	public void setQuantidadeRestante(double quantidadeRestante) {
+		this.quantidadeRestante = quantidadeRestante;
 	}
 	public int getCompraId() {
 		return compraId;

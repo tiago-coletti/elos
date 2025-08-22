@@ -105,16 +105,15 @@
 	</main>
     
     <div class="header">
-		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir'">Incluir</button>
+		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir.jsp'">Incluir</button>
 	</div>
 	
 	<div class="divTable">
 		<table>		
 			<thead>
 				<tr>
-					<th>Data da Compra</th>
-					<th>Data do registro</th>
 					<th>Valor Total</th>
+					<th>Data</th>
 				</tr>
 			</thead>
 			
@@ -126,9 +125,8 @@
 					if(count >= 3) break;
 			%>
 					<tr>
-						<td><%=compra.getDataCompra()%></td>
-						<td><%=compra.getCreatedAt()%></td>
 						<td><%=compra.getValorTotal()%></td>
+						<td><%=compra.getCreatedAt()%></td>
 					</tr>
 			<% count++; 
 			

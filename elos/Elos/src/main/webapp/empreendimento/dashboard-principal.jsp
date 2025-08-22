@@ -31,7 +31,7 @@
 	        </button>
 	    </form>
 	
-	    <form action="${pageContext.request.contextPath}/empreendimento/compra/incluir.jsp" method="get">
+	    <form action="${pageContext.request.contextPath}/empreendimento/compra/incluir" method="get">
 	        <button type="submit" class="square-button">
 	            <i class='bx bx-receipt'></i>
 	            <span>Nova Compra</span>

@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.entity.Compra"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="java.text.SimpleDateFormat"%>
 <% 
     @SuppressWarnings("unchecked") 
     ArrayList<Compra> compras = (ArrayList<Compra>) request.getAttribute("compras"); 
-    // A variável 'filterFormat' foi REMOVIDA daqui.
+    SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat filterFormat = new SimpleDateFormat("yyyy-MM-dd");
 %>
 
 <!DOCTYPE html>
@@ -13,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-    <title>Elos</title>
+    <title>Elos - Listagem de Compras</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/listagem.css" />
@@ -27,6 +29,7 @@
         <button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir.jsp'">Incluir Compra</button>
     </div>
 
+    <!-- Filtro por data -->
     <div class="search-wrapper">
         <div class="date-filter-container">
             <div class="filter-group">
@@ -45,10 +48,8 @@
         <table>
             <thead>
                 <tr>
-					<th>Data da Compra</th>
-					<th>Data do registro</th>
-					<th>Valor Total</th>
-                    <th>Visualizar</th>
+                    <th>Valor Total</th>
+                    <th>Data da Compra</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
@@ -57,19 +58,9 @@
             <% if (compras != null && !compras.isEmpty()) { 
                 for (Compra compra : compras) { 
             %>
-                <%-- MUDANÇA PRINCIPAL AQUI --%>
-                <tr data-date="<%= compra.getCreatedAt() %>">
-                    <td><%=compra.getDataCompra()%></td>
-					<td><%=compra.getCreatedAt()%></td>
-					<td><%=compra.getValorTotal()%></td>
-					<td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/compra/visualizar" method="GET" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= compra.getId() %>">
-                            <button type="submit" class="action-icon edit-icon" title="Visualizar">
-                                <i class='bx bxs-eye-alt'></i>
-                            </button>
-                        </form>
-                    </td>
+                <tr data-date="<%= filterFormat.format(compra.getCreatedAt()) %>">
+                    <td>R$ <%= String.format("%.2f", compra.getValorTotal()) %></td>
+                    <td><%= displayFormat.format(compra.getCreatedAt()) %></td>
                     <td class="action-cell">
                         <form action="${pageContext.request.contextPath}/empreendimento/compra/editar" method="GET" style="display:inline;">
                             <input type="hidden" name="id" value="<%= compra.getId() %>">

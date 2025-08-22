@@ -9,14 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import model.dao.CompraDAO;
-import model.dao.InsumoDAO;
 import model.entity.Compra;
-import model.entity.CompraInsumo;
-import model.entity.Insumo;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +24,6 @@ public class CompraServlet extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(CompraServlet.class.getName());
        
 	CompraDAO compraDAO = new CompraDAO();
-	InsumoDAO insumoDAO = new InsumoDAO();
 
     public CompraServlet() {
         super();
@@ -48,9 +43,6 @@ public class CompraServlet extends HttpServlet {
 		case "/empreendimento/compra/visualizar":
 			visualizarCompra(request, response);
 			break;
-		case "/empreendimento/compra/incluir":
-			visualizarInclusao(request, response);
-			break;	
 		case "/empreendimento/compra/editar":
 			visualizarEdicao(request, response);
 			break;
@@ -115,22 +107,6 @@ public class CompraServlet extends HttpServlet {
 			throws ServletException, IOException {
 	}
 
-	private void visualizarInclusao(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-	    HttpSession session = request.getSession(false);
-	    int empreendimentoId = (Integer) session.getAttribute("id");
-
-	    try {
-	        ArrayList<Insumo> insumos = insumoDAO.listarInsumos(empreendimentoId);
-	        request.setAttribute("insumos", insumos);
-			RequestDispatcher rd = request.getRequestDispatcher("incluir.jsp");
-			rd.forward(request, response);
-	    }  catch (Exception e) {
-	        logger.log(Level.SEVERE, "Erro ao carregar dados para a página de inclusão de compras", e);
-	        response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
-	    }
-	}
-	
 	private void visualizarEdicao(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 	    HttpSession session = request.getSession(false);
@@ -153,12 +129,6 @@ public class CompraServlet extends HttpServlet {
 	        } else {
 	            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Compra não encontrada.");
 	        }
-	        
-	        ArrayList<Insumo> insumos = insumoDAO.listarInsumos(empreendimentoId);
-	        request.setAttribute("insumos", insumos);
-			RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp");
-			rd.forward(request, response);
-			
 	    } catch (NumberFormatException e) {
 	        logger.log(Level.WARNING, "ID de compra inválido: " + request.getParameter("id"), e);
 	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de compra inválido.");
@@ -170,111 +140,70 @@ public class CompraServlet extends HttpServlet {
 
 	// POST //
 	private void processarInclusao(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
-	    HttpSession session = request.getSession(false);
-	    int empreendimentoId = (Integer) session.getAttribute("id");
-	    String mensagem;
+			throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		int empreendimentoId = (Integer) session.getAttribute("id");
+		String mensagem;
 
-	    try {
-	        String dataCompraStr = request.getParameter("dataCompra");
+		try {
+			String nome = request.getParameter("nome");
+			String unidadeMedida = request.getParameter("unidadeMedida");
 
-	        String[] insumoIds = request.getParameterValues("insumoId");
-	        String[] quantidades = request.getParameterValues("quantidade");
-	        String[] precosUnitarios = request.getParameterValues("valorUnitario");
+			Compra compra = new Compra(0, nome, unidadeMedida, 0, empreendimentoId);
+			compraDAO.incluirCompra(compra);
+			mensagem = "Compra incluído com sucesso!";
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Erro ao incluir compra: ", e);
+			mensagem = "Erro ao incluir o compra.";
+		}
 
-	        if (insumoIds == null || insumoIds.length == 0) {
-	            throw new IllegalStateException("Nenhum insumo foi adicionado à compra.");
-	        }
-	        
-	        List<CompraInsumo> insumosDaCompra = new ArrayList<>();
-	        double valorTotalCalculado = 0.0;
-
-	        for (int i = 0; i < insumoIds.length; i++) {
-	            int insumoId = Integer.parseInt(insumoIds[i]);
-	            double quantidade = Double.parseDouble(quantidades[i]);
-	            double precoUnitario = Double.parseDouble(precosUnitarios[i]);
-	            
-	            CompraInsumo insumo = new CompraInsumo();
-	            insumo.setInsumoId(insumoId);
-	            insumo.setPrecoUnitario(precoUnitario);
-	            insumo.setQuantidadeComprada(quantidade);
-	            insumo.setQuantidadeRestante(quantidade);
-	            
-	            insumosDaCompra.add(insumo);
-	            
-	            valorTotalCalculado += (quantidade * precoUnitario);
-	        }
-
-	        Compra novaCompra = new Compra();
-	        novaCompra.setEmpreendimentoId(empreendimentoId);
-	        novaCompra.setValorTotal(valorTotalCalculado);
-
-	        CompraDAO compraDAO = new CompraDAO();
-	        compraDAO.registrarCompra(novaCompra, dataCompraStr, insumosDaCompra); 
-	        
-	        mensagem = "Compra incluída com sucesso!";
-
-	    } catch (Exception e) {
-	        logger.log(Level.SEVERE, "Erro ao incluir compra: ", e);
-	        mensagem = "Erro ao incluir a compra.";
-	    }
-
-	    session.setAttribute("mensagem", mensagem);
-	    response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
+		session.setAttribute("mensagem", mensagem);
+		response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
 	}
 
 	private void processarEdicao(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
-	    HttpSession session = request.getSession(false);
-	    int empreendimentoId = (Integer) session.getAttribute("id");
-	    String mensagem;
+			throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		int empreendimentoId = (Integer) session.getAttribute("id");
+		String mensagem;
 
-	    try {
-	        String dataCompraStr = request.getParameter("dataCompra");
+		try {
+			String compraIdStr = request.getParameter("id");
+			int compraId = (compraIdStr == null || compraIdStr.isEmpty()) ? 0 : Integer.parseInt(compraIdStr);
 
-	        String[] insumoIds = request.getParameterValues("insumoId");
-	        String[] quantidades = request.getParameterValues("quantidade");
-	        String[] precosUnitarios = request.getParameterValues("valorUnitario");
+			if (compraId == 0) {
+				mensagem = "Compra não encontrada para edição.";
+				session.setAttribute("mensagem", mensagem);
+				response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
+				return;
+			}
 
-	        if (insumoIds == null || insumoIds.length == 0) {
-	            throw new IllegalStateException("Nenhum insumo foi adicionado à compra.");
-	        }
-	        
-	        List<CompraInsumo> insumosDaCompra = new ArrayList<>();
-	        double valorTotalCalculado = 0.0;
+			Compra compraExistente = compraDAO.obterCompraPorId(compraId, empreendimentoId);
+			if (compraExistente == null) {
+				mensagem = "Compra não encontrada para edição.";
+				session.setAttribute("mensagem", mensagem);
+				response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
+				return;
+			}
 
-	        for (int i = 0; i < insumoIds.length; i++) {
-	            int insumoId = Integer.parseInt(insumoIds[i]);
-	            double quantidade = Double.parseDouble(quantidades[i]);
-	            double precoUnitario = Double.parseDouble(precosUnitarios[i]);
-	            
-	            CompraInsumo insumo = new CompraInsumo();
-	            insumo.setInsumoId(insumoId);
-	            insumo.setPrecoUnitario(precoUnitario);
-	            insumo.setQuantidadeComprada(quantidade);
-	            insumo.setQuantidadeRestante(quantidade);
-	            
-	            insumosDaCompra.add(insumo);
-	            
-	            valorTotalCalculado += (quantidade * precoUnitario);
-	        }
+			String nome = request.getParameter("nome");
+			String unidadeMedida = request.getParameter("unidadeMedida");
 
-	        Compra novaCompra = new Compra();
-	        novaCompra.setEmpreendimentoId(empreendimentoId);
-	        novaCompra.setValorTotal(valorTotalCalculado);
+			Compra compra = new Compra(compraId, nome, unidadeMedida, 0, empreendimentoId);
+			compraDAO.editarCompra(compra);
+			mensagem = "Compra editado com sucesso!";
 
-	        CompraDAO compraDAO = new CompraDAO();
-	        compraDAO.registrarCompra(novaCompra, dataCompraStr, insumosDaCompra); 
-	        
-	        mensagem = "Compra incluída com sucesso!";
+		} catch (NumberFormatException e) {
+			logger.log(Level.WARNING,
+					"Erro de formato ao converter ID durante edição: " + request.getParameter("id") + ", ", e);
+			mensagem = "Falha ao editar compra.";
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Erro ao editar compra: ", e);
+			mensagem = "Falha ao editar compra.";
+		}
 
-	    } catch (Exception e) {
-	        logger.log(Level.SEVERE, "Erro ao incluir compra: ", e);
-	        mensagem = "Erro ao incluir a compra.";
-	    }
-
-	    session.setAttribute("mensagem", mensagem);
-	    response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
+		session.setAttribute("mensagem", mensagem);
+		response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
 	}
 
 	private void processarExclusao(HttpServletRequest request, HttpServletResponse response)
