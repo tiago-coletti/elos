@@ -132,7 +132,7 @@ public class CompraServlet extends HttpServlet {
 	}
 	
 	private void visualizarEdicao(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	        throws ServletException, IOException {
 	    HttpSession session = request.getSession(false);
 	    int empreendimentoId = (Integer) session.getAttribute("id");
 
@@ -147,18 +147,18 @@ public class CompraServlet extends HttpServlet {
 	        Compra compra = compraDAO.obterCompraPorId(compraId, empreendimentoId);
 
 	        if (compra != null) {
-	            request.setAttribute("compra", compra);
-	            RequestDispatcher rd = request.getRequestDispatcher("editar.jsp");
+	            ArrayList<Insumo> todosInsumos = insumoDAO.listarInsumos(empreendimentoId);
+
+	            request.setAttribute("compra", compra); 
+	            request.setAttribute("insumos", todosInsumos);
+
+	            RequestDispatcher rd = request.getRequestDispatcher("editar.jsp"); 
 	            rd.forward(request, response);
 	        } else {
-	            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Compra não encontrada.");
+		        logger.log(Level.SEVERE, "Compra não encontrada.");
+		        response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
 	        }
-	        
-	        ArrayList<Insumo> insumos = insumoDAO.listarInsumos(empreendimentoId);
-	        request.setAttribute("insumos", insumos);
-			RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp");
-			rd.forward(request, response);
-			
+
 	    } catch (NumberFormatException e) {
 	        logger.log(Level.WARNING, "ID de compra inválido: " + request.getParameter("id"), e);
 	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de compra inválido.");
@@ -208,9 +208,10 @@ public class CompraServlet extends HttpServlet {
 	        Compra novaCompra = new Compra();
 	        novaCompra.setEmpreendimentoId(empreendimentoId);
 	        novaCompra.setValorTotal(valorTotalCalculado);
+	        novaCompra.setDataCompra(dataCompraStr);
 
 	        CompraDAO compraDAO = new CompraDAO();
-	        compraDAO.registrarCompra(novaCompra, dataCompraStr, insumosDaCompra); 
+	        compraDAO.registrarCompra(novaCompra, insumosDaCompra); 
 	        
 	        mensagem = "Compra incluída com sucesso!";
 
@@ -230,6 +231,9 @@ public class CompraServlet extends HttpServlet {
 	    String mensagem;
 
 	    try {
+	        String compraIdStr = request.getParameter("id");
+	        int compraId = Integer.parseInt(compraIdStr);
+	        
 	        String dataCompraStr = request.getParameter("dataCompra");
 
 	        String[] insumoIds = request.getParameterValues("insumoId");
@@ -259,24 +263,24 @@ public class CompraServlet extends HttpServlet {
 	            valorTotalCalculado += (quantidade * precoUnitario);
 	        }
 
-	        Compra novaCompra = new Compra();
-	        novaCompra.setEmpreendimentoId(empreendimentoId);
-	        novaCompra.setValorTotal(valorTotalCalculado);
+	        Compra compra = new Compra();
+	        compra.setId(compraId);
+	        compra.setEmpreendimentoId(empreendimentoId);
+	        compra.setValorTotal(valorTotalCalculado);
+	        compra.setDataCompra(dataCompraStr); 
 
-	        CompraDAO compraDAO = new CompraDAO();
-	        compraDAO.registrarCompra(novaCompra, dataCompraStr, insumosDaCompra); 
-	        
-	        mensagem = "Compra incluída com sucesso!";
+	        compraDAO.editarCompra(compra, insumosDaCompra);
+	        mensagem = "Compra editada com sucesso!";
 
 	    } catch (Exception e) {
-	        logger.log(Level.SEVERE, "Erro ao incluir compra: ", e);
-	        mensagem = "Erro ao incluir a compra.";
+	        logger.log(Level.SEVERE, "Erro ao editar compra: ", e);
+	        mensagem = "Erro ao editar a compra.";
 	    }
 
 	    session.setAttribute("mensagem", mensagem);
 	    response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
 	}
-
+	
 	private void processarExclusao(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);

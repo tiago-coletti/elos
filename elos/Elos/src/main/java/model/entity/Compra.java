@@ -1,5 +1,7 @@
 package model.entity;
 
+import java.util.List;
+
 public class Compra {
 	private int id;
 	private String dataCompra;
@@ -8,6 +10,7 @@ public class Compra {
 	private String createdAt;
 	private String updatedAt;
 	private String deletedAt;
+    private List<CompraInsumo> itens; 
 	
 	public Compra() {
 		super();
@@ -82,5 +85,11 @@ public class Compra {
 		this.deletedAt = deleted_at;
 	}
 	
-	
+	public List<CompraInsumo> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<CompraInsumo> itens) {
+        this.itens = itens;
+    }
 }

@@ -7,6 +7,7 @@ public class CompraInsumo {
 	private double quantidadeRestante;
 	private int compraId;
 	private int insumoId;
+    private String insumoNome;
 	
 	public CompraInsumo() {
 		super();
@@ -26,38 +27,57 @@ public class CompraInsumo {
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public double getPrecoUnitario() {
 		return precoUnitario;
 	}
+	
 	public void setPrecoUnitario(double precoUnitario) {
 		this.precoUnitario = precoUnitario;
 	}
+	
 	public double getQuantidadeComprada() {
 		return quantidadeComprada;
 	}
+	
 	public void setQuantidadeComprada(double quantidadeComprada) {
 		this.quantidadeComprada = quantidadeComprada;
 	}
+	
 	public double getQuantidadeRestante() {
 		return quantidadeRestante;
 	}
+	
 	public void setQuantidadeRestante(double quantidadeRestante) {
 		this.quantidadeRestante = quantidadeRestante;
 	}
+	
 	public int getCompraId() {
 		return compraId;
 	}
+	
 	public void setCompraId(int compraId) {
 		this.compraId = compraId;
 	}
+	
 	public int getInsumoId() {
 		return insumoId;
 	}
+	
 	public void setInsumoId(int insumoId) {
 		this.insumoId = insumoId;
 	}
+	
+    public String getInsumoNome() {
+        return insumoNome;
+    }
+
+    public void setInsumoNome(String insumoNome) {
+        this.insumoNome = insumoNome;
+    }
 	
 }

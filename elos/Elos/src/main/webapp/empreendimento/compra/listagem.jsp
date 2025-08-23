@@ -24,7 +24,7 @@
 
     <div class="page-header">
         <h1>Listagem de Compras</h1>
-        <button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir.jsp'">Incluir Compra</button>
+		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir'">Incluir Compra</button>
     </div>
 
     <div class="search-wrapper">
@@ -81,7 +81,7 @@
                     <td class="action-cell">
                         <form action="${pageContext.request.contextPath}/empreendimento/compra/excluir" method="POST" style="display:inline;">
                             <input type="hidden" name="id" value="<%= compra.getId() %>">
-                            <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir a compra de ID <%= compra.getId() %>?');">
+                            <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir a compra?');">
                                 <i class='bx bxs-trash'></i>
                             </button>
                         </form>

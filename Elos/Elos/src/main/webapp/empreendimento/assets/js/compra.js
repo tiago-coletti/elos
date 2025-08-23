@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. DADOS INICIAIS (Lidos do atributo data-* do HTML)
-    const insumosJson = document.body.dataset.insumos;
-    const insumos = JSON.parse(insumosJson);
+    // 1. DADOS INICIAIS
+    const body = document.body;
+    const insumos = JSON.parse(body.dataset.insumos || '[]');
+    const compraParaEditar = JSON.parse(body.dataset.compra || 'null'); // <-- LÊ OS DADOS DA COMPRA
 
     // 2. ELEMENTOS DO DOM
     const insumoListContainer = document.getElementById('insumoList');
@@ -40,7 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function adicionarItem(insumoId) {
+    // MUDANÇA: A função agora aceita valores iniciais para quantidade e preço
+    function adicionarItem(insumoId, quantidadeInicial = 1, valorUnitarioInicial = 0) {
         if (itensAdicionados.has(insumoId)) return;
 
         const insumo = insumos.find(i => i.id === insumoId);
@@ -55,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 ${insumo.nome}
                 <input type="hidden" name="insumoId" value="${insumo.id}">
             </td>
-            <td><input type="number" name="quantidade" class="item-input" min="0.01" step="0.01" required></td>
-            <td><input type="number" name="valorUnitario" class="item-input" min="0.01" step="0.01" required></td>
+            <td><input type="number" name="quantidade" class="item-input" value="${quantidadeInicial}" min="0.01" step="0.01" required></td>
+            <td><input type="number" name="valorUnitario" class="item-input" value="${valorUnitarioInicial.toFixed(2)}" min="0.01" step="0.01" required></td>
             <td class="subtotal">R$ 0,00</td>
             <td class="item-actions"><button type="button" class="remove-item-btn"><i class='bx bxs-trash'></i></button></td>
         `;
@@ -97,6 +99,22 @@ document.addEventListener('DOMContentLoaded', function() {
         valorTotalEl.textContent = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
     }
     
+    // NOVO: Função para inicializar o formulário
+    function inicializarFormulario() {
+        if (compraParaEditar) { // Se estamos na página de edição
+            // Popula a tabela com os itens existentes da compra
+            if (compraParaEditar.itens && compraParaEditar.itens.length > 0) {
+                compraParaEditar.itens.forEach(item => {
+                    adicionarItem(item.insumoId, item.quantidadeComprada, item.precoUnitario);
+                });
+            }
+        } else { // Se estamos na página de inclusão
+            document.getElementById('dataCompra').valueAsDate = new Date();
+        }
+        calcularTotal(); // Calcula o total inicial
+        renderInsumoList();
+    }
+
     // 5. EVENT LISTENERS
     searchInput.addEventListener('keyup', () => renderInsumoList(searchInput.value));
 
@@ -104,7 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const addButton = e.target.closest('.add-item-btn');
         if (addButton) {
             const insumoId = parseInt(addButton.closest('.insumo-item').dataset.id, 10);
-            adicionarItem(insumoId);
+            adicionarItem(insumoId); // Adiciona com valores padrão
+            calcularTotal();
         }
     });
 
@@ -130,6 +149,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 6. INICIALIZAÇÃO
-    document.getElementById('dataCompra').valueAsDate = new Date();
-    renderInsumoList();
+    inicializarFormulario(); // Chama a nova função de inicialização
 });
