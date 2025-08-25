@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -132,5 +134,97 @@ public class InsumoDAO {
 		}
 		return insumos;
 	}
+	
+	public ArrayList<Insumo> listarInsumosComEstoqueBaixo(int empreendimentoId, double limiteMinimo) {
+		ArrayList<Insumo> insumos = new ArrayList<>();
+		String sql = "SELECT * FROM insumo WHERE empreendimento_id = ? AND quantidade < ? AND deleted_at IS NULL ORDER BY quantidade ASC";
+
+		try (Connection con = ConnectionFactory.conectar(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, empreendimentoId);
+			pstmt.setDouble(2, limiteMinimo);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Insumo insumo = new Insumo();
+				insumo.setId(rs.getInt("id"));
+				insumo.setNome(rs.getString("nome"));
+				insumo.setUnidadeMedida(rs.getString("unidade_medida"));
+				insumo.setQuantidade(rs.getDouble("quantidade"));
+				insumos.add(insumo);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, "Erro ao listar insumos com estoque baixo.", e);
+		}
+		return insumos;
+	}
+	
+	public ArrayList<Insumo> listarInsumosParados(int empreendimentoId, int diasSemMovimento) {
+		ArrayList<Insumo> insumos = new ArrayList<>();
+		String sqlListarInsumosParados = "SELECT * FROM insumo WHERE empreendimento_id = ? AND updated_at < ? AND deleted_at IS NULL ORDER BY updated_at ASC";
+
+		try (Connection con = ConnectionFactory.conectar(); PreparedStatement pstmt = con.prepareStatement(sqlListarInsumosParados)) {
+			LocalDate dataLimite = LocalDate.now().minusDays(diasSemMovimento);
+			pstmt.setInt(1, empreendimentoId);
+			pstmt.setString(2, dataLimite.format(DateTimeFormatter.ISO_LOCAL_DATE));
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Insumo insumo = new Insumo();
+				insumo.setId(rs.getInt("id"));
+				insumo.setNome(rs.getString("nome"));
+				insumo.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime()
+						.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				insumos.add(insumo);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, "Erro ao listar insumos parados.", e);
+		}
+		return insumos;
+	}
+
+	public double calcularValorTotalEstoque(int empreendimentoId) {
+		double valorTotal = 0;
+		String sqlCalcularValorTotalEstoque = "SELECT SUM(i.quantidade * ic.preco_unitario) AS valor_total "
+		           + "FROM insumo i "
+		           + "JOIN ( "
+		           + "    SELECT ci.insumo_id, ci.preco_unitario, "
+		           + "           ROW_NUMBER() OVER(PARTITION BY ci.insumo_id ORDER BY c.created_at DESC) as rn "
+		           + "    FROM compra_insumo ci "
+		           + "    JOIN compra c ON ci.compra_id = c.id " 
+		           + ") ic ON i.id = ic.insumo_id AND ic.rn = 1 "
+		           + "WHERE i.empreendimento_id = ? AND i.deleted_at IS NULL";
+
+		try (Connection con = ConnectionFactory.conectar(); PreparedStatement pstmt = con.prepareStatement(sqlCalcularValorTotalEstoque)) {
+			pstmt.setInt(1, empreendimentoId);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				valorTotal = rs.getDouble("valor_total");
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, "Erro ao calcular valor total do estoque.", e);
+		}
+		return valorTotal;
+	}
+
+	public ArrayList<Insumo> listarUltimosInsumosAdicionados(int empreendimentoId, int limite) {
+		ArrayList<Insumo> insumos = new ArrayList<>();
+		String sqlListarUltimosInsumosAdicionados = "SELECT * FROM insumo WHERE empreendimento_id = ? AND deleted_at IS NULL ORDER BY created_at DESC LIMIT ?";
+
+		try (Connection con = ConnectionFactory.conectar(); PreparedStatement pstmt = con.prepareStatement(sqlListarUltimosInsumosAdicionados)) {
+			pstmt.setInt(1, empreendimentoId);
+			pstmt.setInt(2, limite);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Insumo insumo = new Insumo();
+				insumo.setId(rs.getInt("id"));
+				insumo.setNome(rs.getString("nome"));
+				insumo.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime()
+						.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				insumos.add(insumo);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, "Erro ao listar últimos insumos adicionados.", e);
+		}
+		return insumos;
+	}
+	
 
 }

@@ -41,8 +41,8 @@
 	                    <h3>Últimas Compras Realizadas</h3>
 	                    <p>Acompanhe as entradas de insumo mais recentes.</p>
 	                    <ul>
-	                        <li><strong>Compra #102:</strong> Fornecedor A (R$ 350,00)</li>
-	                        <li><strong>Compra #101:</strong> Cooperativa Local (R$ 1.200,00)</li>
+	                        <li><strong>Compra #102:</strong> Valor Total R$ 350,00</li>
+	                        <li><strong>Compra #101:</strong> Valor Total R$ 1.200,00</li>
 	                    </ul>
 	                    <button class="view-details-btn" data-modal-target="recentPurchasesModal">Ver Detalhes</button>
 	                </div>
@@ -62,7 +62,7 @@
 	                    <p>Itens que precisam de reposição urgente.</p>
 	                    <ul>
 	                        <li><strong>Estoque Baixo:</strong> 4 itens</li>
-	                        <li><strong>Perto do Vencimento:</strong> 2 itens</li>
+	                        <li><strong>Itens Críticos:</strong> 1 item zerado</li>
 	                    </ul>
 	                    <button class="view-details-btn action-button" data-modal-target="purchaseSuggestionModal">Ver Lista de Compras</button>
 	                </div>
@@ -78,23 +78,23 @@
 	                </div>
 	                
 	                <div class="card">
-	                    <h3>Principais Fornecedores</h3>
-	                    <p>Parceiros com maior volume de compras no mês.</p>
-	                    <ul>
-	                        <li><strong>Atacado Central:</strong> R$ 2.150,00</li>
-	                        <li><strong>Cooperativa Agrícola:</strong> R$ 1.800,00</li>
+	                    <h3>Origem dos Insumos</h3>
+	                    <p>Distribuição das compras por tipo de produtor.</p>
+	                     <ul>
+	                        <li><strong>Cooperativas/Locais:</strong> 55%</li>
+	                        <li><strong>Grandes Atacadistas:</strong> 45%</li>
 	                    </ul>
-	                    <button class="view-details-btn" data-modal-target="topSuppliersModal">Ver Todos</button>
+	                    <button class="view-details-btn" data-modal-target="insumoOriginModal">Ver Análise</button>
 	                </div>
 	
 	                <div class="card">
-	                    <h3>Contas a Pagar (Compras)</h3>
-	                    <p>Faturas de compras com vencimento próximo.</p>
+	                    <h3>Nível de Estoque Atual</h3>
+	                    <p>Visão geral dos insumos armazenados.</p>
 	                    <ul>
-	                        <li><strong>Próximos 7 dias:</strong> R$ 890,00</li>
-	                        <li><strong>Próximos 30 dias:</strong> R$ 2.450,00</li>
+	                        <li><strong>Valor em Estoque:</strong> R$ 3.120,00</li>
+	                        <li><strong>Itens distintos:</strong> 28 tipos</li>
 	                    </ul>
-	                    <button class="view-details-btn" data-modal-target="accountsPayableModal">Gerenciar Faturas</button>
+	                    <button class="view-details-btn" data-modal-target="stockLevelModal">Detalhar Estoque</button>
 	                </div>
 	
 	            </div>

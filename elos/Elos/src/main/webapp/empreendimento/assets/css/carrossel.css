@@ -207,6 +207,12 @@
 	margin-bottom: 20px;
 }
 
+.modal-list li ul {
+    list-style-type: none; 
+    padding-left: 15px;  
+    margin-top: 8px;    
+}
+
 .modal-list li {
 	padding: 8px 0;
 	border-bottom: 1px dashed #eee;
@@ -495,4 +501,5 @@ body.dark .dashboard-title h2 {
 	body.sidebar-opened .dashboard-title, body.sidebar-hovered .dashboard-title {
 		transform: translateX(0);
 	}
+	
 }

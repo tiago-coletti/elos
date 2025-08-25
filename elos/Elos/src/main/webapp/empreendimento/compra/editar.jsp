@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="model.entity.Insumo" %>
 <%@ page import="model.entity.Compra" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.google.gson.Gson" %>
-
 <%
     // Objeto da compra que está sendo editada (enviado pelo Servlet 'visualizarEdicao')
     Compra compra = (Compra) request.getAttribute("compra");

@@ -2,7 +2,7 @@
     <div class="modal-content">
         <span class="close-button">×</span>
         <h2>Lista de Compras Sugerida</h2>
-        <p>Com base no seu estoque atual e itens próximos ao vencimento, recomendamos a compra dos seguintes insumos para garantir a continuidade da produção.</p>
+        <p>Com base no seu estoque atual, recomendamos a compra dos seguintes insumos para garantir a continuidade da produção.</p>
         <h3>Baseado em Estoque Baixo:</h3>
         <ul class="modal-list">
             <li><strong>Farinha de Trigo:</strong> Quantidade Atual: 5kg (Mínimo: 10kg)</li>
@@ -10,12 +10,7 @@
             <li><strong>Fermento Biológico (500g):</strong> Quantidade Atual: 1 (Mínimo: 2)</li>
             <li><strong>Embalagem para Bolo:</strong> Quantidade Atual: 15 un (Mínimo: 50 un)</li>
         </ul>
-        <h3>Baseado em Vencimento Próximo (próximos 30 dias):</h3>
-        <ul class="modal-list">
-            <li><strong>Creme de Leite (Lata):</strong> Validade: 2025-09-10 (Estoque: 12 un)</li>
-            <li><strong>Manteiga (200g):</strong> Validade: 2025-09-15 (Estoque: 8 un)</li>
-        </ul>
-        <button class="modal-action-button">Criar Pedido de Compra</button>
+        <button class="modal-action-button">Gerar Nova Compra</button>
     </div>
 </div>
 
@@ -27,21 +22,18 @@
         <ul class="modal-list">
             <li><strong>Compra #102 (12/08/2025)</strong>
                 <ul>
-                    <li>Fornecedor: Fornecedor A</li>
                     <li>Valor Total: R$ 350,00</li>
                     <li>Itens: 10kg Açúcar, 5L Óleo de Soja</li>
                 </ul>
             </li>
             <li><strong>Compra #101 (10/08/2025)</strong>
                 <ul>
-                    <li>Fornecedor: Cooperativa Local</li>
                     <li>Valor Total: R$ 1.200,00</li>
                     <li>Itens: 20kg Chocolate em Barra, 5kg Morangos Frescos</li>
                 </ul>
             </li>
              <li><strong>Compra #100 (05/08/2025)</strong>
                 <ul>
-                    <li>Fornecedor: Embalagens & Cia</li>
                     <li>Valor Total: R$ 450,00</li>
                     <li>Itens: 200x Embalagem para Torta, 500x Forminha para Brigadeiro</li>
                 </ul>
@@ -49,6 +41,37 @@
         </ul>
     </div>
 </div>
+
+<div id="insumoOriginModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Análise da Origem dos Insumos</h2>
+        <p>Entender de onde vêm seus insumos é um passo importante para fortalecer a economia local e criar laços com a comunidade. Este gráfico mostra a distribuição de suas compras no último período.</p>
+        <ol class="modal-list">
+            <li><strong>Cooperativas e Produtores Locais:</strong> R$ 2.670,00 (55%)</li>
+            <li><strong>Agricultura Familiar:</strong> R$ 850,00 (17.5%)</li>
+            <li><strong>Grandes Atacadistas:</strong> R$ 1.330,00 (27.5%)</li>
+        </ol>
+        <p><strong>Dica:</strong> Aumentar as compras de cooperativas e da agricultura familiar não só garante produtos de qualidade, mas também apoia diretamente outros pequenos empreendedores!</p>
+    </div>
+</div>
+
+<div id="stockLevelModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Detalhes do Estoque Atual</h2>
+        <p>Acompanhe o valor e a quantidade de insumos disponíveis para sua produção. Manter um estoque equilibrado evita desperdícios e paradas na produção.</p>
+        <ul class="modal-list">
+            <li><strong>Valor Total Investido em Estoque:</strong> R$ 3.120,00</li>
+            <li><strong>Total de Itens em Estoque:</strong> 450 unidades</li>
+            <li><strong>Número de Insumos Diferentes:</strong> 28 tipos</li>
+            <li><strong>Insumo de Maior Valor em Estoque:</strong> Chocolate em Barra (R$ 760,00)</li>
+            <li><strong>Insumo de Menor Valor em Estoque:</strong> Sal (R$ 15,00)</li>
+        </ul>
+        <button class="modal-action-button">Ver Inventário Completo</button>
+    </div>
+</div>
+
 
 <div id="priceVariationModal" class="modal">
     <div class="modal-content">

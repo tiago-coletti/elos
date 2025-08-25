@@ -67,7 +67,7 @@
 
                 <ul class="menu_items submenu">
                     <a href="${pageContext.request.contextPath}/empreendimento/compra/dashboard" class="nav_link sublink">Painel de Compras</a>
-                    <a href="${pageContext.request.contextPath}/empreendimento/compra/incluir" method="GET" class="nav_link sublink">Registrar Compra</a>
+                    <a href="${pageContext.request.contextPath}/empreendimento/compra/listagem" method="GET" class="nav_link sublink">Listar Compras</a>
                 </ul>
             </li>
         </ul>

@@ -10,9 +10,11 @@ import jakarta.servlet.http.HttpSession;
 
 import model.dao.InsumoDAO;
 import model.entity.Insumo;
+import services.InsumoHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -93,8 +95,13 @@ public class InsumoServlet extends HttpServlet {
 		int empreendimentoId = (Integer) session.getAttribute("id");
 		
 		try {
+			InsumoHelper helper = new InsumoHelper();
+			Map<String, Object> dashboardData = helper.prepararDadosDashboard(empreendimentoId);
+			request.setAttribute("dashboardData", dashboardData);
+			
 			ArrayList<Insumo> insumos = insumoDAO.listarInsumos(empreendimentoId);
 			request.setAttribute("insumos", insumos);
+			
 			RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp");
 			rd.forward(request, response);
 		} catch (Exception e) {
