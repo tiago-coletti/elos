@@ -150,6 +150,7 @@ public class InsumoDAO {
 				insumo.setUnidadeMedida(rs.getString("unidade_medida"));
 				insumo.setQuantidade(rs.getDouble("quantidade"));
 				insumos.add(insumo);
+				System.out.println(insumo.getNome());
 			}
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, "Erro ao listar insumos com estoque baixo.", e);

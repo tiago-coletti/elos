@@ -31,7 +31,7 @@ public class CompraDAO {
 		
 	    String sqlCompras = "INSERT INTO compra (data_compra, valor_total, empreendimento_id) VALUES (?, ?, ?)";
 	    String sqlCompraInsumo = "INSERT INTO compra_insumo (preco_unitario, quantidade_comprada, quantidade_restante, insumo_id, compra_id) VALUES (?, ?, ?, ?, ?)";
-	    String sqlAtualizarEstoqueInsumo = "UPDATE insumo SET quantidade = quantidade + ? WHERE id = ?";
+	    String sqlAtualizarEstoqueInsumo = "UPDATE insumo SET quantidade = COALESCE(quantidade, 0) + ? WHERE id = ?";
 	    String sqlAtualizarSaldo = "UPDATE empreendimento SET saldo = saldo - ? WHERE id = ?";
 
 	    Connection con = null; 
