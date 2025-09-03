@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.entity.Compra"%>
-<%@ page import="java.util.ArrayList"%>
-<% @SuppressWarnings("unchecked") ArrayList<Compra> compras = (ArrayList<Compra>) request.getAttribute("compras"); %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -26,7 +25,6 @@
 	    </div>
 	
 	    <section class="carousel-container">
-    
 	        <div class="carousel-wrapper">
 	            <div class="carousel-track">
 	
@@ -119,32 +117,40 @@
 			</thead>
 			
 			<tbody id="comprasTable">
-			<% 
-			int count = 0;
-			if (compras != null && !compras.isEmpty()) { 
-				for (Compra compra : compras) { 
-					if(count >= 3) break;
-			%>
-					<tr>
-						<td><%=compra.getDataCompra()%></td>
-						<td><%=compra.getCreatedAt()%></td>
-						<td><%=compra.getValorTotal()%></td>
-					</tr>
-			<% count++; 
-			
-			}} else { %>
-				<tr>
-					<td colspan="3">Nenhuma compra cadastrada</td>
-				</tr>
-			<% } %>
-							
+				<c:choose>
+					<c:when test="${not empty compras}">
+						<c:forEach var="compra" items="${compras}" varStatus="status">
+							<c:if test="${status.count <= 3}">
+								<tr>
+									<td>
+										<%-- CORREÇÃO: Converte a String para um objeto Date antes de formatar --%>
+										<fmt:parseDate value="${compra.dataCompra}" pattern="yyyy-MM-dd" var="parsedDataCompra" />
+										<fmt:formatDate value="${parsedDataCompra}" pattern="dd/MM/yyyy" />
+									</td>
+									<td>
+										<%-- CORREÇÃO: Faz o mesmo para a data de criação. Ajuste o pattern se o formato da String for outro. --%>
+										<fmt:parseDate value="${compra.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedCreatedAt" />
+										<fmt:formatDate value="${parsedCreatedAt}" pattern="dd/MM/yyyy HH:mm" />
+									</td>
+									<td>
+										<fmt:formatNumber value="${compra.valorTotal}" type="currency" currencySymbol="R$ " />
+									</td>
+								</tr>
+							</c:if>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td colspan="3">Nenhuma compra cadastrada</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
 			</tbody>
 		</table>
 		
-		<% if (compras != null && !compras.isEmpty()) { %>
+		<c:if test="${not empty compras}">
 			<a href="${pageContext.request.contextPath}/empreendimento/compra/listagem" class="ver-todos-btn">Ver todas as compras</a>
-		<% } %>
-
+		</c:if>
 	</div>
     
     <%@ include file="/empreendimento/shared/modals/compra.jspf"%>

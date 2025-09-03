@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.entity.Insumo"%>
-<%@ page import="java.util.ArrayList"%>
-<% @SuppressWarnings("unchecked") ArrayList<Insumo> insumos = (ArrayList<Insumo>) request.getAttribute("insumos"); %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
@@ -20,7 +18,7 @@
 
     <div class="page-header">
         <h1>Listagem de Insumos</h1>
-		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/insumo/incluir.jsp'">Incluir</button>
+        <button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/insumo/incluir.jsp'">Incluir</button>
     </div>
 
     <div class="search-wrapper">
@@ -42,38 +40,38 @@
                 </tr>
             </thead>
             <tbody id="insumosTable">
-            <% if (insumos != null && !insumos.isEmpty()) { 
-                for (Insumo insumo : insumos) { 
-            %>
-                <tr>
-                    <td><%= insumo.getNome() %></td>
-                    <td><%= insumo.getUnidadeMedida() %></td>
-                    <td><%= insumo.getQuantidade() %></td>
-                    <td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/insumo/editar" method="GET" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= insumo.getId() %>">
-                            <button type="submit" class="action-icon edit-icon" title="Editar">
-                                <i class='bx bxs-edit'></i>
-                            </button>
-                        </form>
-                    </td>
-                    <td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/insumo/excluir" method="POST" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= insumo.getId() %>">
-                            <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir o insumo <%= insumo.getNome() %>?');">
-                                <i class='bx bxs-trash'></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            <% 
-                }
-            } else { 
-            %>
-                <tr id="no-results">
-                    <td colspan="5">Nenhum insumo cadastrado</td>
-                </tr>
-            <% } %>
+                <c:choose>
+                    <c:when test="${not empty insumos}">
+                        <c:forEach var="insumo" items="${insumos}">
+                            <tr>
+                                <td><c:out value="${insumo.nome}" /></td>
+                                <td><c:out value="${insumo.unidadeMedida}" /></td>
+                                <td><c:out value="${insumo.quantidade}" /></td>
+                                <td class="action-cell">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/insumo/editar" method="GET" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${insumo.id}' />">
+                                        <button type="submit" class="action-icon edit-icon" title="Editar">
+                                            <i class='bx bxs-edit'></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="action-cell">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/insumo/excluir" method="POST" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${insumo.id}' />">
+                                        <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir o insumo <c:out value="${insumo.nome}" />?');">
+                                            <i class='bx bxs-trash'></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr id="no-results">
+                            <td colspan="5">Nenhum insumo cadastrado</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>

@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.entity.MaoObra"%>
-<%@ page import="java.util.ArrayList"%>
-<% @SuppressWarnings("unchecked") ArrayList<MaoObra> maosObra = (ArrayList<MaoObra>) request.getAttribute("maosObra"); %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -107,30 +106,31 @@
 			</thead>
 			
 			<tbody id="maosObraTable">
-			<% 
-			int count = 0;
-			if (maosObra != null && !maosObra.isEmpty()) { 
-				for (MaoObra maoObra : maosObra) { 
-					if(count >= 3) break;
-			%>
-					<tr>
-						<td><%=maoObra.getNome()%></td>
-						<td style="text-align: left;">R$ <%=maoObra.getCustoHora()%></td>
-					</tr>
-			<% count++; 
-			
-			}} else { %>
-				<tr>
-					<td colspan="3">Nenhuma mão de obra cadastrada</td>
-				</tr>
-			<% } %>
-							
+				<c:choose>
+					<c:when test="${not empty maosObra}">
+						<c:forEach var="maoObra" items="${maosObra}" varStatus="status">
+							<c:if test="${status.count <= 3}">
+								<tr>
+									<td><c:out value="${maoObra.nome}" /></td>
+									<td style="text-align: left;">
+										<fmt:formatNumber value="${maoObra.custoHora}" type="currency" currencySymbol="R$ " />
+									</td>
+								</tr>
+							</c:if>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td colspan="2">Nenhuma mão de obra cadastrada</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
 			</tbody>
 		</table>
 		
-		<% if (maosObra != null && !maosObra.isEmpty()) { %>
+		<c:if test="${not empty maosObra}">
 			<a href="${pageContext.request.contextPath}/empreendimento/mao-obra/listagem" class="ver-todos-btn">Ver todas as mãos de obra</a>
-		<% } %>
+		</c:if>
 
 	</div>
     

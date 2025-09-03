@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.width = `${cardWidth}px`;
         });
 
-        const buffer = cardsPerView + 1;
+        const buffer = Math.min(cardsPerView + 1, originalCards.length);
         currentPosition = buffer + currentIndex;
         updateCarouselPosition();
     };
@@ -46,18 +46,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const numOriginalCards = originalCards.length;
         if (numOriginalCards === 0) return;
 
-        const buffer = cardsPerView + 1;
+        let buffer = cardsPerView + 1;
+        if (buffer > numOriginalCards) {
+            buffer = numOriginalCards; // 🔧 evita acessar índice inexistente
+        }
 
+        // Clona os últimos cards para o início
         for (let i = numOriginalCards - buffer; i < numOriginalCards; i++) {
             const clone = originalCards[i].cloneNode(true);
             clone.dataset.cloned = 'true';
             carouselTrack.appendChild(clone);
         }
 
+        // Clona os cards originais
         originalCards.forEach(card => {
             carouselTrack.appendChild(card.cloneNode(true));
         });
 
+        // Clona os primeiros cards para o final
         for (let i = 0; i < buffer; i++) {
             const clone = originalCards[i].cloneNode(true);
             clone.dataset.cloned = 'true';
@@ -84,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isTransitioning = true;
 
         const numOriginalCards = originalCards.length;
-        const buffer = cardsPerView + 1;
+        const buffer = Math.min(cardsPerView + 1, numOriginalCards);
 
         if (direction === 1) {
             currentIndex++;
@@ -96,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     carouselTrack.addEventListener('transitionend', () => {
         const numOriginalCards = originalCards.length;
-        const buffer = cardsPerView + 1;
+        const buffer = Math.min(cardsPerView + 1, numOriginalCards);
 
         if (currentIndex >= numOriginalCards) {
             currentIndex = 0;
@@ -150,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Modais ---
     const modalButtons = document.querySelectorAll('.view-details-btn, .help-icon');
     const closeButtons = document.querySelectorAll('.modal .close-button');
     const modals = document.querySelectorAll('.modal');

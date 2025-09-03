@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.entity.MaoObra"%>
-<%@ page import="java.util.ArrayList"%>
-<% @SuppressWarnings("unchecked") ArrayList<MaoObra> maosObra = (ArrayList<MaoObra>) request.getAttribute("maosObra"); %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -41,37 +40,39 @@
                 </tr>
             </thead>
             <tbody id="maosObraTable">
-            <% if (maosObra != null && !maosObra.isEmpty()) { 
-                for (MaoObra maoObra : maosObra) { 
-            %>
-                <tr>
-                    <td><%= maoObra.getNome() %></td>
-                    <td>R$ <%= maoObra.getCustoHora() %></td>
-                    <td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/mao-obra/editar" method="GET" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= maoObra.getId() %>">
-                            <button type="submit" class="action-icon edit-icon" title="Editar">
-                                <i class='bx bxs-edit'></i>
-                            </button>
-                        </form>
-                    </td>
-                    <td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/mao-obra/excluir" method="POST" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= maoObra.getId() %>">
-                            <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir a mão de obra <%= maoObra.getNome() %>?');">
-                                <i class='bx bxs-trash'></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            <% 
-                }
-            } else { 
-            %>
-                <tr id="no-results">
-                    <td colspan="5">Nenhuma mão de obra cadastrada</td>
-                </tr>
-            <% } %>
+                <c:choose>
+                    <c:when test="${not empty maosObra}">
+                        <c:forEach var="maoObra" items="${maosObra}">
+                            <tr>
+                                <td><c:out value="${maoObra.nome}" /></td>
+                                <td>
+                                    <fmt:formatNumber value="${maoObra.custoHora}" type="currency" currencySymbol="R$ " />
+                                </td>
+                                <td class="action-cell">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/mao-obra/editar" method="GET" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${maoObra.id}' />">
+                                        <button type="submit" class="action-icon edit-icon" title="Editar">
+                                            <i class='bx bxs-edit'></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="action-cell">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/mao-obra/excluir" method="POST" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${maoObra.id}' />">
+                                        <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir a mão de obra <c:out value="${maoObra.nome}"/>?');">
+                                            <i class='bx bxs-trash'></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr id="no-results">
+                            <td colspan="4">Nenhuma mão de obra cadastrada</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>

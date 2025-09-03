@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.entity.Compra"%>
-<%@ page import="java.util.ArrayList"%>
-<% 
-    @SuppressWarnings("unchecked") 
-    ArrayList<Compra> compras = (ArrayList<Compra>) request.getAttribute("compras"); 
-    // A variável 'filterFormat' foi REMOVIDA daqui.
-%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -24,7 +19,7 @@
 
     <div class="page-header">
         <h1>Listagem de Compras</h1>
-		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir'">Incluir Compra</button>
+        <button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir'">Incluir Compra</button>
     </div>
 
     <div class="search-wrapper">
@@ -45,56 +40,64 @@
         <table>
             <thead>
                 <tr>
-					<th>Data da Compra</th>
-					<th>Data do registro</th>
-					<th>Valor Total</th>
+                    <th>Data da Compra</th>
+                    <th>Data do registro</th>
+                    <th>Valor Total</th>
                     <th>Visualizar</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
             </thead>
             <tbody id="comprasTable">
-            <% if (compras != null && !compras.isEmpty()) { 
-                for (Compra compra : compras) { 
-            %>
-                <%-- MUDANÇA PRINCIPAL AQUI --%>
-                <tr data-date="<%= compra.getCreatedAt() %>">
-                    <td><%=compra.getDataCompra()%></td>
-					<td><%=compra.getCreatedAt()%></td>
-					<td><%=compra.getValorTotal()%></td>
-					<td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/compra/visualizar" method="GET" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= compra.getId() %>">
-                            <button type="submit" class="action-icon edit-icon" title="Visualizar">
-                                <i class='bx bxs-eye-alt'></i>
-                            </button>
-                        </form>
-                    </td>
-                    <td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/compra/editar" method="GET" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= compra.getId() %>">
-                            <button type="submit" class="action-icon edit-icon" title="Editar">
-                                <i class='bx bxs-edit'></i>
-                            </button>
-                        </form>
-                    </td>
-                    <td class="action-cell">
-                        <form action="${pageContext.request.contextPath}/empreendimento/compra/excluir" method="POST" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= compra.getId() %>">
-                            <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir a compra?');">
-                                <i class='bx bxs-trash'></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            <% 
-                }
-            } else { 
-            %>
-                <tr id="no-results">
-                    <td colspan="5">Nenhuma compra cadastrada</td>
-                </tr>
-            <% } %>
+                <c:choose>
+                    <c:when test="${not empty compras}">
+                        <c:forEach var="compra" items="${compras}">
+                            <fmt:parseDate value="${compra.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedCreatedAt" />
+                            
+                            <tr data-date="<fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy-MM-dd" />">
+                                <td>
+                                    <fmt:parseDate value="${compra.dataCompra}" pattern="yyyy-MM-dd" var="parsedDataCompra" />
+                                    <fmt:formatDate value="${parsedDataCompra}" pattern="dd/MM/yyyy" />
+                                </td>
+                                <td>
+                                    <fmt:formatDate value="${parsedCreatedAt}" pattern="dd/MM/yyyy HH:mm" />
+                                </td>
+                                <td>
+                                    <fmt:formatNumber value="${compra.valorTotal}" type="currency" currencySymbol="R$ " />
+                                </td>
+                                <td class="action-cell">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/compra/visualizar" method="GET" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${compra.id}' />">
+                                        <button type="submit" class="action-icon view-icon" title="Visualizar">
+                                            <i class='bx bxs-show'></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="action-cell">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/compra/editar" method="GET" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${compra.id}' />">
+                                        <button type="submit" class="action-icon edit-icon" title="Editar">
+                                            <i class='bx bxs-edit'></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="action-cell">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/compra/excluir" method="POST" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${compra.id}' />">
+                                        <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir a compra?');">
+                                            <i class='bx bxs-trash'></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr id="no-results">
+                            <td colspan="6">Nenhuma compra cadastrada</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>
@@ -102,6 +105,7 @@
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            
             const startDateInput = document.getElementById('startDateInput');
             const endDateInput = document.getElementById('endDateInput');
             const clearFilterBtn = document.getElementById('clearFilterBtn');
@@ -114,7 +118,7 @@
             } else {
                 noResultsRow = document.createElement('tr');
                 noResultsRow.id = 'no-results-js';
-                noResultsRow.innerHTML = '<td colspan="5">Nenhum resultado encontrado para o filtro aplicado.</td>';
+                noResultsRow.innerHTML = '<td colspan="6">Nenhum resultado encontrado para o filtro aplicado.</td>';
                 tableBody.appendChild(noResultsRow);
             }
             noResultsRow.style.display = 'none';
@@ -134,9 +138,14 @@
                     if (startDate && rowDate < startDate) {
                         showRow = false;
                     }
+                    
+                    if (endDate) {
+                        const finalDate = new Date(endDate + 'T00:00:00'); 
+                        const linhaDate = new Date(rowDate + 'T00:00:00');
 
-                    if (endDate && rowDate > endDate) {
-                        showRow = false;
+                        if (linhaDate > finalDate) {
+                            showRow = false;
+                        }
                     }
 
                     if (showRow) {
