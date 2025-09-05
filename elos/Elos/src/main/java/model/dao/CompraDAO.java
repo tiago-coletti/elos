@@ -23,7 +23,7 @@ public class CompraDAO {
 	private static final Logger logger = Logger.getLogger(CompraDAO.class.getName());
 
 	/**
-	 * Registra uma compra, incluindo o pedido, os itens E ATUALIZA O ESTOQUE.
+	 * Registra uma compra, incluindo o pedido, os insumos e atualiza o estoque.
 	 * @param compra         Compra que referencia a compra realizada pelo aluno.
 	 * @param compraInsumo     Lista de insumos que fazem parte da compra.
 	 */
@@ -114,7 +114,7 @@ public class CompraDAO {
 
 	/**
 	 * Edita uma compra existente, atualizando seus dados, recalculando o valor total,
-	 * substituindo os itens antigos pelos novos, ajustando o saldo do empreendimento E O ESTOQUE DE INSUMOS.
+	 * substituindo os insumos antigos pelos novos, ajustando o saldo do empreendimento e o estoque de insumos.
 	 *
 	 * @param compra       O objeto Compra contendo os DADOS NOVOS e o ID da compra a ser editada.
 	 * @param novosInsumos A nova lista de insumos que irão compor a compra.
@@ -126,7 +126,7 @@ public class CompraDAO {
 	    String sqlBuscarInsumosAntigos = "SELECT insumo_id, quantidade_comprada FROM compra_insumo WHERE compra_id = ?";
 	    String sqlUpdateCompra = "UPDATE compra SET data_compra = ?, valor_total = ? WHERE id = ?";
 	    
-	    // SQLs para manipulação de itens e saldo
+	    // SQLs para manipulação de insumos e saldo
 	    String sqlDeleteInsumosAntigos = "DELETE FROM compra_insumo WHERE compra_id = ?";
 	    String sqlInsertNovosInsumos = "INSERT INTO compra_insumo (preco_unitario, quantidade_comprada, quantidade_restante, insumo_id, compra_id) VALUES (?, ?, ?, ?, ?)";
 	    String sqlAtualizarSaldo = "UPDATE empreendimento SET saldo = saldo + ? - ? WHERE id = ?"; 
@@ -292,10 +292,10 @@ public class CompraDAO {
 	            pstmtBuscaInsumos.setInt(1, compraId);
 	            try (ResultSet rs = pstmtBuscaInsumos.executeQuery()) {
 	                while (rs.next()) {
-	                    CompraInsumo item = new CompraInsumo();
-	                    item.setInsumoId(rs.getInt("insumo_id"));
-	                    item.setQuantidadeComprada(rs.getDouble("quantidade_comprada"));
-	                    insumosParaReverter.add(item);
+	                    CompraInsumo insumo = new CompraInsumo();
+	                    insumo.setInsumoId(rs.getInt("insumo_id"));
+	                    insumo.setQuantidadeComprada(rs.getDouble("quantidade_comprada"));
+	                    insumosParaReverter.add(insumo);
 	                }
 	            }
 	        }
@@ -303,9 +303,9 @@ public class CompraDAO {
 	        // 3. Reverter o estoque (subtrair as quantidades compradas)
 	        if (!insumosParaReverter.isEmpty()) {
 	            try (PreparedStatement pstmtReverteEstoque = con.prepareStatement(sqlReverterEstoqueInsumo)) {
-	                for (CompraInsumo item : insumosParaReverter) {
-	                    pstmtReverteEstoque.setDouble(1, item.getQuantidadeComprada());
-	                    pstmtReverteEstoque.setInt(2, item.getInsumoId());
+	                for (CompraInsumo insumo : insumosParaReverter) {
+	                    pstmtReverteEstoque.setDouble(1, insumo.getQuantidadeComprada());
+	                    pstmtReverteEstoque.setInt(2, insumo.getInsumoId());
 	                    pstmtReverteEstoque.addBatch();
 	                }
 	                pstmtReverteEstoque.executeBatch();
@@ -353,6 +353,7 @@ public class CompraDAO {
 	        }
 	    }
 	}
+	
 	/**
 	 * Recupera todos as compras da tabela "compra" de determinado empreendimento.
 	 * 
@@ -394,26 +395,25 @@ public class CompraDAO {
 	private List<CompraInsumo> listarInsumosPorCompraId(int compraId, Connection con) throws SQLException {
 	    List<CompraInsumo> insumos = new ArrayList<>();
 	    
-	    // Esta query é a ideal: busca os dados da compra_insumo e o NOME do insumo da tabela 'insumo'
-	    String sql = "SELECT ci.*, i.nome AS insumo_nome " +
+	    String sqlListarInsumosPorCompraId = "SELECT ci.*, i.nome AS insumo_nome " +
 	                 "FROM compra_insumo ci " +
 	                 "JOIN insumo i ON ci.insumo_id = i.id " +
 	                 "WHERE ci.compra_id = ?";
 
-	    try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+	    try (PreparedStatement pstmt = con.prepareStatement(sqlListarInsumosPorCompraId)) {
 	        pstmt.setInt(1, compraId);
 
 	        try (ResultSet rs = pstmt.executeQuery()) {
 	            while (rs.next()) {
-	                CompraInsumo item = new CompraInsumo();
-	                item.setId(rs.getInt("id"));
-	                item.setPrecoUnitario(rs.getDouble("preco_unitario"));
-	                item.setQuantidadeComprada(rs.getDouble("quantidade_comprada"));
-	                item.setInsumoId(rs.getInt("insumo_id"));
-	                item.setCompraId(rs.getInt("compra_id"));
+	                CompraInsumo insumo = new CompraInsumo();
+	                insumo.setId(rs.getInt("id"));
+	                insumo.setPrecoUnitario(rs.getDouble("preco_unitario"));
+	                insumo.setQuantidadeComprada(rs.getDouble("quantidade_comprada"));
+	                insumo.setInsumoId(rs.getInt("insumo_id"));
+	                insumo.setCompraId(rs.getInt("compra_id"));
 	                
-	                item.setInsumoNome(rs.getString("insumo_nome")); 
-	                insumos.add(item);
+	                insumo.setInsumoNome(rs.getString("insumo_nome")); 
+	                insumos.add(insumo);
 	            }
 	        }
 	    }
@@ -421,11 +421,11 @@ public class CompraDAO {
 	}
 	
 	/**
-	 * Recupera uma compra pelo seu ID, incluindo todos os seus insumos (itens) associados.
+	 * Recupera uma compra pelo seu ID, incluindo todos os seus insumos associados.
 	 *
 	 * @param id O ID da compra a ser recuperada.
 	 * @param empreendimentoId O ID do empreendimento para verificação de propriedade.
-	 * @return Objeto Compra com os dados e a lista de itens preenchida, ou null se não for encontrada.
+	 * @return Objeto Compra com os dados e a lista de insumos preenchida, ou null se não for encontrada.
 	 */
 	public Compra obterCompraPorId(int id, int empreendimentoId) {
 	    Compra compra = null;
@@ -445,8 +445,8 @@ public class CompraDAO {
 	                compra.setValorTotal(rs.getDouble("valor_total"));
 	                compra.setEmpreendimentoId(rs.getInt("empreendimento_id"));
 
-	                List<CompraInsumo> itensDaCompra = listarInsumosPorCompraId(compra.getId(), con);
-	                compra.setItens(itensDaCompra);
+	                List<CompraInsumo> insumosDaCompra = listarInsumosPorCompraId(compra.getId(), con);
+	                compra.setInsumos(insumosDaCompra);
 	            }
 	        }
 	    } catch (SQLException e) {

@@ -5,6 +5,7 @@ public class ProdutoInsumo {
 	private double quantidadeUtilizada;
 	private int insumoId;
 	private int produtoId;
+	private String insumoNome;
 	
 	public ProdutoInsumo() {
 		super();
@@ -50,5 +51,12 @@ public class ProdutoInsumo {
 	public void setProdutoId(int produtoId) {
 		this.produtoId = produtoId;
 	}
-	
+
+	public String getInsumoNome() {
+		return insumoNome;
+	}
+
+	public void setInsumoNome(String insumoNome) {
+	this.insumoNome = insumoNome;
+	}
 }

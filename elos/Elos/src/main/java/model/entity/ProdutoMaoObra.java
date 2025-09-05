@@ -5,6 +5,7 @@ public class ProdutoMaoObra {
 	private double horasUtilizadas;
 	private int maoObraId;
 	private int produtoId;
+	private String maoObraNome;
 	
 	public ProdutoMaoObra() {
 		super();
@@ -49,5 +50,13 @@ public class ProdutoMaoObra {
 
 	public void setProdutoId(int produtoId) {
 		this.produtoId = produtoId;
+	}
+
+	public String getMaoObraNome() {
+		return maoObraNome;
+	}
+
+	public void setMaoObraNome(String maoObraNome) {
+		this.maoObraNome = maoObraNome;
 	}
 }

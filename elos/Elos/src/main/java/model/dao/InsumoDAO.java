@@ -106,33 +106,38 @@ public class InsumoDAO {
 	}
 
 	/**
-	 * Recupera todos os insumos da tabela "insumo" de determinado empreendimento.
+	 * Recupera todos os insumos da tabela "insumo" de determinado empreendimento.4
 	 * 
+	 * @param empreendimentoId O ID do empreendimento.
 	 * @return Lista de insumos cadastrados no banco de dados.
 	 */
 	public ArrayList<Insumo> listarInsumos(int empreendimentoId) {
-		ArrayList<Insumo> insumos = new ArrayList<>();
-		String sqlListarInsumos = "SELECT * FROM insumo WHERE empreendimento_id = ? AND deleted_at IS NULL";
+	    ArrayList<Insumo> insumos = new ArrayList<>();
+	    String sqlListarInsumos = "SELECT * FROM insumo WHERE empreendimento_id = ? AND deleted_at IS NULL";
 
-		try (Connection con = ConnectionFactory.conectar();
-				PreparedStatement pstmt = con.prepareStatement(sqlListarInsumos)) {
+	    try (Connection con = ConnectionFactory.conectar();
+	            PreparedStatement pstmt = con.prepareStatement(sqlListarInsumos)) {
 
-			pstmt.setInt(1, empreendimentoId);
-			ResultSet rs = pstmt.executeQuery();
+	        pstmt.setInt(1, empreendimentoId);
+	        ResultSet rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				Insumo insumo = new Insumo();
-				insumo.setId(rs.getInt("id"));
-				insumo.setNome(rs.getString("nome"));
-				insumo.setUnidadeMedida(rs.getString("unidade_medida"));
-				insumo.setQuantidade(rs.getDouble("quantidade"));
+	        while (rs.next()) {
+	            Insumo insumo = new Insumo();
+	            int insumoId = rs.getInt("id");
+	            
+	            insumo.setId(insumoId);
+	            insumo.setNome(rs.getString("nome"));
+	            insumo.setUnidadeMedida(rs.getString("unidade_medida"));
+	            insumo.setQuantidade(rs.getDouble("quantidade"));
+	            
+	            insumo.setCustoEstimado(this.retornarCustoDoInsumo(empreendimentoId, insumoId));
 
-				insumos.add(insumo);
-			}
-		} catch (SQLException e) {
-			logger.log(Level.SEVERE, "Erro ao listar insumos.", e);
-		}
-		return insumos;
+	            insumos.add(insumo);
+	        }
+	    } catch (SQLException e) {
+	        logger.log(Level.SEVERE, "Erro ao listar insumos.", e);
+	    }
+	    return insumos;
 	}
 	
 	public ArrayList<Insumo> listarInsumosComEstoqueBaixo(int empreendimentoId, double limiteMinimo) {
@@ -226,5 +231,37 @@ public class InsumoDAO {
 		return insumos;
 	}
 	
+	/**
+	 * Recupera o valor de determinado insumo com base na lógica FIFO (Primeiro que Entra, Primeiro que Sai).
+	 * 
+	 * @param empreendimentoId O ID do empreendimento.
+	 * @param insumoId O ID do insumo a ser consultado.
+	 * @return Double com o custo do lote mais antigo disponível do insumo. Retorna 0.0 se não encontrar.
+	 */
+	public double retornarCustoDoInsumo(int empreendimentoId, int insumoId) {
+	    double custoInsumo = 0.0;
+	    String sqlRetornarCustoDoInsumo = "SELECT ci.preco_unitario FROM compra_insumo AS ci "
+	    		+ "INNER JOIN compra AS c ON ci.compra_id = c.id "
+	    		+ "INNER JOIN insumo AS i ON ci.insumo_id = i.id "
+	    		+ "WHERE i.empreendimento_id = ? AND ci.insumo_id = ? AND i.deleted_at IS NULL "
+	    		+ "AND c.deleted_at IS NULL AND ci.quantidade_restante <> 0 ORDER BY c.data_compra ASC LIMIT 1";
+
+	    try (Connection con = ConnectionFactory.conectar();
+	            PreparedStatement pstmt = con.prepareStatement(sqlRetornarCustoDoInsumo)) {
+	        
+	        pstmt.setInt(1, empreendimentoId);
+	        pstmt.setInt(2, insumoId);
+	        
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            custoInsumo = rs.getDouble("preco_unitario");
+	        }
+	        
+	    } catch (SQLException e) {
+	        logger.log(Level.SEVERE, "Erro ao retornar custo do insumo.", e);
+	    }
+	    return custoInsumo;
+	}
 
 }

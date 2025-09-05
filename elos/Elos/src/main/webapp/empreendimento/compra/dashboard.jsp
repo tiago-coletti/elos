@@ -123,12 +123,10 @@
 							<c:if test="${status.count <= 3}">
 								<tr>
 									<td>
-										<%-- CORREÇÃO: Converte a String para um objeto Date antes de formatar --%>
 										<fmt:parseDate value="${compra.dataCompra}" pattern="yyyy-MM-dd" var="parsedDataCompra" />
 										<fmt:formatDate value="${parsedDataCompra}" pattern="dd/MM/yyyy" />
 									</td>
 									<td>
-										<%-- CORREÇÃO: Faz o mesmo para a data de criação. Ajuste o pattern se o formato da String for outro. --%>
 										<fmt:parseDate value="${compra.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedCreatedAt" />
 										<fmt:formatDate value="${parsedCreatedAt}" pattern="dd/MM/yyyy HH:mm" />
 									</td>

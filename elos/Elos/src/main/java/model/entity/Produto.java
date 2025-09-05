@@ -1,5 +1,7 @@
 package model.entity;
 
+import java.util.List;
+
 public class Produto {
 	private int id;
 	private String nome;
@@ -8,6 +10,9 @@ public class Produto {
 	private String createdAt;
 	private String updatedAt;
 	private String deletedAt;
+	
+	private List<ProdutoInsumo> insumos;
+    private List<ProdutoMaoObra> maosObra;
 	
 	public Produto() {
 		super();
@@ -80,5 +85,21 @@ public class Produto {
 
 	public void setDeletedAt(String deleted_at) {
 		this.deletedAt = deleted_at;
+	}
+
+	public List<ProdutoInsumo> getInsumos() {
+		return insumos;
+	}
+
+	public void setInsumos(List<ProdutoInsumo> insumos) {
+		this.insumos = insumos;
+	}
+
+	public List<ProdutoMaoObra> getMaosObra() {
+		return maosObra;
+	}
+
+	public void setMaosObra(List<ProdutoMaoObra> maosObra) {
+		this.maosObra = maosObra;
 	}
 }

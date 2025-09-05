@@ -1,30 +1,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.entity.Insumo"%>
-<%@ page import="java.util.ArrayList"%>
-<%@ page import="com.google.gson.Gson"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="model.entity.Insumo" %>
+<%@ page import="model.entity.Compra" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.google.gson.Gson" %>
 <%
+    // Objeto da compra que está sendo editada (enviado pelo Servlet 'visualizarEdicao')
+    Compra compra = (Compra) request.getAttribute("compra");
+
+    // Lista de TODOS os insumos disponíveis (para a seleção)
     @SuppressWarnings("unchecked")
     ArrayList<Insumo> insumos = (ArrayList<Insumo>) request.getAttribute("insumos");
 
-    String insumosJson = "[]";
-    if (insumos != null) {
-        insumosJson = new Gson().toJson(insumos);
-    }
+    Gson gson = new Gson();
+    // Converte o objeto da compra e a lista de insumos para JSON
+    String compraJson = (compra != null) ? gson.toJson(compra) : "null";
+    String insumosJson = (insumos != null) ? gson.toJson(insumos) : "[]";
 %>
-	
+
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-  <title>Elos</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/formulario.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <title>Elos</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/formulario.css" />
 </head>
   
-<body data-insumos='<%= insumosJson %>'>	
+<body data-insumos='<%= insumosJson %>' data-compra='<%= compraJson %>'>
 	<%@ include file="/empreendimento/shared/navbar.jspf"%>
 	<div class="inclusao-container">
 	
@@ -34,15 +40,17 @@
 	    </a>
 	    
 	    <div class="inclusao-body">
-	        <h2>Inclusão de Compra</h2>
+	        <h2>Edição de Compra</h2>
 	        
-	        <form id="compraForm" action="${pageContext.request.contextPath}/empreendimento/compra/incluir" method="post">
+	        <form id="compraForm" action="${pageContext.request.contextPath}/empreendimento/compra/editar" method="post">
 	            
+	            <input type="hidden" name="id" value="${compra.id}">
+
                 <div class="form-group">
                     <label for="dataCompra">Data da Compra</label>
-                    <input type="date" id="dataCompra" name="dataCompra" required>
+				    <input type="date" id="dataCompra" name="dataCompra" value="${fn:substring(compra.dataCompra, 0, 10)}" required>
                 </div>
-				
+
                 <div class="compra-layout">
                     <div class="selecao-insumos">
                         <h3>Insumos Disponíveis</h3>
@@ -77,7 +85,7 @@
                         Valor Total: <span id="valorTotal">R$ 0,00</span>
                     </div>
                     <div class="form-actions">
-                        <button type="submit">Cadastrar Compra</button>
+                        <button type="submit">Salvar Alterações</button>
                     </div>
                 </div>
 	        </form>

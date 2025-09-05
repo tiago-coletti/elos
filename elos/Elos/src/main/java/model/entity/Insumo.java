@@ -10,6 +10,8 @@ public class Insumo {
 	private String updatedAt;
 	private String deletedAt;
 	
+	private double custoEstimado;
+	
 	public Insumo() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -87,5 +89,12 @@ public class Insumo {
 	public void setDeletedAt(String deleted_at) {
 		this.deletedAt = deleted_at;
 	}
-	
+
+	public double getCustoEstimado() {
+		return custoEstimado;
+	}
+
+	public void setCustoEstimado(double custoEstimado) {
+		this.custoEstimado = custoEstimado;
+	}	
 }

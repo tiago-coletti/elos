@@ -1,0 +1,116 @@
+<div id="topSellingProductsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Ranking de Produtos Mais Vendidos</h2>
+        <p>Lista completa dos produtos que mais se destacaram em vendas no último mês.</p>
+        <ol class="modal-list">
+            <li><strong>Bolo de Cenoura:</strong> 45 unidades vendidas</li>
+            <li><strong>Pão Artesanal:</strong> 38 unidades vendidas</li>
+            <li><strong>Torta de Limão:</strong> 25 unidades vendidas</li>
+            <li><strong>Brigadeiro Gourmet (un):</strong> 120 unidades vendidas</li>
+            <li><strong>Pão de Mel:</strong> 22 unidades vendidas</li>
+        </ol>
+    </div>
+</div>
+
+<div id="productionSuggestionModal" class="modal action-modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Sugestões para Produção</h2>
+        <p>Com base no seu estoque de produtos acabados, recomendamos a produção dos seguintes itens para atender à demanda.</p>
+        <h3>Produtos Esgotados (Crítico):</h3>
+        <ul class="modal-list">
+            <li><strong>Torta Holandesa:</strong> Estoque Atual: 0 un</li>
+        </ul>
+        <h3>Baseado em Estoque Baixo:</h3>
+        <ul class="modal-list">
+            <li><strong>Torta de Limão:</strong> Estoque Atual: 2 un (Mínimo: 5 un)</li>
+            <li><strong>Pão de Mel:</strong> Estoque Atual: 3 un (Mínimo: 10 un)</li>
+        </ul>
+        <button class="modal-action-button">Gerar Ordem de Produção</button>
+    </div>
+</div>
+
+<div id="socialImpactModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Detalhes do Impacto e Transparência</h2>
+        <p>Entenda como seu negócio fortalece a economia local e cria valor para a comunidade.</p>
+        <ul class="modal-list">
+            <li><strong>Origem dos Insumos:</strong> 75% dos seus insumos são comprados de produtores e cooperativas locais da sua região.</li>
+            <li><strong>Reinvestimento na Comunidade:</strong> R$ 735,00 (10% da receita bruta mensal) são reinvestidos através da compra de insumos locais, apoiando outros pequenos empreendedores.</li>
+            <li><strong>Valorização do Trabalho Artesanal:</strong> Cada produto é feito com cuidado, valorizando a produção em pequena escala e a qualidade dos ingredientes.</li>
+        </ul>
+        <p><strong>Dica:</strong> Compartilhe esses dados com seus clientes! A transparência gera confiança e valoriza sua marca.</p>
+    </div>
+</div>
+
+<div id="socialImpactHelpModal" class="modal help-modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>O que é Impacto e Transparência?</h2>
+        <p>Em um negócio local, o impacto vai além do produto. Significa mostrar aos seus clientes o valor que você gera para a comunidade. Acompanhar essa métrica é importante para:</p>
+        <ul>
+            <li><strong>Fortalecer a Economia Local:</strong> Ao comprar de fornecedores próximos, você ajuda a manter o dinheiro circulando na sua região.</li>
+            <li><strong>Criar uma História Autêntica:</strong> Seus clientes se conectam com a sua marca ao saber que estão apoiando um ecossistema local.</li>
+            <li><strong>Atrair Clientes Conscientes:</strong> Cada vez mais, as pessoas valorizam negócios que são transparentes sobre suas práticas e seu impacto positivo.</li>
+        </ul>
+        <p>Ser transparente sobre a origem dos seus insumos e seu reinvestimento na comunidade não é apenas bom para os outros, é uma poderosa ferramenta de marketing para o seu negócio.</p>
+    </div>
+</div>
+
+
+<div id="financialHealthModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Relatório de Saúde Financeira (Mês Atual)</h2>
+        <p>Uma análise detalhada dos seus resultados financeiros com a venda de produtos.</p>
+        <ul class="modal-list">
+            <li><strong>Receita Bruta:</strong> R$ 7.350,00</li>
+            <li><strong>Custo Total de Produção:</strong> R$ 4.850,00</li>
+            <li><strong>Lucro Bruto:</strong> R$ 2.500,00</li>
+            <li><strong>Margem de Lucro Bruta:</strong> 34,01%</li>
+            <li><strong>Produto Mais Rentável:</strong> Torta de Limão (Margem de 55%)</li>
+            <li><strong>Produto Menos Rentável:</strong> Pão de Mel (Margem de 20%)</li>
+        </ul>
+        <button class="modal-action-button">Exportar Relatório</button>
+    </div>
+</div>
+
+<div id="customerFeedbackModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Voz da Comunidade: Últimas Avaliações</h2>
+        <p>O que seus clientes estão dizendo sobre seus produtos.</p>
+        <ul class="modal-list">
+            <li>
+                <strong>Bolo de Cenoura</strong> - 5/5 <i class='bx bxs-star' style='color:#f1c40f'></i>
+                <p>"O melhor bolo de cenoura que já comi! A cobertura de chocolate é perfeita. Virei cliente fiel." - Ana P.</p>
+            </li>
+            <li>
+                <strong>Pão Artesanal</strong> - 4/5 <i class='bx bxs-star' style='color:#f1c40f'></i>
+                <p>"Muito saboroso e com a casca crocante. Só gostaria que tivesse uma versão com grãos." - Carlos M.</p>
+            </li>
+            <li>
+                <strong>Torta de Limão</strong> - 5/5 <i class='bx bxs-star' style='color:#f1c40f'></i>
+                <p>"Equilíbrio perfeito entre o doce e o azedo. A massa desmancha na boca. Incrível!" - Juliana S.</p>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="productStockModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Estoque de Produtos Acabados</h2>
+        <p>Visão detalhada dos seus produtos prontos para venda.</p>
+        <ul class="modal-list">
+            <li><strong>Valor Total Investido em Estoque:</strong> R$ 2.150,00</li>
+            <li><strong>Total de Produtos em Estoque:</strong> 85 unidades</li>
+            <li><strong>Número de Produtos Diferentes:</strong> 12 tipos</li>
+            <li><strong>Produto com Maior Estoque:</strong> Pão Artesanal (15 unidades)</li>
+            <li><strong>Produto com Menor Estoque:</strong> Torta Holandesa (0 unidades)</li>
+        </ul>
+        <button class="modal-action-button">Ver Inventário Completo</button>
+    </div>
+</div>

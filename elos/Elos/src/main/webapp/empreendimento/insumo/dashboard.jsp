@@ -5,14 +5,6 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.Map" %>
 
-<%
-    @SuppressWarnings("unchecked")
-    ArrayList<Insumo> insumos = (ArrayList<Insumo>) request.getAttribute("insumos");
-    
-    @SuppressWarnings("unchecked")
-    Map<String, Object> dashboardData = (Map<String, Object>) request.getAttribute("dashboardData");
-%>
-
 <!DOCTYPE html>
 <html>
 <head>

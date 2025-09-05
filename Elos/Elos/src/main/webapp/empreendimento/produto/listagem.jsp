@@ -25,7 +25,7 @@
     <div class="search-wrapper">
         <div class="search-container">
             <i class='bx bx-search'></i>
-            <input type="text" id="searchInput" placeholder="Pesquisar por nome do insumo...">
+            <input type="text" id="searchInput" placeholder="Pesquisar por nome do produto...">
         </div>
     </div>
 
@@ -34,8 +34,8 @@
             <thead>
                 <tr>
                     <th>Nome</th>
-                    <th>Preço</th>
                     <th>Data do registro</th>
+                    <th>Preço de Venda</th>
                     <th>Visualizar</th>
                     <th>Editar</th>
                     <th>Excluir</th>
@@ -48,12 +48,12 @@
                             <fmt:parseDate value="${produto.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedCreatedAt" />
                             
                             <tr data-date="<fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy-MM-dd" />">
-                                <td><c:out value="${produto.nome}"/></td>
+                                <td><c:out value="${insumo.nome}"/></td>
                                 <td>
-                                    <fmt:formatNumber value="${produto.precoVenda}" type="currency" currencySymbol="R$" />
+                                    <fmt:formatDate value="${parsedCreatedAt}" pattern="dd/MM/yyyy HH:mm" />
                                 </td>
                                 <td>
-                                    <fmt:formatDate value="${parsedCreatedAt}" pattern="dd/MM/yyyy" />
+                                    <fmt:formatNumber value="${produto.precoVenda}" type="currency" currencySymbol="R$ " />
                                 </td>
                                 <td class="action-cell">
                                     <form action="${pageContext.request.contextPath}/empreendimento/produto/visualizar" method="GET" style="display:inline;">
@@ -138,6 +138,6 @@
                 }
             });
         });
-    </script>
+   </script>
 </body>
 </html>

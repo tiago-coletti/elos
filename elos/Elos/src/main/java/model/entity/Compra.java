@@ -10,7 +10,7 @@ public class Compra {
 	private String createdAt;
 	private String updatedAt;
 	private String deletedAt;
-    private List<CompraInsumo> itens; 
+    private List<CompraInsumo> insumos; 
 	
 	public Compra() {
 		super();
@@ -85,11 +85,11 @@ public class Compra {
 		this.deletedAt = deleted_at;
 	}
 	
-	public List<CompraInsumo> getItens() {
-        return itens;
+	public List<CompraInsumo> getInsumos() {
+        return insumos;
     }
 
-    public void setItens(List<CompraInsumo> itens) {
-        this.itens = itens;
+    public void setInsumos(List<CompraInsumo> insumos) {
+        this.insumos = insumos;
     }
 }
