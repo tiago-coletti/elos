@@ -1,0 +1,114 @@
+	<div id="mostUsedLaborModal" class="modal action-modal">
+	    <div class="modal-content">
+	        <span class="close-button">×</span>
+	        <h2>Mãos de Obra Mais Usadas</h2>
+	        <p>A seguir, uma lista das mãos de obra que mais acumularam horas nos produtos. Isso pode indicar onde o empreendimento está concentrando mais esforços.</p>
+	        <ul class="modal-list">
+	            <li><strong>Criação de Artesanato:</strong> Total de 150 horas, com valor de R$ 3.000,00</li>
+	            <li><strong>Colheita e Preparo:</strong> Total de 120 horas, com valor de R$ 2.400,00</li>
+	            <li><strong>Venda Direta:</strong> Total de 95 horas, com valor de R$ 1.900,00</li>
+	            <li><strong>Corte e Costura:</strong> Total de 80 horas, com valor de R$ 1.600,00</li>
+	            <li><strong>Empacotamento:</strong> Total de 50 horas, com valor de R$ 1.000,00</li>
+	        </ul>
+	        <button class="modal-action-button">Gerar Relatório Detalhado</button>
+	    </div>
+	</div>
+	
+	<div id="highValueLaborModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close-button">×</span>
+	        <h2>Mãos de Obra de Maior Valor/Hora</h2>
+	        <p>Lista detalhada de mãos de obra com o maior valor por hora, indicando atividades de maior custo.</p>
+	        <h3>Top 3:</h3>
+	        <ul class="modal-list">
+	            <li><strong>Consultoria Financeira:</strong> R$ 60,00/h (4h usadas)</li>
+	            <li><strong>Design Gráfico:</strong> R$ 45,00/h (10h usadas)</li>
+	        </ul>
+	        <h3>Outros:</h3>
+	        <ul class="modal-list">
+	            <li><strong>Manutenção de Equipamentos:</strong> R$ 35,00/h (15h usadas)</li>
+	            <li><strong>Criação de Conteúdo Digital:</strong> R$ 30,00/h (20h usadas)</li>
+	            <li><strong>Marketing e Publicidade:</strong> R$ 28,00/h (25h usadas)</li>
+	        </ul>
+	    </div>
+	</div>
+	
+	<div id="opportunityModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close-button">×</span>
+	        <h2>Oportunidades de Mão de Obra</h2>
+	        <p>Estas horas de mão de obra foram registradas, mas ainda não foram associadas a nenhum produto final, o que pode indicar tarefas em andamento ou registros incompletos. Reavaliar e associar essas horas é importante para o cálculo correto dos custos dos produtos.</p>
+	        <ul class="modal-list">
+	            <li><strong>Colheita e Preparo:</strong> 5 horas pendentes (Registro: 2025-07-25)</li>
+	            <li><strong>Venda Direta:</strong> 3 horas pendentes (Registro: 2025-07-22)</li>
+	            <li><strong>Embalagem de Doces:</strong> 7 horas pendentes (Registro: 2025-07-18)</li>
+	        </ul>
+	    </div>
+	</div>
+	
+	<div id="productivityModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close-button">×</span>
+	        <h2>Produtividade por Mão de Obra</h2>
+	        <p>Esta seção mostra a relação entre o número de horas de uma mão de obra e a quantidade de produtos produzidos, permitindo uma análise da eficiência do processo.</p>
+	        <ul class="modal-list">
+	            <li><strong>Criação de Artesanato:</strong>
+	                <ul>
+	                    <li>Horas Totais: 150h</li>
+	                    <li>Produtos Finalizados: 450 peças</li>
+	                    <li>Média: 3,0 peças/hora</li>
+	                </ul>
+	            </li>
+	            <li><strong>Colheita e Preparo:</strong>
+	                <ul>
+	                    <li>Horas Totais: 120h</li>
+	                    <li>Produtos Finalizados: 240 pães</li>
+	                    <li>Média: 2,0 pães/hora</li>
+	                </ul>
+	            </li>
+	            <li><strong>Corte e Costura:</strong>
+	                <ul>
+	                    <li>Horas Totais: 80h</li>
+	                    <li>Produtos Finalizados: 160 bolsas</li>
+	                    <li>Média: 2,0 bolsas/hora</li>
+	                </ul>
+	            </li>
+	        </ul>
+	    </div>
+	</div>
+	
+	<div id="opportunityHelpModal" class="modal help-modal">
+	    <div class="modal-content">
+	        <span class="close-button">×</span>
+	        <h2>O que são Oportunidades de Mão de Obra?</h2>
+	        <p>Neste contexto, "Oportunidades de Mão de Obra" se refere a horas de trabalho que foram registradas no sistema, mas que ainda não foram associadas a nenhum produto finalizado. Isso pode acontecer por diversas razões:</p>
+	        <ul>
+	            <li>O trabalho ainda está em andamento e o produto não foi concluído.</li>
+	            <li>Houve um esquecimento ou erro no processo de registro.</li>
+	            <li>A mão de obra foi utilizada em uma tarefa de apoio que não está diretamente ligada a um produto específico.</li>
+	        </ul>
+	        <p>É crucial revisar essas oportunidades para garantir que o custo real de cada produto seja calculado corretamente. A análise regular ajuda a identificar gargalos e a otimizar o fluxo de trabalho.</p>
+	        <div class="multimedia-content">
+	            <p>Assista a um vídeo sobre gestão de tempo e valor em projetos:</p>
+	            <iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	        </div>
+	    </div>
+	</div>
+	
+	<div id="productivityHelpModal" class="modal help-modal">
+	    <div class="modal-content">
+	        <span class="close-button">×</span>
+	        <h2>Como Funciona a Produtividade por Mão de Obra?</h2>
+	        <p>A produtividade por mão de obra é uma métrica que compara as horas de trabalho dedicadas a uma tarefa com a quantidade de produtos finalizados. Essa ferramenta é essencial para entender a eficiência do processo produtivo e otimizar a alocação de tempo.</p>
+	        <ul>
+	            <li>**Horas Totais:** Soma de todas as horas dedicadas a uma mão de obra.</li>
+	            <li>**Produtos Finalizados:** Quantidade de itens produzidos usando essa mão de obra.</li>
+	            <li>**Média:** O cálculo da produtividade em itens por hora.</li>
+	        </ul>
+	        <p>Com base nesses dados, o sistema ajuda a identificar quais atividades são mais eficientes e onde pode haver a necessidade de ajustes, treinamento ou otimização de processos.</p>
+	        <div class="multimedia-content">
+	            <p>Aprenda mais sobre análise de produtividade em Economia Solidária:</p>
+	            <iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	        </div>
+	    </div>
+	</div>

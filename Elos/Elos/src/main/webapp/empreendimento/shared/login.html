@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <link rel="stylesheet" href="assets/css/login.css" />
+    <title>Elos</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="forms">
+            <div class="form login">
+                <span class="title">Login</span>
+
+                <form action="/Elos/empreendimento/login" method="POST">
+                    <div class="input-field">
+                        <input type="text" placeholder="Digite seu email ou login" required name="login" />
+                        <i class="uil uil-envelope icon"></i>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" class="password" placeholder="Digite sua senha" required name="senha" />
+                        <i class="uil uil-lock icon"></i>
+                        <i class="uil uil-eye-slash showHidePw"></i>
+                    </div>
+
+                    <div class="checkbox-text">
+                        <div class="checkbox-content">
+                            <input type="checkbox" id="logCheck" />
+                            <label for="logCheck" class="text">Lembre de mim</label>
+                        </div>
+
+                        <a href="#" class="text">Esqueceu a senha?</a>
+                    </div>
+
+                    <div class="input-field button">
+                        <input type="submit" value="Login" />
+                    </div>
+                </form>
+
+                <div class="login-signup">
+                    <span class="text">Não tem uma conta?
+                        <a href="#" class="text signup-link">Cadastre-se</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form signup">
+                <span class="title">Cadastro</span>
+
+                <form action="/Elos/empreendimento/cadastro" method="POST"> 
+                    <h3 class="subtitle">Informações Pessoais</h3>
+                    <div class="fields-group">
+                        <div class="input-field">
+                            <label for="nome">Nome</label>
+                            <input type="text" id="nome" placeholder="Digite seu nome" required name="nome" />
+                        </div>
+                        <div class="input-field">
+                            <label for="lastName">Sobrenome</label>
+                            <input type="text" id="lastName" placeholder="Digite seu sobrenome" name="lastName" />
+                        </div>
+                        <div class="input-field">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="Digite seu email" required name="email" />
+                        </div>
+                        <div class="input-field">
+                            <label for="phoneNumber">Telefone</label>
+                            <input type="text" id="phoneNumber" placeholder="Digite seu telefone" name="phoneNumber" />
+                        </div>
+                        <div class="input-field">
+                            <label for="address">Endereço</label>
+                            <input type="text" id="address" placeholder="Digite seu endereço" name="address" />
+                        </div>
+                        <div class="input-field">
+                            <label for="city">Cidade</label>
+                            <input type="text" id="city" placeholder="Digite sua cidade" name="city" />
+                        </div>
+                    </div>
+
+                    <h3 class="subtitle">Informações da Conta</h3>
+                    <div class="fields-group">
+                        <div class="input-field">
+                            <label for="username">Usuário</label>
+                            <input type="text" id="username" placeholder="Digite seu usuário" name="username" />
+                        </div>
+                        <div class="input-field">
+                            <label for="senha">Senha</label>
+                            <input type="password" id="senha" placeholder="Digite sua senha" required name="senha" />
+                        </div>
+                        <div class="input-field">
+                            <label for="confirmarSenha">Confirme a Senha</label>
+                            <input type="password" id="confirmarSenha" placeholder="Confirme sua senha" required name="confirmarSenha" />
+                        </div>
+                        <div class="input-field">
+                            <label for="securityQuestion">Pergunta de Segurança</label>
+                            <input type="text" id="securityQuestion" placeholder="Digite sua pergunta" name="securityQuestion" />
+                        </div>
+                        <div class="input-field">
+                            <label for="answer">Resposta</label>
+                            <input type="text" id="answer" placeholder="Digite a resposta" name="answer" />
+                        </div>
+                        <div class="input-field">
+                            <label for="referralCode">XXXX - XXXX</label>
+                            <input type="text" id="referralCode" placeholder="Digite XXXX - XXXX" name="referralCode" />
+                        </div>
+                    </div>
+
+                    <div class="input-field button next-btn">
+                        <button type="submit">
+                            <i class="uil uil-message"></i> Submeter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="input-field button back-btn">
+            <button type="button">
+                <i class="uil uil-arrow-left"></i> Faça Login
+            </button>
+        </div>
+    </div>
+
+    <script src="assets/js/login.js"></script>
+</body>
+
+</html>
