@@ -69,28 +69,14 @@
                             <input type="text" id="phoneNumber" placeholder="Digite o telefone" name="phoneNumber" />
                         </div>
                         <div class="input-field">
-                            <label for="address">Endereço</label>
-                            <input type="text" id="address" placeholder="Digite o endereço" name="address" />
-                        </div>
-                        <div class="input-field">
                             <label for="city">Cidade</label>
                             <input type="text" id="city" placeholder="Digite a cidade" name="city" />
                         </div>
                     </div>
                     
-                    <div id="alunos-section" style="display: none;">
-                        <h3 class="subtitle">Integrantes do Empreendimento</h3>
-                        <div id="alunos-list">
-                            </div>
-                        <div class="input-field button add-button">
-                             <button type="button" id="add-aluno-btn">
-                                <i class="uil uil-plus"></i> Adicionar Integrante
-                            </button>
-                        </div>
-                    </div>
+                    
 
-
-                    <h3 class="subtitle">Informações da Conta</h3>
+					<h3 class="subtitle">Informações da Conta</h3>
                     <div class="fields-group">
                         <div class="input-field">
                             <label for="senha">Senha</label>
@@ -99,6 +85,52 @@
                         <div class="input-field">
                             <label for="confirmarSenha">Confirme a Senha</label>
                             <input type="password" id="confirmarSenha" class="password" placeholder="Confirme sua senha" required name="confirmarSenha" />
+                        </div>
+                        <div class="input-field">
+                            <label for="loginEmpreendimento">Login do Empreendimento</label>
+                            <input type="text" 
+                                   id="loginEmpreendimento" 
+                                   placeholder="Crie seu login" 
+                                   required 
+                                   name="loginEmpreendimento"
+                                   pattern="[a-z0-9_-]{4,20}" 
+                                   title="O login deve ter entre 4 e 20 caracteres e conter apenas letras minúsculas, números, hífens (-) ou underlines (_)."
+                                   />
+                        </div>
+                    </div>
+
+                    
+
+<div id="alunos-section" style="display: none;">
+                        <h3 class="subtitle">Integrantes do Empreendimento</h3>
+                        
+                        <div class="fields-group course-semester-group">
+                            <div class="input-field">
+                                <label for="cursoGeralId">Curso do Empreendimento Solidário</label>
+                                <select id="cursoGeralId" name="cursoGeralId" required>
+                                    <option value="" disabled selected>Selecione o Curso</option>
+                                    <option value="1">Desenvolvimento de Sistemas</option>
+                                    <option value="2">Energias Renováveis</option>
+                                </select>
+                            </div>
+                            <div class="input-field">
+                                <label for="anoSemestre">Ano/Semestre</label>
+                                <input type="text" 
+                                       id="anoSemestre" 
+                                       name="anoSemestre" 
+                                       placeholder="Ex: 2024/1" 
+                                       required 
+                                       pattern="\d{4}\/[1-2]"
+                                       title="O Semestre deve seguir o padrão AAAA/S (ex: 2024/1 ou 2023/2)"
+                                       />
+                            </div>
+                        </div>
+                        <div id="alunos-list">
+                        </div>
+                        <div class="input-field button add-button">
+                             <button type="button" id="add-aluno-btn">
+                                 Adicionar Integrante
+                            </button>
                         </div>
                     </div>
 

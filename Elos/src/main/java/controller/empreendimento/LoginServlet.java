@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.dao.EmpreendimentoDAO;
+import model.entity.Aluno;
 import model.entity.Empreendimento;
+import model.entity.EmpreendimentoAluno;
 import util.PasswordUtils;
 
 import java.io.IOException;
@@ -54,7 +56,7 @@ public class LoginServlet extends HttpServlet {
 
 		if (login == null || login.trim().isEmpty() || senha == null || senha.trim().isEmpty()) {
 			logger.log(Level.WARNING, "Login ou senha estão vazios.");
-			response.sendRedirect("/empreendimento/login.html?erro=campos_vazios");
+			response.sendRedirect(request.getContextPath() + "/empreendimento/login.html?erro=campos_vazios");
 			return;
 		}
 
@@ -80,35 +82,122 @@ public class LoginServlet extends HttpServlet {
 
 	private void processarCadastro(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
+
+		// 1. Coleta de Parâmetros Comuns do Empreendimento
 		String nome = request.getParameter("nome");
 		String email = request.getParameter("email");
+		String numeroTelefone = request.getParameter("phoneNumber");
+		String cidade = request.getParameter("city");
+		String tipo = request.getParameter("tipo");
+
+		// Informações de Conta
 		String senha = request.getParameter("senha");
 		String confirmarSenha = request.getParameter("confirmarSenha");
+		String login = request.getParameter("loginEmpreendimento");
 
-		if (senha == null || !senha.equals(confirmarSenha)) {
-			response.sendRedirect("/empreendimento/login.html?erro=senhas_diferentes");
+		// Informações do Curso e Semestre
+		String cursoGeralId = request.getParameter("cursoGeralId");
+		String anoSemestre = request.getParameter("anoSemestre");
+
+		// 2. Validação Básica
+		if (senha == null || !senha.equals(confirmarSenha) || login == null || login.trim().isEmpty()) {
+			logger.log(Level.WARNING, "Senhas diferentes ou login do empreendimento vazio.");
+			response.sendRedirect(request.getContextPath() + "/empreendimento/login.html?erro=senhas_diferentes");
 			return;
 		}
 
+		// Mapeia o ID do curso para o valor ENUM (String) que o MySQL espera
+		String cursoENUM = null;
+		if (cursoGeralId != null) {
+			switch (cursoGeralId) {
+			case "1":
+				cursoENUM = "DESENVOLVIMENTO_SISTEMAS";
+				break;
+			case "2":
+				cursoENUM = "ENERGIA_RENOVAVEIS";
+				break;
+			}
+		}
+		
+		// CORREÇÃO ESSENCIAL: Mapeia o valor do formulário ("ALUNO_SOLIDARIO") 
+		// para o valor aceito pelo ENUM no BD ("ALUNO").
+		String tipoBD = "PADRAO";
+		if ("ALUNO_SOLIDARIO".equals(tipo)) {
+			tipoBD = "ALUNO";
+		}
+
 		try {
-			if (empreendimentoDAO.verificarLogin(email)) {
-				response.sendRedirect("/empreendimento/login.html?erro=usuario_existente");
+			// 3. Verificação de Existência (verifica o campo 'login')
+			if (empreendimentoDAO.verificarLogin(login)) {
+				response.sendRedirect(request.getContextPath() + "/empreendimento/login.html?erro=usuario_existente");
 				return;
 			}
 
-			senha = PasswordUtils.hashPassword(senha);
-			Empreendimento empreendimento = new Empreendimento(0, nome, email, senha, null, null, null);
-			boolean sucesso = empreendimentoDAO.incluirEmpreendimento(empreendimento);
+			// 4. Criação e Hash da Senha
+			String senhaHash = PasswordUtils.hashPassword(senha);
 
-			if (sucesso) {
-				int id = empreendimentoDAO.obterId(email);
-				request.getSession().setAttribute("id", id);
-				response.sendRedirect(request.getContextPath() + "/empreendimento/dashboard-principal");
+			// 5. Criação da Entidade Empreendimento
+			Empreendimento empreendimento = new Empreendimento(0, nome, email, senhaHash, login, tipoBD,
+					numeroTelefone, cidade, null, null, null);
+
+			// 6. Inclusão no Banco de Dados
+			boolean sucessoEmpreendimento = empreendimentoDAO.incluirEmpreendimento(empreendimento);
+			int empreendimentoId = empreendimento.getId();
+
+			if (sucessoEmpreendimento) {
+				boolean sucessoAlunos = true;
+
+				// 7. Lógica para Empreendimento Solidário de Alunos
+				if ("ALUNO".equals(tipoBD) && empreendimentoId > 0 && cursoENUM != null && anoSemestre != null
+						&& !anoSemestre.trim().isEmpty()) {
+
+					// Coleta e itera sobre os arrays de dados dos alunos
+					for (String paramName : request.getParameterMap().keySet()) {
+						if (paramName.startsWith("alunos[") && paramName.endsWith("].nome")) {
+							String indexKey = paramName.substring(7, paramName.indexOf("]."));
+
+							String nomeAluno = request.getParameter(paramName);
+							String matriculaAluno = request.getParameter("alunos[" + indexKey + "].matricula");
+
+							if (nomeAluno != null && matriculaAluno != null) {
+								// Cria a entidade Aluno com o curso do grupo
+								Aluno aluno = new Aluno(0, nomeAluno, matriculaAluno, cursoENUM);
+								int alunoId = empreendimentoDAO.incluirAluno(aluno);
+
+								if (alunoId > 0) {
+									// Associa o aluno ao empreendimento com o semestre coletado
+									EmpreendimentoAluno ea = new EmpreendimentoAluno(empreendimentoId, alunoId,
+											anoSemestre);
+									if (!empreendimentoDAO.incluirEmpreendimentoAluno(ea)) {
+										sucessoAlunos = false;
+									}
+								} else {
+									sucessoAlunos = false;
+								}
+							}
+						}
+					}
+				}
+				// 8. Se for solidário, mas faltou o semestre, falha o cadastro de alunos
+				else if ("ALUNO".equals(tipoBD) && (anoSemestre == null || anoSemestre.trim().isEmpty())) {
+					sucessoAlunos = false;
+					logger.log(Level.WARNING, "Empreendimento Solidário de Alunos sem Ano/Semestre preenchido.");
+				}
+
+				// 9. Resposta Final
+				if (sucessoAlunos) {
+					request.getSession().setAttribute("id", empreendimentoId);
+					response.sendRedirect(request.getContextPath() + "/empreendimento/dashboard-principal");
+				} else {
+					response.sendRedirect(request.getContextPath() + "/empreendimento/login.html?erro=cadastro_alunos_falhou");
+				}
+
 			} else {
-				response.sendRedirect("/empreendimento/login.html?erro=cadastro_falhou");
+				response.sendRedirect(request.getContextPath() + "/empreendimento/login.html?erro=cadastro_falhou");
 			}
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Erro ao processar cadastro para: " + email, e);
+			logger.log(Level.SEVERE, "Erro ao processar cadastro para: " + login, e);
+			response.sendRedirect(request.getContextPath() + "/empreendimento/login.html?erro=erro_interno");
 		}
 	}
 }
