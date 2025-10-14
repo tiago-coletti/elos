@@ -1,5 +1,8 @@
 package model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Empreendimento {
 	private int id;
 	private String nome;
@@ -15,6 +18,7 @@ public class Empreendimento {
 	
     private int cursoGeralId;
     private String anoSemestre;
+    private List<Aluno> alunos = new ArrayList<>();
 	
 	public Empreendimento() {
 		super();
@@ -142,5 +146,13 @@ public class Empreendimento {
 
     public void setAnoSemestre(String anoSemestre) {
         this.anoSemestre = anoSemestre;
+    }
+    
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
     }
 }

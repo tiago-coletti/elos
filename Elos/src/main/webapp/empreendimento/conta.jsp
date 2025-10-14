@@ -105,22 +105,39 @@
                     <div class="form-group" style="padding: 15px; border: 1px dashed #ccc; border-radius: 8px;">
                         
                         <c:choose>
-                            <c:when test="${not empty empreendimento.alunos}">
-                                <ul>
-                                    <c:forEach var="aluno" items="${empreendimento.alunos}" varStatus="status">
-                                        <li>
-                                            <i class='bx bxs-user'></i>
-                                            <c:out value="${aluno.nome}"/> (Matrícula: <c:out value="${aluno.matricula}"/>)
-                                        </li>
-                                    </c:forEach>
-                                </ul>
-                            </c:when>
-                            <c:otherwise>
-                                <p style="margin-bottom: 10px; font-style: italic;">
-                                    Nenhum integrante cadastrado.
-                                </p>
-                            </c:otherwise>
-                        </c:choose>
+					        <c:when test="${not empty empreendimento.alunos}">
+					            <p style="margin-bottom: 15px; font-size: 0.9em; color: #555;">
+					                Altere o nome e a matrícula dos integrantes abaixo. Para remover um integrante, entre em contato com o suporte.
+					            </p>
+					            
+					            <div class="integrantes-list">
+					                <div class="integrante-item header">
+					                    <label>Nome do Aluno</label>
+					                    <label>Matrícula</label>
+					                </div>
+					
+					                <c:forEach var="aluno" items="${empreendimento.alunos}" varStatus="status">
+					                    <div class="integrante-item">
+					                        <input type="hidden" name="alunoId" value="${aluno.id}" />
+					                        
+					                        <input type="text" name="alunoNome" class="integrante-input" 
+					                               placeholder="Nome do integrante" required 
+					                               value="<c:out value="${aluno.nome}"/>" />
+					                               
+					                        <input type="text" name="alunoMatricula" class="integrante-input" 
+					                               placeholder="Matrícula" required 
+					                               value="<c:out value="${aluno.matricula}"/>" />
+					                    </div>
+					                </c:forEach>
+					            </div>
+					
+					        </c:when>
+					        <c:otherwise>
+					            <p style="margin-bottom: 10px; font-style: italic;">
+					                Nenhum integrante cadastrado.
+					            </p>
+					        </c:otherwise>
+					    </c:choose>
                         
                         <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
                              <button type="button" class="form-actions-button" 

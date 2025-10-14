@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.dao.EmpreendimentoDAO;
+import model.entity.Aluno;
 import model.entity.Empreendimento;
 import util.PasswordUtils;
 
@@ -21,9 +22,6 @@ public class ContaServlet extends HttpServlet {
 
     private final EmpreendimentoDAO empreendimentoDAO = new EmpreendimentoDAO();
 
-    // ----------------------------------------------------------------------
-    // GET: CARREGAR DADOS DA CONTA
-    // ----------------------------------------------------------------------
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -34,7 +32,6 @@ public class ContaServlet extends HttpServlet {
         }
 
         try {
-            // Usa o novo método para carregar dados completos, incluindo dados de aluno
             Empreendimento empreendimento = empreendimentoDAO.obterEmpreendimentoCompletoPorId(empreendimentoId);
 
             if (empreendimento != null) {
@@ -51,9 +48,6 @@ public class ContaServlet extends HttpServlet {
         }
     }
 
-    // ----------------------------------------------------------------------
-    // POST: ATUALIZAR DADOS DA CONTA
-    // ----------------------------------------------------------------------
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -66,7 +60,6 @@ public class ContaServlet extends HttpServlet {
         String redirectURL = request.getContextPath() + "/empreendimento/conta";
 
         try {
-            // 1. Coleta de Parâmetros
             String nome = request.getParameter("nome");
             String email = request.getParameter("email");
             String numeroTelefone = request.getParameter("phoneNumber");
@@ -78,7 +71,10 @@ public class ContaServlet extends HttpServlet {
             String cursoGeralIdStr = request.getParameter("cursoGeralId");
             String anoSemestre = request.getParameter("anoSemestre");
             
-            // 2. Obter dados existentes
+            String[] alunoIds = request.getParameterValues("alunoId");
+            String[] alunoNomes = request.getParameterValues("alunoNome");
+            String[] alunoMatriculas = request.getParameterValues("alunoMatricula");
+            
             Empreendimento empreendimentoExistente = empreendimentoDAO.obterEmpreendimentoCompletoPorId(empreendimentoId);
             
             if (empreendimentoExistente == null) {
@@ -86,7 +82,6 @@ public class ContaServlet extends HttpServlet {
                 return;
             }
             
-            // 3. Validação e Preparação da Senha
             String senhaHashParaAtualizacao = empreendimentoExistente.getSenha();
             
             if (novaSenha != null && !novaSenha.trim().isEmpty()) {
@@ -97,7 +92,6 @@ public class ContaServlet extends HttpServlet {
                 senhaHashParaAtualizacao = PasswordUtils.hashPassword(novaSenha);
             }
 
-            // 4. Cria a Entidade para atualização (mantendo os dados que não mudam)
             Empreendimento empreendimentoAtualizado = new Empreendimento(
                 empreendimentoId, 
                 nome, 
@@ -108,17 +102,15 @@ public class ContaServlet extends HttpServlet {
                 numeroTelefone, 
                 cidade, 
                 empreendimentoExistente.getCreatedAt(), 
-                null, // Deixe o DAO atualizar este campo
+                null,
                 empreendimentoExistente.getDeletedAt()
             );
 
-            // 5. Atualiza o Empreendimento (Dados principais)
             boolean sucessoEmpreendimento = empreendimentoDAO.atualizarEmpreendimento(empreendimentoAtualizado);
-            boolean sucessoAluno = true;
+            boolean sucessoAlunoInfo = true;
+            boolean sucessoIntegrantes = true;
 
-            // 6. Lógica para Empreendimento Solidário de Alunos
             if (sucessoEmpreendimento && empreendimentoExistente.isAluno()) {
-                // Mapeia o ID do curso para o valor ENUM
                 String cursoENUM = null;
                 if ("1".equals(cursoGeralIdStr)) {
                     cursoENUM = "DESENVOLVIMENTO_SISTEMAS";
@@ -126,13 +118,26 @@ public class ContaServlet extends HttpServlet {
                     cursoENUM = "ENERGIA_RENOVAVEIS";
                 }
 
-                // Novo método no DAO para atualizar as informações de Aluno
-                 sucessoAluno = empreendimentoDAO.atualizarEmpreendimentoAlunoInfo(
+                sucessoAlunoInfo = empreendimentoDAO.atualizarEmpreendimentoAlunoInfo(
                     empreendimentoId, cursoENUM, anoSemestre);
+                
+                if (alunoIds != null && alunoNomes != null && alunoMatriculas != null) {
+                    for (int i = 0; i < alunoIds.length; i++) {
+                        int alunoId = Integer.parseInt(alunoIds[i]);
+                        String alunoNome = alunoNomes[i];
+                        String alunoMatricula = alunoMatriculas[i];
+
+                        Aluno alunoParaAtualizar = new Aluno(alunoId, alunoNome, alunoMatricula, null);
+
+                        if (!empreendimentoDAO.atualizarAluno(alunoParaAtualizar)) {
+                            sucessoIntegrantes = false;
+                            break;
+                        }
+                    }
+                }
             }
 
-            // 7. Resposta Final
-            if (sucessoEmpreendimento && sucessoAluno) {
+            if (sucessoEmpreendimento && sucessoAlunoInfo && sucessoIntegrantes) {
                 response.sendRedirect(redirectURL + "?sucesso=true");
             } else {
                 response.sendRedirect(redirectURL + "?erro=falha_atualizacao");

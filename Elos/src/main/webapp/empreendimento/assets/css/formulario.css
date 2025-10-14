@@ -354,3 +354,24 @@ body.dark .compra-footer {
 #valorTotal {
     color: var(--blue-color);
 }
+
+.integrantes-list .integrante-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr; 
+  gap: 15px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.integrantes-list .integrante-item.header {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.integrantes-list .integrante-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

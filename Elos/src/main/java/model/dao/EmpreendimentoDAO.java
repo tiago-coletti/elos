@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -168,8 +170,39 @@ public class EmpreendimentoDAO {
         }
     }
 
- // Dentro de model.dao.EmpreendimentoDAO
+    /**
+     * Obtém os dados dos alunos de um empreendimento.
+     * @param id ID do empreendimento logado.
+     * @return List Lista com os alunos.
+     */
+    public List<Aluno> obterAlunosPorEmpreendimentoId(int empreendimentoId) {
+        List<Aluno> alunos = new ArrayList<>();
+        String sql = "SELECT a.* FROM aluno a " +
+                     "INNER JOIN empreendimento_aluno ea ON a.id = ea.aluno_id " +
+                     "WHERE ea.empreendimento_id = ?";
 
+        try (Connection con = ConnectionFactory.conectar();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, empreendimentoId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Aluno aluno = new Aluno(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("matricula"),
+                    rs.getString("curso")
+                    // Adicione outros campos do aluno se houver
+                );
+                alunos.add(aluno);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao obter alunos para o empreendimento ID: " + empreendimentoId, e);
+        }
+        return alunos;
+    }
+    
     /**
      * Obtém os dados completos de um empreendimento (e dados de aluno se for o caso)
      * com base no ID.
@@ -177,22 +210,16 @@ public class EmpreendimentoDAO {
      * @return Objeto Empreendimento preenchido ou null.
      */
     public Empreendimento obterEmpreendimentoCompletoPorId(int id) {
-        // LEFT JOIN para obter dados de ALUNO: ano_semestre e curso (apenas o primeiro aluno, 
-        // assumindo que é o dado do grupo)
-        String sql = "SELECT e.*, ea.ano_semestre, a.curso AS curso_aluno_enum " +
-                     "FROM empreendimento e " +
-                     "LEFT JOIN empreendimento_aluno ea ON e.id = ea.empreendimento_id " +
-                     "LEFT JOIN aluno a ON ea.aluno_id = a.id " +
-                     "WHERE e.id = ? LIMIT 1";
+        String sql = "SELECT * FROM empreendimento WHERE id = ?";
+        Empreendimento empreendimento = null;
 
         try (Connection con = ConnectionFactory.conectar();
              PreparedStatement pst = con.prepareStatement(sql)) {
-            
+
             pst.setInt(1, id);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    // 1. Cria o objeto Empreendimento
-                    Empreendimento e = new Empreendimento(
+                    empreendimento = new Empreendimento(
                         rs.getInt("id"),
                         rs.getString("nome"),
                         rs.getString("email"),
@@ -206,27 +233,41 @@ public class EmpreendimentoDAO {
                         rs.getString("deleted_at")
                     );
 
-                    // 2. Adiciona dados específicos de Aluno (se aplicável)
-                    if (e.isAluno()) {
-                        String cursoEnum = rs.getString("curso_aluno_enum");
-                        int cursoId = 0;
-                        // Mapeia o ENUM do banco para o ID usado no JSP (login.html e conta.jsp)
-                        if ("DESENVOLVIMENTO_SISTEMAS".equals(cursoEnum)) {
-                            cursoId = 1;
-                        } else if ("ENERGIA_RENOVAVEIS".equals(cursoEnum)) {
-                            cursoId = 2;
-                        }
-                        e.setCursoGeralId(cursoId);
-                        e.setAnoSemestre(rs.getString("ano_semestre"));
-                    }
+                    // Se for um empreendimento de alunos, busca os dados específicos
+                    if (empreendimento.isAluno()) {
+                        // Busca a lista de alunos e anexa ao objeto
+                        List<Aluno> alunos = obterAlunosPorEmpreendimentoId(id);
+                        empreendimento.setAlunos(alunos);
 
-                    return e;
+                        // Lógica para pegar ano/semestre e curso (do primeiro aluno, por exemplo)
+                        if (!alunos.isEmpty()) {
+                            try (PreparedStatement pstAlunoInfo = con.prepareStatement(
+                                 "SELECT ano_semestre FROM empreendimento_aluno WHERE empreendimento_id = ? LIMIT 1")) {
+                                pstAlunoInfo.setInt(1, id);
+                                ResultSet rsAlunoInfo = pstAlunoInfo.executeQuery();
+                                if (rsAlunoInfo.next()) {
+                                    empreendimento.setAnoSemestre(rsAlunoInfo.getString("ano_semestre"));
+                                }
+                            }
+
+                            // Mapeia o ENUM do curso do primeiro aluno para o ID do JSP
+                            String cursoEnum = alunos.get(0).getCurso();
+                            int cursoId = 0;
+                            if ("DESENVOLVIMENTO_SISTEMAS".equals(cursoEnum)) {
+                                cursoId = 1;
+                            } else if ("ENERGIA_RENOVAVEIS".equals(cursoEnum)) {
+                                cursoId = 2;
+                            }
+                            empreendimento.setCursoGeralId(cursoId);
+                        }
+                    }
                 }
             }
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao obter empreendimento completo por ID: " + id, e);
         }
-        return null;
+
+        return empreendimento;
     }
     
     /**
@@ -252,6 +293,53 @@ public class EmpreendimentoDAO {
             return pst.executeUpdate() > 0;
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao atualizar empreendimento ID: " + empreendimento.getId(), e);
+            return false;
+        }
+    }
+    
+    /**
+     * Atualiza os dados de um único aluno no banco de dados.
+     * @param aluno O objeto Aluno contendo o ID e os novos dados (nome, matricula).
+     * @return true se a atualização foi bem-sucedida.
+     */
+    public boolean atualizarAluno(Aluno aluno) {
+        String sql = "UPDATE aluno SET nome = ?, matricula = ? WHERE id = ?";
+        
+        try (Connection con = ConnectionFactory.conectar();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+            
+            pst.setString(1, aluno.getNome());
+            pst.setString(2, aluno.getMatricula());
+            pst.setInt(3, aluno.getId());
+            
+            return pst.executeUpdate() > 0;
+            
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao atualizar aluno ID: " + aluno.getId(), e);
+            return false;
+        }
+    }
+    
+    /**
+     * Remove a associação entre um empreendimento e um aluno.
+     * @param empreendimentoId O ID do empreendimento.
+     * @param alunoId O ID do aluno a ser desvinculado.
+     * @return true se a remoção for bem-sucedida.
+     */
+    public boolean removerAssociacaoAluno(int empreendimentoId, int alunoId) {
+        // Esta query é mais segura, pois deleta apenas o vínculo, não o aluno.
+        String sql = "DELETE FROM empreendimento_aluno WHERE empreendimento_id = ? AND aluno_id = ?";
+        
+        try (Connection con = ConnectionFactory.conectar();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+            
+            pst.setInt(1, empreendimentoId);
+            pst.setInt(2, alunoId);
+            
+            return pst.executeUpdate() > 0;
+            
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao remover associação para empreendimento ID: " + empreendimentoId + " e aluno ID: " + alunoId, e);
             return false;
         }
     }
