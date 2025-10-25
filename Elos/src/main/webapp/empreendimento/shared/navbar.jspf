@@ -7,10 +7,13 @@
     <div class="navbar_content">
         <i class="bi bi-grid"></i>
         <i class='bx bx-sun' id="darkLight"></i>
-        <i class='bx bx-bell'></i>
-        <img src="${pageContext.request.contextPath}/empreendimento/assets/img/profile.jpg" alt="" class="profile" />
+        
+        <a href="${pageContext.request.contextPath}/empreendimento/conta" title="Minha Conta">
+            <img src="${pageContext.request.contextPath}/empreendimento/assets/img/profile.jpg" alt="Acessar perfil" class="profile" />
+        </a>
     </div>
 </nav>
+
 
 <nav class="sidebar">
     <div class="menu_content">
@@ -26,16 +29,12 @@
                 </a>
             </li>
             <li class="item">
-                <div href="#" class="nav_link submenu_item" data-submenu="financeiro">
+                <a href="/Elos/empreendimento/dashboard-financeiro" class="nav_link submenu_item">
                     <span class="navlink_icon">
-                        <i class="bx bx-bar-chart-square"></i>
+                        <i class="bx bx-home-alt"></i>
                     </span>
                     <span class="navlink">Financeiro</span>
-                </div>
-                <ul class="menu_items submenu">
-                    <a href="#" class="nav_link sublink">Painel</a>
-                    <a href="#" class="nav_link sublink">Relatórios</a>
-                </ul>
+                </a>
             </li>
         </ul>
 
@@ -149,4 +148,27 @@
             </div>
         </div>
     </div>
+</nav>
+
+<nav class="mobile-nav">
+    <a href="/Elos/empreendimento/dashboard-principal" class="mobile-nav__link">
+        <i class="bx bx-home-alt"></i>
+        <span class="mobile-nav__text">Principal</span>
+    </a>
+    <a href="${pageContext.request.contextPath}/empreendimento/insumo/dashboard" class="mobile-nav__link">
+        <i class="bx bxs-package"></i>
+        <span class="mobile-nav__text">Insumos</span>
+    </a>
+    <a href="${pageContext.request.contextPath}/empreendimento/compra/dashboard" class="mobile-nav__link">
+        <i class="bx bx-receipt"></i>
+        <span class="mobile-nav__text">Compras</span>
+    </a>
+    <a href="${pageContext.request.contextPath}/empreendimento/produto/dashboard" class="mobile-nav__link">
+        <i class="bx bx-cube"></i>
+        <span class="mobile-nav__text">Produtos</span>
+    </a>
+    <a href="#" class="mobile-nav__link">
+        <i class="bx bx-cart"></i>
+        <span class="mobile-nav__text">Vendas</span>
+    </a>
 </nav>

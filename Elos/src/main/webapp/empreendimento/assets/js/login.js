@@ -163,3 +163,28 @@ if (anoSemestreInput) {
         this.value = value;
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const phoneInput = document.getElementById('phoneNumber');
+
+    if (phoneInput) {
+        phoneInput.addEventListener('input', handlePhoneInput);
+    }
+});
+
+function handlePhoneInput(event) {
+    const input = event.target;
+    let value = input.value.replace(/\D/g, '');
+
+    value = value.slice(0, 11);
+
+    if (value.length > 7) {
+        input.value = `(${value.slice(0, 2)}) ${value.slice(2, 3)} ${value.slice(3, 7)}-${value.slice(7)}`;
+    } else if (value.length > 3) {
+        input.value = `(${value.slice(0, 2)}) ${value.slice(2, 3)} ${value.slice(3)}`;
+    } else if (value.length > 2) {
+        input.value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+    } else {
+        input.value = value.replace(/^(\d{2})/, '($1'); 
+    }
+}

@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.dao.EmpreendimentoDAO;
 import model.entity.Aluno;
 import model.entity.Empreendimento;
+import model.entity.EmpreendimentoAluno;
 import util.PasswordUtils;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class ContaServlet extends HttpServlet {
 
     private final EmpreendimentoDAO empreendimentoDAO = new EmpreendimentoDAO();
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -33,21 +35,20 @@ public class ContaServlet extends HttpServlet {
 
         try {
             Empreendimento empreendimento = empreendimentoDAO.obterEmpreendimentoCompletoPorId(empreendimentoId);
-
             if (empreendimento != null) {
                 request.setAttribute("empreendimento", empreendimento);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/empreendimento/conta.jsp");
                 dispatcher.forward(request, response);
             } else {
-                logger.log(Level.WARNING, "Empreendimento ID não encontrado: " + empreendimentoId);
                 response.sendRedirect(request.getContextPath() + "/empreendimento/dashboard-principal?erro=conta_nao_encontrada");
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao carregar a página de conta para o ID: " + empreendimentoId, e);
+            logger.log(Level.SEVERE, "Erro ao carregar a página de conta: ", e);
             response.sendRedirect(request.getContextPath() + "/empreendimento/dashboard-principal?erro=carregamento_conta");
         }
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -58,93 +59,103 @@ public class ContaServlet extends HttpServlet {
         }
         
         String redirectURL = request.getContextPath() + "/empreendimento/conta";
+        boolean sucessoGeral = true;
 
         try {
-            String nome = request.getParameter("nome");
-            String email = request.getParameter("email");
-            String numeroTelefone = request.getParameter("phoneNumber");
-            String cidade = request.getParameter("city");
-            String login = request.getParameter("loginEmpreendimento"); 
-            String novaSenha = request.getParameter("novaSenha");
-            String confirmarNovaSenha = request.getParameter("confirmarNovaSenha");
-            
-            String cursoGeralIdStr = request.getParameter("cursoGeralId");
-            String anoSemestre = request.getParameter("anoSemestre");
-            
-            String[] alunoIds = request.getParameterValues("alunoId");
-            String[] alunoNomes = request.getParameterValues("alunoNome");
-            String[] alunoMatriculas = request.getParameterValues("alunoMatricula");
-            
             Empreendimento empreendimentoExistente = empreendimentoDAO.obterEmpreendimentoCompletoPorId(empreendimentoId);
-            
             if (empreendimentoExistente == null) {
                 response.sendRedirect(redirectURL + "?erro=nao_encontrado");
                 return;
             }
+
+            String nome = request.getParameter("nome");
+            String email = request.getParameter("email");
+            String numeroTelefone = request.getParameter("phoneNumber");
+            String cidade = request.getParameter("city");
+            String novaSenha = request.getParameter("novaSenha");
+            String confirmarNovaSenha = request.getParameter("confirmarNovaSenha");
             
-            String senhaHashParaAtualizacao = empreendimentoExistente.getSenha();
-            
+            String senhaHash = empreendimentoExistente.getSenha();
             if (novaSenha != null && !novaSenha.trim().isEmpty()) {
                 if (!novaSenha.equals(confirmarNovaSenha)) {
                     response.sendRedirect(redirectURL + "?erro=senhas_diferentes");
                     return;
                 }
-                senhaHashParaAtualizacao = PasswordUtils.hashPassword(novaSenha);
+                senhaHash = PasswordUtils.hashPassword(novaSenha);
             }
 
             Empreendimento empreendimentoAtualizado = new Empreendimento(
-                empreendimentoId, 
-                nome, 
-                email, 
-                senhaHashParaAtualizacao, 
-                login, 
-                empreendimentoExistente.getTipo(), 
-                numeroTelefone, 
-                cidade, 
-                empreendimentoExistente.getCreatedAt(), 
-                null,
-                empreendimentoExistente.getDeletedAt()
+                empreendimentoId, nome, email, senhaHash, empreendimentoExistente.getLogin(), 
+                empreendimentoExistente.getTipo(), numeroTelefone, cidade, 
+                empreendimentoExistente.getCreatedAt(), null, empreendimentoExistente.getDeletedAt()
             );
 
-            boolean sucessoEmpreendimento = empreendimentoDAO.atualizarEmpreendimento(empreendimentoAtualizado);
-            boolean sucessoAlunoInfo = true;
-            boolean sucessoIntegrantes = true;
+            if (!empreendimentoDAO.atualizarEmpreendimento(empreendimentoAtualizado)) {
+                sucessoGeral = false;
+            }
 
-            if (sucessoEmpreendimento && empreendimentoExistente.isAluno()) {
-                String cursoENUM = null;
-                if ("1".equals(cursoGeralIdStr)) {
-                    cursoENUM = "DESENVOLVIMENTO_SISTEMAS";
-                } else if ("2".equals(cursoGeralIdStr)) {
-                    cursoENUM = "ENERGIA_RENOVAVEIS";
+            if (empreendimentoExistente.isAluno() && sucessoGeral) {
+                String cursoGeralIdStr = request.getParameter("cursoGeralId");
+                String anoSemestre = request.getParameter("anoSemestre");
+                String cursoENUM = "1".equals(cursoGeralIdStr) ? "DESENVOLVIMENTO_SISTEMAS" : "ENERGIA_RENOVAVEIS";
+
+                if (!empreendimentoDAO.atualizarEmpreendimentoAlunoInfo(empreendimentoId, cursoENUM, anoSemestre)) {
+                    sucessoGeral = false;
                 }
 
-                sucessoAlunoInfo = empreendimentoDAO.atualizarEmpreendimentoAlunoInfo(
-                    empreendimentoId, cursoENUM, anoSemestre);
-                
-                if (alunoIds != null && alunoNomes != null && alunoMatriculas != null) {
+                String idsParaRemoverStr = request.getParameter("alunosParaRemover");
+                if (idsParaRemoverStr != null && !idsParaRemoverStr.isEmpty()) {
+                    String[] idsParaRemover = idsParaRemoverStr.split(",");
+                    for (String idStr : idsParaRemover) {
+                        if (!idStr.isEmpty()) {
+                            int alunoId = Integer.parseInt(idStr);
+                            if (!empreendimentoDAO.removerAssociacaoAluno(empreendimentoId, alunoId)) {
+                                sucessoGeral = false;
+                            }
+                        }
+                    }
+                }
+
+                String[] alunoIds = request.getParameterValues("alunoId");
+                String[] alunoNomes = request.getParameterValues("alunoNome");
+                String[] alunoMatriculas = request.getParameterValues("alunoMatricula");
+
+                if (alunoIds != null) {
                     for (int i = 0; i < alunoIds.length; i++) {
                         int alunoId = Integer.parseInt(alunoIds[i]);
                         String alunoNome = alunoNomes[i];
                         String alunoMatricula = alunoMatriculas[i];
 
-                        Aluno alunoParaAtualizar = new Aluno(alunoId, alunoNome, alunoMatricula, null);
-
-                        if (!empreendimentoDAO.atualizarAluno(alunoParaAtualizar)) {
-                            sucessoIntegrantes = false;
-                            break;
+                        if (alunoId > 0) {
+                            Aluno alunoParaAtualizar = new Aluno(alunoId, alunoNome, alunoMatricula, null);
+                            if (!empreendimentoDAO.atualizarAluno(alunoParaAtualizar)) {
+                                sucessoGeral = false;
+                            }
+                        } else {
+                            Aluno novoAluno = new Aluno(0, alunoNome, alunoMatricula, cursoENUM);
+                            int novoAlunoId = empreendimentoDAO.incluirAluno(novoAluno);
+                            
+                            if (novoAlunoId > 0) {
+                                EmpreendimentoAluno novaAssociacao = new EmpreendimentoAluno(empreendimentoId, novoAlunoId, anoSemestre);
+                                if (!empreendimentoDAO.incluirEmpreendimentoAluno(novaAssociacao)) {
+                                    sucessoGeral = false;
+                                }
+                            } else {
+                                sucessoGeral = false;
+                            }
                         }
                     }
                 }
             }
 
-            if (sucessoEmpreendimento && sucessoAlunoInfo && sucessoIntegrantes) {
+            if (sucessoGeral) {
                 response.sendRedirect(redirectURL + "?sucesso=true");
             } else {
                 response.sendRedirect(redirectURL + "?erro=falha_atualizacao");
             }
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao atualizar conta para o ID: " + empreendimentoId, e);
+            logger.log(Level.SEVERE, "Erro fatal ao atualizar conta para o ID: " + empreendimentoId, e);
             response.sendRedirect(redirectURL + "?erro=erro_interno");
         }
     }

@@ -1,6 +1,7 @@
 package model.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Produto {
 	private int id;
@@ -101,5 +102,35 @@ public class Produto {
 
 	public void setMaosObra(List<ProdutoMaoObra> maosObra) {
 		this.maosObra = maosObra;
+	}
+
+	// ========== MÉTODOS ADICIONADOS PARA CORREÇÃO ==========
+
+	/**
+	 * Calcula o custo total somando os custos de todos os insumos da lista.
+	 * @return A soma dos custos dos insumos.
+	 */
+	public double getCustoTotalInsumos() {
+		if (insumos == null) {
+			return 0.0;
+		}
+		return insumos.stream()
+				.filter(Objects::nonNull)
+				.mapToDouble(ProdutoInsumo::getCustoTotal)
+				.sum();
+	}
+
+	/**
+	 * Calcula o custo total somando os custos de todas as etapas de mão de obra.
+	 * @return A soma dos custos da mão de obra.
+	 */
+	public double getCustoTotalMaoObra() {
+		if (maosObra == null) {
+			return 0.0;
+		}
+		return maosObra.stream()
+				.filter(Objects::nonNull)
+				.mapToDouble(ProdutoMaoObra::getCustoTotalEtapa)
+				.sum();
 	}
 }

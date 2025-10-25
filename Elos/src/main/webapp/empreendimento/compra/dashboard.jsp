@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<fmt:setLocale value="pt_BR"/>
 
 <!DOCTYPE html>
 <html>
@@ -30,8 +31,10 @@
 	
 	                <div class="card">
 	                    <h3>Total Gasto em Compras</h3>
-	                    <p>Período: <select><option>Este Mês</option><option>Últimos 3 meses</option><option>Ano</option></select></p>
-	                    <p class="card-value">R$ 4.850,00</p>
+	                    <p>Período: <strong>Este Mês</strong></p>
+	                    <p class="card-value">
+	                        <fmt:formatNumber value="${dashboardData.totalGastoMes}" type="currency" />
+	                    </p>
 	                    <p>Valor total investido na aquisição de insumos.</p>
 	                </div>
 	
@@ -39,8 +42,12 @@
 	                    <h3>Últimas Compras Realizadas</h3>
 	                    <p>Acompanhe as entradas de insumo mais recentes.</p>
 	                    <ul>
-	                        <li><strong>Compra #102:</strong> Valor Total R$ 350,00</li>
-	                        <li><strong>Compra #101:</strong> Valor Total R$ 1.200,00</li>
+	                        <c:forEach var="compra" items="${dashboardData.ultimasCompras}">
+	                            <li>
+	                                <strong>Compra #${compra.id}:</strong> 
+	                                Valor Total <fmt:formatNumber value="${compra.valorTotal}" type="currency" />
+	                            </li>
+	                        </c:forEach>
 	                    </ul>
 	                    <button class="view-details-btn" data-modal-target="recentPurchasesModal">Ver Detalhes</button>
 	                </div>
@@ -49,8 +56,14 @@
 	                    <h3>Variação de Preços <i class='bx bx-help-circle help-icon' data-modal-target="priceVariationHelpModal"></i></h3>
 	                    <p>Itens com maiores alterações de custo.</p>
 	                    <ul>
-	                        <li><strong>Farinha de Trigo:</strong> <span style="color: #c0392b;">▲ 8%</span> na última compra</li>
-	                        <li><strong>Embalagem Pote:</strong> <span style="color: #27ae60;">▼ 5%</span> na última compra</li>
+	                        <c:forEach var="variacao" items="${dashboardData.variacaoPrecos}">
+	                            <li>
+	                                <strong><c:out value="${variacao.nome}"/>:</strong> 
+	                                <span style="color: ${variacao.variacao > 0 ? '#c0392b' : '#27ae60'};">
+	                                    ${variacao.variacao > 0 ? '▲' : '▼'} <fmt:formatNumber value="${variacao.variacao}" type="number" maxFractionDigits="1"/>%
+	                                </span>
+	                            </li>
+	                        </c:forEach>
 	                    </ul>
 	                    <button class="view-details-btn" data-modal-target="priceVariationModal">Analisar Histórico</button>
 	                </div>
@@ -59,8 +72,14 @@
 	                    <h3>Sugestões de Compra</h3>
 	                    <p>Itens que precisam de reposição urgente.</p>
 	                    <ul>
-	                        <li><strong>Estoque Baixo:</strong> 4 itens</li>
-	                        <li><strong>Itens Críticos:</strong> 1 item zerado</li>
+	                        <li><strong>Estoque Baixo:</strong> <c:out value="${dashboardData.sugestoesCompra.size()}"/> itens</li>
+	                        <c:set var="itensZerados" value="0" />
+	                        <c:forEach var="insumo" items="${dashboardData.sugestoesCompra}">
+	                            <c:if test="${insumo.quantidade <= 0}">
+	                                <c:set var="itensZerados" value="${itensZerados + 1}" />
+	                            </c:if>
+	                        </c:forEach>
+	                        <li><strong>Itens Críticos:</strong> <c:out value="${itensZerados}"/> itens zerados</li>
 	                    </ul>
 	                    <button class="view-details-btn action-button" data-modal-target="purchaseSuggestionModal">Ver Lista de Compras</button>
 	                </div>
@@ -69,28 +88,25 @@
 	                    <h3>Maiores Despesas (Mês)</h3>
 	                    <p>Insumos que mais consumiram o orçamento de compras.</p>
 	                    <ul>
-	                        <li><strong>Chocolate em Barra:</strong> R$ 950,00</li>
-	                        <li><strong>Leite Condensado:</strong> R$ 720,00</li>
+	                        <c:forEach var="despesa" items="${dashboardData.maioresDespesas}">
+	                            <li>
+	                                <strong><c:out value="${despesa.nome}"/>:</strong> 
+	                                <fmt:formatNumber value="${despesa.total}" type="currency" />
+	                            </li>
+	                        </c:forEach>
 	                    </ul>
 	                    <button class="view-details-btn" data-modal-target="topExpensesModal">Ver Relatório Completo</button>
 	                </div>
 	                
 	                <div class="card">
-	                    <h3>Origem dos Insumos</h3>
-	                    <p>Distribuição das compras por tipo de produtor.</p>
-	                     <ul>
-	                        <li><strong>Cooperativas/Locais:</strong> 55%</li>
-	                        <li><strong>Grandes Atacadistas:</strong> 45%</li>
-	                    </ul>
-	                    <button class="view-details-btn" data-modal-target="insumoOriginModal">Ver Análise</button>
-	                </div>
-	
-	                <div class="card">
 	                    <h3>Nível de Estoque Atual</h3>
 	                    <p>Visão geral dos insumos armazenados.</p>
 	                    <ul>
-	                        <li><strong>Valor em Estoque:</strong> R$ 3.120,00</li>
-	                        <li><strong>Itens distintos:</strong> 28 tipos</li>
+	                        <li>
+	                            <strong>Valor em Estoque:</strong> 
+	                            <fmt:formatNumber value="${dashboardData.valorTotalEstoque}" type="currency" />
+	                        </li>
+	                        <li><strong>Itens distintos:</strong> <c:out value="${dashboardData.totalItensDistintos}"/> tipos</li>
 	                    </ul>
 	                    <button class="view-details-btn" data-modal-target="stockLevelModal">Detalhar Estoque</button>
 	                </div>

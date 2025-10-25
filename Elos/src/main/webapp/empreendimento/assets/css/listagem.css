@@ -213,7 +213,6 @@ body.dark .divTable tbody tr:hover {
 	border: none;
 	padding: 0;
 	outline: none;
-    
     font-size: 1.5rem;
     cursor: pointer;
     text-decoration: none;
@@ -329,4 +328,57 @@ body.dark #clearFilterBtn {
 
 body.dark #clearFilterBtn:hover {
 	background-color: #626f7d;
+}
+
+@media screen and (max-width: 768px) {
+    .page-header,
+    .search-wrapper,
+    .divTable,
+    body.sidebar-closed .page-header,
+    body.sidebar-closed .search-wrapper,
+    body.sidebar-closed .divTable,
+    body.sidebar-hovered .page-header,
+    body.sidebar-hovered .search-wrapper,
+    body.sidebar-hovered .divTable {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .page-header {
+        margin-top: 90px;
+        margin-bottom: 30px;
+    }
+    
+    .search-wrapper {
+        margin-bottom: 30px;
+    }
+
+    .page-header button#new {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .date-filter-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .filter-group input[type="date"] {
+        width: 100%;
+    }
+
+    .divTable {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .divTable table th,
+    .divTable table td {
+        white-space: nowrap;
+    }
+    
+    .action-cell {
+        min-width: 60px;
+    }
 }

@@ -29,70 +29,78 @@
 				<div class="carousel-track">
 
 					<div class="card">
-						<h3>Receita com Vendas</h3>
-						<p>Período: <select><option>Este Mês</option><option>Últimos 3 meses</option><option>Ano</option></select></p>
-						<p class="card-value">R$ 7.350,00</p>
-						<p>Valor total arrecadado com a venda dos produtos.</p>
-					</div>
-
-					<div class="card">
-						<h3>Produtos Mais Vendidos</h3>
-						<p>Os preferidos da sua comunidade.</p>
+						<h3>Rentabilidade de Produtos</h3>
+						<p>Produtos com maior margem de lucro.</p>
 						<ul>
-							<li><strong>Bolo de Cenoura:</strong> 45 unidades</li>
-							<li><strong>Pão Artesanal:</strong> 38 unidades</li>
+							<c:choose>
+								<c:when test="${not empty dashboardData.produtosMaisRentaveisCard}">
+									<c:forEach var="produto" items="${dashboardData.produtosMaisRentaveisCard}">
+										<li>
+											<strong><c:out value="${produto.nome}"/>:</strong>
+											<fmt:formatNumber value="${produto.margem}" type="number" maxFractionDigits="0"/>% de margem
+										</li>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<li>Nenhum produto para exibir.</li>
+								</c:otherwise>
+							</c:choose>
 						</ul>
-						<button class="view-details-btn" data-modal-target="topSellingProductsModal">Ver Ranking Completo</button>
+						<button class="view-details-btn" data-modal-target="topProfitProductsModal">Analisar Rentabilidade</button>
 					</div>
-
-					<div class="card">
-						<h3>Impacto e Transparência <i class='bx bx-help-circle help-icon' data-modal-target="socialImpactHelpModal"></i></h3>
-						<p>Mostre o valor do seu trabalho.</p>
-						<ul>
-							<li><strong>Insumos Locais:</strong> 75%</li>
-							<li><strong>Reinvestido na Comunidade:</strong> R$ 735,00</li>
-						</ul>
-						<button class="view-details-btn" data-modal-target="socialImpactModal">Saber Mais</button>
-					</div>
-
-					<div class="card">
-						<h3>Sugestões de Produção</h3>
-						<p>Produtos que precisam ser repostos.</p>
-						<ul>
-							<li><strong>Estoque Baixo:</strong> 3 produtos</li>
-							<li><strong>Itens Críticos:</strong> 1 produto zerado</li>
-						</ul>
-						<button class="view-details-btn action-button" data-modal-target="productionSuggestionModal">Planejar Produção</button>
-					</div>
-
+					
 					<div class="card">
 						<h3>Saúde Financeira (Mês)</h3>
 						<p>Análise de Custo e Receita dos produtos.</p>
 						<ul>
-							<li><strong>Custo Total de Produção:</strong> R$ 4.850,00</li>
-							<li><strong>Receita Bruta:</strong> R$ 7.350,00</li>
+							<li>Custo Total de Produção: <fmt:formatNumber value="${dashboardData.custoProducaoMes}" type="currency"/></li>
+							<li>Receita Bruta: <fmt:formatNumber value="${dashboardData.receitaTotalMes}" type="currency"/></li>
 						</ul>
 						<button class="view-details-btn" data-modal-target="financialHealthModal">Ver Relatório Detalhado</button>
 					</div>
 					
 					<div class="card">
-						<h3>Voz da Comunidade</h3>
-						<p>Feedbacks recentes dos seus clientes.</p>
+						<h3>Variação de Vendas</h3>
+						<p>Tendência vs. mês anterior.</p>
 						<ul>
-							<li><strong>Avaliação Média:</strong> 4.8 <i class='bx bxs-star' style='color:#f1c40f'></i></li>
-							<li><strong>Novos Comentários:</strong> 3</li>
+							<c:choose>
+								<c:when test="${not empty dashboardData.variacaoVendas}">
+									<c:forEach var="variacao" items="${dashboardData.variacaoVendas}" end="1">
+			                            <li>
+			                                <strong><c:out value="${variacao.nome}"/>:</strong> 
+			                                <span style="color: ${variacao.variacao > 0 ? '#27ae60' : '#c0392b'};">
+			                                    ${variacao.variacao > 0 ? '▲' : '▼'} <fmt:formatNumber value="${variacao.variacao}" type="number" maxFractionDigits="1"/>%
+			                                </span>
+			                            </li>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<li>Sem dados para comparar.</li>
+								</c:otherwise>
+							</c:choose>
 						</ul>
-						<button class="view-details-btn" data-modal-target="customerFeedbackModal">Ler Avaliações</button>
+						<button class="view-details-btn" data-modal-target="salesVariationModal">Ver Tendências</button>
 					</div>
 
 					<div class="card">
-						<h3>Estoque de Produtos</h3>
-						<p>Visão geral dos produtos prontos para venda.</p>
+						<h3>Composição do Preço Justo</h3>
+						<p>Análise da estrutura de custos.</p>
+						<c:set var="produtoJusto" value="${dashboardData.produtoPrecoJusto}" />
 						<ul>
-							<li><strong>Valor em Estoque:</strong> R$ 2.150,00</li>
-							<li><strong>Produtos distintos:</strong> 12 tipos</li>
+							<c:choose>
+								<c:when test="${not empty produtoJusto}">
+									<c:set var="custoInsumos" value="${produtoJusto.getCustoTotalInsumos()}" />
+									<c:set var="custoMaoObra" value="${produtoJusto.getCustoTotalMaoObra()}" />
+									<c:set var="custoTotal" value="${custoInsumos + custoMaoObra}" />
+									<li><strong>Custo Insumos (Médio):</strong> <fmt:formatNumber value="${(custoInsumos / produtoJusto.precoVenda) * 100}" type="number" maxFractionDigits="0"/>%</li>
+									<li><strong>Valor Trabalho (Médio):</strong> <fmt:formatNumber value="${(custoMaoObra / produtoJusto.precoVenda) * 100}" type="number" maxFractionDigits="0"/>%</li>
+								</c:when>
+								<c:otherwise>
+									<li>Nenhum produto para analisar.</li>
+								</c:otherwise>
+							</c:choose>
 						</ul>
-						<button class="view-details-btn" data-modal-target="productStockModal">Detalhar Estoque</button>
+						<button class="view-details-btn action-button" data-modal-target="fairPriceModal">Analisar Estrutura</button>
 					</div>
 
 				</div>
@@ -118,19 +126,17 @@
 			<tbody id="comprasTable">
 				<c:choose>
 					<c:when test="${not empty produtos}">
-						<c:forEach var="compra" items="${produtos}" varStatus="status">
-							<c:if test="${status.count <= 3}">
-								<tr>
-									<td><c:out value="${produto.nome}" /></td>	
-									<td>
-										<fmt:parseDate value="${produto.createdAt}" pattern="yyyy-MM-dd" var="parsedCreatedAt" />
-										<fmt:formatDate value="${parsedCreatedAt}" pattern="dd/MM/yyyy" />
-									</td>
-									<td>
-										<fmt:formatNumber value="${produto.precoVenda}" type="currency" currencySymbol="R$ " />
-									</td>
-								</tr>
-							</c:if>
+						<c:forEach var="produto" items="${produtos}" end="2">
+							<tr>
+								<td><c:out value="${produto.nome}" /></td>	
+								<td>
+									<fmt:parseDate value="${produto.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedCreatedAt" />
+									<fmt:formatDate value="${parsedCreatedAt}" pattern="dd/MM/yyyy" />
+								</td>
+								<td>
+									<fmt:formatNumber value="${produto.precoVenda}" type="currency" currencySymbol="R$ " />
+								</td>
+							</tr>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>

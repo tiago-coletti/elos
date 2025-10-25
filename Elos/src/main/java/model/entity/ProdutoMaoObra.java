@@ -6,10 +6,10 @@ public class ProdutoMaoObra {
 	private int maoObraId;
 	private int produtoId;
 	private String maoObraNome;
-	
+	private MaoObra maoObra;
+
 	public ProdutoMaoObra() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public ProdutoMaoObra(int id, double horasUtilizadas, int maoObraId, int produtoId) {
@@ -58,5 +58,20 @@ public class ProdutoMaoObra {
 
 	public void setMaoObraNome(String maoObraNome) {
 		this.maoObraNome = maoObraNome;
+	}
+	
+	public MaoObra getMaoObra() {
+		return maoObra;
+	}
+
+	public void setMaoObra(MaoObra maoObra) {
+		this.maoObra = maoObra;
+	}
+
+	public double getCustoTotalEtapa() {
+		if (maoObra != null && maoObra.getCustoHora() > 0) {
+			return horasUtilizadas * maoObra.getCustoHora();
+		}
+		return 0.0;
 	}
 }

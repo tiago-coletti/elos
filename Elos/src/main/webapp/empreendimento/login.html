@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -9,7 +8,6 @@
     <link rel="stylesheet" href="assets/css/login.css" />
     <title>Elos</title>
 </head>
-
 <body>
     <div class="container">
         <div class="forms">
@@ -42,18 +40,14 @@
                     </span>
                 </div>
             </div>
-
             <div class="form signup">
                 <span class="title">Cadastro</span>
-
                 <form action="/Elos/empreendimento/cadastro" method="POST">
                     <input type="hidden" name="tipo" value="PADRAO" id="tipoEmpreendimento">
-                    
                     <div class="form-toggle">
                         <input type="checkbox" id="alunoSolidarioCheck" />
                         <label for="alunoSolidarioCheck">Este é um Empreendimento Solidário de Alunos?</label>
                     </div>
-
                     <h3 class="subtitle">Informações do Empreendimento</h3>
                     <div class="fields-group">
                         <div class="input-field">
@@ -65,17 +59,20 @@
                             <input type="email" id="email" placeholder="Digite o email de contato" required name="email" />
                         </div>
                         <div class="input-field">
-                            <label for="phoneNumber">Telefone</label>
-                            <input type="text" id="phoneNumber" placeholder="Digite o telefone" name="phoneNumber" />
-                        </div>
+						    <label for="phoneNumber">Telefone</label>
+						    <input type="tel" 
+						           id="phoneNumber" 
+						           placeholder="(xx) 9 xxxx-xxxx" 
+						           name="phoneNumber" 
+						           maxlength="16" pattern="\(\d{2}\) 9 \d{4}-\d{4}"
+						           title="O telefone deve estar no formato (xx) 9 xxxx-xxxx"
+						    />                       
+						</div>
                         <div class="input-field">
                             <label for="city">Cidade</label>
                             <input type="text" id="city" placeholder="Digite a cidade" name="city" />
                         </div>
                     </div>
-                    
-                    
-
 					<h3 class="subtitle">Informações da Conta</h3>
                     <div class="fields-group">
                         <div class="input-field">
@@ -98,12 +95,8 @@
                                    />
                         </div>
                     </div>
-
-                    
-
-<div id="alunos-section" style="display: none;">
+                    <div id="alunos-section" style="display: none;">
                         <h3 class="subtitle">Integrantes do Empreendimento</h3>
-                        
                         <div class="fields-group course-semester-group">
                             <div class="input-field">
                                 <label for="cursoGeralId">Curso do Empreendimento Solidário</label>
@@ -120,6 +113,7 @@
                                        name="anoSemestre" 
                                        placeholder="Ex: 2024/1" 
                                        required 
+                                       maxlength="6"
                                        pattern="\d{4}\/[1-2]"
                                        title="O Semestre deve seguir o padrão AAAA/S (ex: 2024/1 ou 2023/2)"
                                        />
@@ -133,7 +127,6 @@
                             </button>
                         </div>
                     </div>
-
                     <div class="input-field button next-btn">
                         <button type="submit">
                             <i class="uil uil-message"></i> Submeter Cadastro
@@ -148,8 +141,6 @@
             </button>
         </div>
     </div>
-
     <script src="assets/js/login.js"></script>
 </body>
-
 </html>

@@ -61,8 +61,8 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		try {
-			if (empreendimentoDAO.verificarLogin(login)) {
-				String storedHash = empreendimentoDAO.obterSenhaPorLogin(login);
+			if (empreendimentoDAO.verificarUsuarioExistente(login)) {
+				String storedHash = empreendimentoDAO.obterSenhaPorLoginOuEmail(login);
 				if (storedHash != null && PasswordUtils.checkPassword(senha, storedHash)) {
 					int id = empreendimentoDAO.obterId(login);
 					request.getSession().setAttribute("id", id);
@@ -119,7 +119,6 @@ public class LoginServlet extends HttpServlet {
 			}
 		}
 		
-		// CORREÇÃO ESSENCIAL: Mapeia o valor do formulário ("ALUNO_SOLIDARIO") 
 		// para o valor aceito pelo ENUM no BD ("ALUNO").
 		String tipoBD = "PADRAO";
 		if ("ALUNO_SOLIDARIO".equals(tipo)) {
@@ -128,7 +127,7 @@ public class LoginServlet extends HttpServlet {
 
 		try {
 			// 3. Verificação de Existência (verifica o campo 'login')
-			if (empreendimentoDAO.verificarLogin(login)) {
+			if (empreendimentoDAO.verificarUsuarioExistente(login)) {
 				response.sendRedirect(request.getContextPath() + "/empreendimento/login.html?erro=usuario_existente");
 				return;
 			}

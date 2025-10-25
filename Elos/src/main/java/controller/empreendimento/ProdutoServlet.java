@@ -15,331 +15,390 @@ import model.entity.MaoObra;
 import model.entity.Produto;
 import model.entity.ProdutoInsumo;
 import model.entity.ProdutoMaoObra;
+import services.ProdutoHelper; // Importe o novo Helper
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map; // Importe o Map
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = { "/empreendimento/produto/listagem", "/empreendimento/produto/dashboard",
-		"/empreendimento/produto/visualizar", "/empreendimento/produto/incluir", "/empreendimento/produto/editar",
-		"/empreendimento/produto/excluir" })
+        "/empreendimento/produto/visualizar", "/empreendimento/produto/incluir", "/empreendimento/produto/editar",
+        "/empreendimento/produto/excluir" })
 public class ProdutoServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private static final Logger logger = Logger.getLogger(ProdutoServlet.class.getName());
-	
-	ProdutoDAO produtoDAO = new ProdutoDAO();
-	InsumoDAO insumoDAO = new InsumoDAO();
-	MaoObraDAO maoObraDAO = new MaoObraDAO();
+    private static final long serialVersionUID = 1L;
+    private static final Logger logger = Logger.getLogger(ProdutoServlet.class.getName());
+    
+    ProdutoDAO produtoDAO = new ProdutoDAO();
+    InsumoDAO insumoDAO = new InsumoDAO();
+    MaoObraDAO maoObraDAO = new MaoObraDAO();
+    ProdutoHelper produtoHelper = new ProdutoHelper(); // Instancie o Helper
 
     public ProdutoServlet() {
         super();
     }
 
     @Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String path = request.getServletPath();
-		switch (path) {
-		case "/empreendimento/produto/listagem":
-			visualizarListagem(request, response);
-			break;
-		case "/empreendimento/produto/dashboard":
-			visualizarDashboard(request, response);
-			break;
-		case "/empreendimento/produto/visualizar":
-			visualizarProduto(request, response);
-			break;
-		case "/empreendimento/produto/incluir":
-			visualizarInclusao(request, response);
-			break;	
-		case "/empreendimento/produto/editar":
-			visualizarEdicao(request, response);
-			break;
-		default:
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Rota não reconhecida.");
-		}
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getServletPath();
+        switch (path) {
+        case "/empreendimento/produto/listagem":
+            visualizarListagem(request, response);
+            break;
+        case "/empreendimento/produto/dashboard":
+            visualizarDashboard(request, response);
+            break;
+        case "/empreendimento/produto/visualizar":
+            visualizarProduto(request, response);
+            break;
+        case "/empreendimento/produto/incluir":
+            visualizarInclusao(request, response);
+            break;
+        case "/empreendimento/produto/editar":
+            visualizarEdicao(request, response);
+            break;
+        default:
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Rota não reconhecida.");
+        }
+    }
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String path = request.getServletPath();
-		switch (path) {
-		case "/empreendimento/produto/incluir":
-			processarInclusao(request, response);
-			break;
-		case "/empreendimento/produto/editar":
-			processarEdicao(request, response);
-			break;
-		case "/empreendimento/produto/excluir":
-			processarExclusao(request, response);
-			break;
-		default:
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Rota não reconhecida.");
-		}
-	}
-	
-	private void visualizarListagem(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		int empreendimentoId = (Integer) session.getAttribute("id");
-		
-		try {
-			ArrayList<Produto> produtos = produtoDAO.listarProdutos(empreendimentoId);
-			request.setAttribute("produtos", produtos);
-			RequestDispatcher rd = request.getRequestDispatcher("listagem.jsp");
-			rd.forward(request, response);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Erro ao carregar dados para a página de produtos", e);
-			response.sendRedirect(request.getContextPath() + "/empreendimento/produto/dashboard");
-		}
-	}
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getServletPath();
+        switch (path) {
+        case "/empreendimento/produto/incluir":
+            processarInclusao(request, response);
+            break;
+        case "/empreendimento/produto/editar":
+            processarEdicao(request, response);
+            break;
+        case "/empreendimento/produto/excluir":
+            processarExclusao(request, response);
+            break;
+        default:
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Rota não reconhecida.");
+        }
+    }
+    
+    private void visualizarListagem(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int empreendimentoId = (Integer) session.getAttribute("id");
+        
+        try {
+            ArrayList<Produto> produtos = produtoDAO.listarProdutos(empreendimentoId);
+            request.setAttribute("produtos", produtos);
+            RequestDispatcher rd = request.getRequestDispatcher("listagem.jsp");
+            rd.forward(request, response);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao carregar dados para a página de produtos", e);
+            response.sendRedirect(request.getContextPath() + "/empreendimento/produto/dashboard");
+        }
+    }
 
-	private void visualizarDashboard(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		int empreendimentoId = (Integer) session.getAttribute("id");
-		
-		try {
-			ArrayList<Produto> Produtos = produtoDAO.listarProdutos(empreendimentoId);
-			request.setAttribute("Produtos", Produtos);
-			RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp");
-			rd.forward(request, response);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Erro ao carregar dados para a página de produtos", e);
-			response.sendRedirect(request.getContextPath() + "/empreendimento/dashboard-principal");
-		}
-	}
+    private void visualizarDashboard(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int empreendimentoId = (Integer) session.getAttribute("id");
+        
+        try {
+            // Usa o Helper para buscar todos os dados analíticos
+            Map<String, Object> dashboardData = produtoHelper.prepararDadosDashboard(empreendimentoId);
+            request.setAttribute("dashboardData", dashboardData);
+            
+            // Busca os produtos recentes para a tabela inferior (pode ser otimizado no futuro)
+            ArrayList<Produto> produtos = produtoDAO.listarProdutos(empreendimentoId);
+            request.setAttribute("produtos", produtos);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp");
+            rd.forward(request, response);
+            
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao carregar dados para o dashboard de produtos", e);
+            response.sendRedirect(request.getContextPath() + "/empreendimento/dashboard-principal");
+        }
+    }
 
-	private void visualizarProduto(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-	}
+    private void visualizarProduto(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int empreendimentoId = (Integer) session.getAttribute("id");
 
-	private void visualizarInclusao(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-	    HttpSession session = request.getSession(false);
-	    int empreendimentoId = (Integer) session.getAttribute("id");
+        try {
+            String idParam = request.getParameter("id");
+            if (idParam == null || idParam.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID do produto não fornecido.");
+                return;
+            }
 
-	    try {
-	        ArrayList<Insumo> insumos = insumoDAO.listarInsumos(empreendimentoId);
-	        request.setAttribute("insumos", insumos);
-	        
-	        ArrayList<MaoObra> maosObra = maoObraDAO.listarMaosObra(empreendimentoId);
-	        request.setAttribute("maosObra", maosObra);
-	        
-			RequestDispatcher rd = request.getRequestDispatcher("incluir.jsp");
-			rd.forward(request, response);
-	    }  catch (Exception e) {
-	        logger.log(Level.SEVERE, "Erro ao carregar dados para a página de inclusão de produtos", e);
-	        response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
-	    }
-	}
-	
-	private void visualizarEdicao(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
-	    HttpSession session = request.getSession(false);
-	    int empreendimentoId = (Integer) session.getAttribute("id");
+            int produtoId = Integer.parseInt(idParam);
+            
+            // 1. Obter o objeto Produto completo com suas listas já preenchidas pelo DAO
+            Produto produto = produtoDAO.obterProdutoPorId(produtoId, empreendimentoId);
 
-	    try {
-	        String idParam = request.getParameter("id");
-	        if (idParam == null || idParam.isEmpty()) {
-	            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID do produto não fornecido.");
-	            return;
-	        }
+            if (produto != null) {
+                // 2. Calcular os custos usando os métodos helper das entidades
+                double custoInsumos = produto.getInsumos().stream()
+                        .mapToDouble(ProdutoInsumo::getCustoTotal)
+                        .sum();
+                
+                double custoMaoDeObra = produto.getMaosObra().stream()
+                        .mapToDouble(ProdutoMaoObra::getCustoTotalEtapa)
+                        .sum();
+                        
+                double custoTotal = custoInsumos + custoMaoDeObra;
 
-	        int produtoId = Integer.parseInt(idParam);
-	        Produto produto = produtoDAO.obterProdutoPorId(produtoId, empreendimentoId);
+                // 3. Enviar o produto (que contém as listas) e os custos calculados para o JSP
+                request.setAttribute("produto", produto);
+                request.setAttribute("custoInsumos", custoInsumos);
+                request.setAttribute("custoTotal", custoTotal);
 
-	        if (produto != null) {
-	            ArrayList<Insumo> todosInsumos = insumoDAO.listarInsumos(empreendimentoId);
-	            ArrayList<MaoObra> todasMaosObra = maoObraDAO.listarMaosObra(empreendimentoId);
+                RequestDispatcher rd = request.getRequestDispatcher("/empreendimento/produto/visualizar.jsp");
+                rd.forward(request, response);
+                
+            } else {
+                logger.log(Level.WARNING, "Produto não encontrado. ID: " + produtoId);
+                session.setAttribute("mensagem", "Produto não encontrado.");
+                response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
+            }
 
-	            request.setAttribute("produto", produto); 
-	            request.setAttribute("insumos", todosInsumos);
-	            request.setAttribute("maosObra", todasMaosObra);
+        } catch (NumberFormatException e) {
+            logger.log(Level.WARNING, "ID do produto inválido: " + request.getParameter("id"), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID do produto inválido.");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao carregar dados para visualização de produto", e);
+            session.setAttribute("mensagem", "Erro ao carregar detalhes do produto.");
+            response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
+        }
+    }
 
-	            RequestDispatcher rd = request.getRequestDispatcher("editar.jsp"); 
-	            rd.forward(request, response);
-	        } else {
-		        logger.log(Level.WARNING, "Produto não encontrado.");
-		        response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
-	        }
+    private void visualizarInclusao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int empreendimentoId = (Integer) session.getAttribute("id");
 
-	    } catch (NumberFormatException e) {
-	        logger.log(Level.WARNING, "ID do produto inválido: " + request.getParameter("id"), e);
-	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID do produto inválido.");
-	    } catch (Exception e) {
-	        logger.log(Level.SEVERE, "Erro ao carregar dados para a página de edição de produtos", e);
-	        response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
-	    }
-	}
+        try {
+            ArrayList<Insumo> insumos = insumoDAO.listarInsumos(empreendimentoId);
+            request.setAttribute("insumos", insumos);
+            
+            ArrayList<MaoObra> maosObra = maoObraDAO.listarMaosObra(empreendimentoId);
+            request.setAttribute("maosObra", maosObra);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("incluir.jsp");
+            rd.forward(request, response);
+        }  catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao carregar dados para a página de inclusão de produtos", e);
+            response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
+        }
+    }
+    
+    private void visualizarEdicao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int empreendimentoId = (Integer) session.getAttribute("id");
 
-	private void processarInclusao(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
-	    HttpSession session = request.getSession(false);
-	    int empreendimentoId = (Integer) session.getAttribute("id");
-	    String mensagem;
+        try {
+            String idParam = request.getParameter("id");
+            if (idParam == null || idParam.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID do produto não fornecido.");
+                return;
+            }
 
-	    try {
-	        String nome = request.getParameter("nomeProduto");
-	        String precoVendaStr = request.getParameter("precoVenda");
-	        double precoVenda = (precoVendaStr == null || precoVendaStr.isEmpty()) ? 0 : Double.parseDouble(precoVendaStr);
+            int produtoId = Integer.parseInt(idParam);
+            Produto produto = produtoDAO.obterProdutoPorId(produtoId, empreendimentoId);
 
-	        String[] insumoIds = request.getParameterValues("insumoId");
-	        String[] insumoQuantidades = request.getParameterValues("insumoQuantidade"); 
-	        
-	        String[] maoObraIds = request.getParameterValues("maoObraId");
-	        String[] maoObraHoras = request.getParameterValues("maoObraHoras");
+            if (produto != null) {
+                ArrayList<Insumo> todosInsumos = insumoDAO.listarInsumos(empreendimentoId);
+                ArrayList<MaoObra> todasMaosObra = maoObraDAO.listarMaosObra(empreendimentoId);
 
-	        List<ProdutoInsumo> produtoInsumos = new ArrayList<>();
-	        if (insumoIds != null) {
-	            for (int i = 0; i < insumoIds.length; i++) {
-	                int insumoId = Integer.parseInt(insumoIds[i]);
-	                double quantidadeUtilizada = Double.parseDouble(insumoQuantidades[i]);
-	                
-	                ProdutoInsumo produtoInsumo = new ProdutoInsumo();
-	                produtoInsumo.setInsumoId(insumoId);
-	                produtoInsumo.setQuantidadeUtilizada(quantidadeUtilizada);
-	                
-	                produtoInsumos.add(produtoInsumo);
-	            }
-	        }
-	        
-	        List<ProdutoMaoObra> produtoMaosObra = new ArrayList<>();
-	        if (maoObraIds != null) {
-	            for (int i = 0; i < maoObraIds.length; i++) {
-	                int maoObraId = Integer.parseInt(maoObraIds[i]);
-	                double horasUtilizadas = Double.parseDouble(maoObraHoras[i]);
-	                
-	                ProdutoMaoObra produtoMaoObra = new ProdutoMaoObra(); 
-	                produtoMaoObra.setMaoObraId(maoObraId);
-	                produtoMaoObra.setHorasUtilizadas(horasUtilizadas); 
-	                
-	                produtoMaosObra.add(produtoMaoObra); 
-	            }
-	        }
+                request.setAttribute("produto", produto);
+                request.setAttribute("insumos", todosInsumos);
+                request.setAttribute("maosObra", todasMaosObra);
 
-	        Produto novoProduto = new Produto();
-	        novoProduto.setEmpreendimentoId(empreendimentoId);
-	        novoProduto.setNome(nome);
-	        novoProduto.setPrecoVenda(precoVenda);
-	        
-	        produtoDAO.incluirProduto(novoProduto, produtoInsumos, produtoMaosObra); 
-	        
-	        mensagem = "Produto incluído com sucesso!";
+                RequestDispatcher rd = request.getRequestDispatcher("editar.jsp");
+                rd.forward(request, response);
+            } else {
+                logger.log(Level.WARNING, "Produto não encontrado.");
+                response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
+            }
 
-	    } catch (Exception e) {
-	        logger.log(Level.SEVERE, "Erro ao incluir produto: ", e);
-	        mensagem = "Erro ao incluir o produto.";
-	    }
+        } catch (NumberFormatException e) {
+            logger.log(Level.WARNING, "ID do produto inválido: " + request.getParameter("id"), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID do produto inválido.");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao carregar dados para a página de edição de produtos", e);
+            response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
+        }
+    }
 
-	    session.setAttribute("mensagem", mensagem);
-	    response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
-	}
+    private void processarInclusao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int empreendimentoId = (Integer) session.getAttribute("id");
+        String mensagem;
 
-	private void processarEdicao(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
-	    HttpSession session = request.getSession(false);
-	    int empreendimentoId = (Integer) session.getAttribute("id");
-	    String mensagem;
+        try {
+            String nome = request.getParameter("nomeProduto");
+            String precoVendaStr = request.getParameter("precoVenda");
+            double precoVenda = (precoVendaStr == null || precoVendaStr.isEmpty()) ? 0 : Double.parseDouble(precoVendaStr);
 
-	    try {
-	        String produtoIdStr = request.getParameter("id");
-	        int produtoId = (produtoIdStr == null || produtoIdStr.isEmpty()) ? 0 : Integer.parseInt(produtoIdStr);
-	        
-	        String nome = request.getParameter("nomeProduto");
-	        String precoVendaStr = request.getParameter("precoVenda");
-	        double precoVenda = (precoVendaStr == null || precoVendaStr.isEmpty()) ? 0 : Double.parseDouble(precoVendaStr);
+            String[] insumoIds = request.getParameterValues("insumoId");
+            String[] insumoQuantidades = request.getParameterValues("insumoQuantidade");
+            
+            String[] maoObraIds = request.getParameterValues("maoObraId");
+            String[] maoObraHoras = request.getParameterValues("maoObraHoras");
 
-	        String[] insumoIds = request.getParameterValues("insumoId");
-	        String[] insumoQuantidades = request.getParameterValues("insumoQuantidade");
-	        
-	        String[] maoObraIds = request.getParameterValues("maoObraId");
-	        String[] maoObraHoras = request.getParameterValues("maoObraHoras");
-	        
-	        List<ProdutoInsumo> produtoInsumos = new ArrayList<>();
-	        if (insumoIds != null) {
-	            for (int i = 0; i < insumoIds.length; i++) {
-	                int insumoId = Integer.parseInt(insumoIds[i]);
-	                double quantidadeUtilizada = Double.parseDouble(insumoQuantidades[i]);
-	                
-	                ProdutoInsumo produtoInsumo = new ProdutoInsumo();
-	                produtoInsumo.setInsumoId(insumoId);
-	                produtoInsumo.setQuantidadeUtilizada(quantidadeUtilizada);
-	                
-	                produtoInsumos.add(produtoInsumo);
-	            }
-	        }
-	        
-	        List<ProdutoMaoObra> produtoMaosObra = new ArrayList<>();
-	        if (maoObraIds != null) {
-	            for (int i = 0; i < maoObraIds.length; i++) {
-	                int maoObraId = Integer.parseInt(maoObraIds[i]);
-	                double horasUtilizadas = Double.parseDouble(maoObraHoras[i]);
-	                
-	                ProdutoMaoObra produtoMaoObra = new ProdutoMaoObra();
-	                produtoMaoObra.setMaoObraId(maoObraId);
-	                produtoMaoObra.setHorasUtilizadas(horasUtilizadas);
-	                
-	                produtoMaosObra.add(produtoMaoObra);
-	            }
-	        }
+            List<ProdutoInsumo> produtoInsumos = new ArrayList<>();
+            if (insumoIds != null) {
+                for (int i = 0; i < insumoIds.length; i++) {
+                    int insumoId = Integer.parseInt(insumoIds[i]);
+                    double quantidadeUtilizada = Double.parseDouble(insumoQuantidades[i]);
+                    
+                    ProdutoInsumo produtoInsumo = new ProdutoInsumo();
+                    produtoInsumo.setInsumoId(insumoId);
+                    produtoInsumo.setQuantidadeUtilizada(quantidadeUtilizada);
+                    
+                    produtoInsumos.add(produtoInsumo);
+                }
+            }
+            
+            List<ProdutoMaoObra> produtoMaosObra = new ArrayList<>();
+            if (maoObraIds != null) {
+                for (int i = 0; i < maoObraIds.length; i++) {
+                    int maoObraId = Integer.parseInt(maoObraIds[i]);
+                    double horasUtilizadas = Double.parseDouble(maoObraHoras[i]);
+                    
+                    ProdutoMaoObra produtoMaoObra = new ProdutoMaoObra();
+                    produtoMaoObra.setMaoObraId(maoObraId);
+                    produtoMaoObra.setHorasUtilizadas(horasUtilizadas);
+                    
+                    produtoMaosObra.add(produtoMaoObra);
+                }
+            }
 
-	        Produto produto = new Produto();
-	        produto.setEmpreendimentoId(empreendimentoId);
-	        produto.setId(produtoId);
-	        produto.setNome(nome);
-	        produto.setPrecoVenda(precoVenda);
-	        
-	        produtoDAO.editarProduto(produto, produtoInsumos, produtoMaosObra); 
-	        
-	        mensagem = "Produto editado com sucesso!";
+            Produto novoProduto = new Produto();
+            novoProduto.setEmpreendimentoId(empreendimentoId);
+            novoProduto.setNome(nome);
+            novoProduto.setPrecoVenda(precoVenda);
+            
+            produtoDAO.incluirProduto(novoProduto, produtoInsumos, produtoMaosObra);
+            
+            mensagem = "Produto incluído com sucesso!";
 
-	    } catch (Exception e) {
-	        logger.log(Level.SEVERE, "Erro ao editar produto: ", e);
-	        mensagem = "Erro ao editar o produto.";
-	    }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao incluir produto: ", e);
+            mensagem = "Erro ao incluir o produto.";
+        }
 
-	    session.setAttribute("mensagem", mensagem);
-	    response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
-	}
-	
-	private void processarExclusao(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		int empreendimentoId = (Integer) session.getAttribute("id");
-		String mensagem;
+        session.setAttribute("mensagem", mensagem);
+        response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
+    }
 
-		try {
-			String produtoIdStr = request.getParameter("id");
-			int produtoId = (produtoIdStr == null || produtoIdStr.isEmpty()) ? 0 : Integer.parseInt(produtoIdStr);
+    private void processarEdicao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int empreendimentoId = (Integer) session.getAttribute("id");
+        String mensagem;
 
-			if (produtoId == 0) {
-				mensagem = "Produto não encontrado para exclusão.";
-				session.setAttribute("mensagem", mensagem);
-				response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
-				return;
-			}
+        try {
+            String produtoIdStr = request.getParameter("id");
+            int produtoId = (produtoIdStr == null || produtoIdStr.isEmpty()) ? 0 : Integer.parseInt(produtoIdStr);
+            
+            String nome = request.getParameter("nomeProduto");
+            String precoVendaStr = request.getParameter("precoVenda");
+            double precoVenda = (precoVendaStr == null || precoVendaStr.isEmpty()) ? 0 : Double.parseDouble(precoVendaStr);
 
-			boolean exclusao = produtoDAO.excluirProduto(produtoId, empreendimentoId);
-			if (exclusao) {
-				mensagem = "Produto excluído com sucesso.";
-			} else {
-				mensagem = "Não foi possível excluir o produto.";
-			}
+            String[] insumoIds = request.getParameterValues("insumoId");
+            String[] insumoQuantidades = request.getParameterValues("insumoQuantidade");
+            
+            String[] maoObraIds = request.getParameterValues("maoObraId");
+            String[] maoObraHoras = request.getParameterValues("maoObraHoras");
+            
+            List<ProdutoInsumo> produtoInsumos = new ArrayList<>();
+            if (insumoIds != null) {
+                for (int i = 0; i < insumoIds.length; i++) {
+                    int insumoId = Integer.parseInt(insumoIds[i]);
+                    double quantidadeUtilizada = Double.parseDouble(insumoQuantidades[i]);
+                    
+                    ProdutoInsumo produtoInsumo = new ProdutoInsumo();
+                    produtoInsumo.setInsumoId(insumoId);
+                    produtoInsumo.setQuantidadeUtilizada(quantidadeUtilizada);
+                    
+                    produtoInsumos.add(produtoInsumo);
+                }
+            }
+            
+            List<ProdutoMaoObra> produtoMaosObra = new ArrayList<>();
+            if (maoObraIds != null) {
+                for (int i = 0; i < maoObraIds.length; i++) {
+                    int maoObraId = Integer.parseInt(maoObraIds[i]);
+                    double horasUtilizadas = Double.parseDouble(maoObraHoras[i]);
+                    
+                    ProdutoMaoObra produtoMaoObra = new ProdutoMaoObra();
+                    produtoMaoObra.setMaoObraId(maoObraId);
+                    produtoMaoObra.setHorasUtilizadas(horasUtilizadas);
+                    
+                    produtoMaosObra.add(produtoMaoObra);
+                }
+            }
 
-		} catch (NumberFormatException e) {
-			logger.log(Level.WARNING,
-					"Erro de formato ao converter ID do produto para exclusão: " + request.getParameter("id"), e);
-			mensagem = "Falha ao excluir produto.";
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Erro ao excluir produto", e);
-			mensagem = "Falha ao excluir produto.";
-		}
+            Produto produto = new Produto();
+            produto.setEmpreendimentoId(empreendimentoId);
+            produto.setId(produtoId);
+            produto.setNome(nome);
+            produto.setPrecoVenda(precoVenda);
+            
+            produtoDAO.editarProduto(produto, produtoInsumos, produtoMaosObra);
+            
+            mensagem = "Produto editado com sucesso!";
 
-		session.setAttribute("mensagem", mensagem);
-		response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
-	}
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao editar produto: ", e);
+            mensagem = "Erro ao editar o produto.";
+        }
+
+        session.setAttribute("mensagem", mensagem);
+        response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
+    }
+    
+    private void processarExclusao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int empreendimentoId = (Integer) session.getAttribute("id");
+        String mensagem;
+
+        try {
+            String produtoIdStr = request.getParameter("id");
+            int produtoId = (produtoIdStr == null || produtoIdStr.isEmpty()) ? 0 : Integer.parseInt(produtoIdStr);
+
+            if (produtoId == 0) {
+                mensagem = "Produto não encontrado para exclusão.";
+                session.setAttribute("mensagem", mensagem);
+                response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
+                return;
+            }
+
+            boolean exclusao = produtoDAO.excluirProduto(produtoId, empreendimentoId);
+            if (exclusao) {
+                mensagem = "Produto excluído com sucesso.";
+            } else {
+                mensagem = "Não foi possível excluir o produto.";
+            }
+
+        } catch (NumberFormatException e) {
+            logger.log(Level.WARNING,
+                    "Erro de formato ao converter ID do produto para exclusão: " + request.getParameter("id"), e);
+            mensagem = "Falha ao excluir produto.";
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao excluir produto", e);
+            mensagem = "Falha ao excluir produto.";
+        }
+
+        session.setAttribute("mensagem", mensagem);
+        response.sendRedirect(request.getContextPath() + "/empreendimento/produto/listagem");
+    }
 }

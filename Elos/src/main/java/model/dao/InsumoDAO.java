@@ -263,5 +263,21 @@ public class InsumoDAO {
 	    }
 	    return custoInsumo;
 	}
+	
+	public int contarInsumosDistintos(int empreendimentoId) {
+        int total = 0;
+        String sql = "SELECT COUNT(id) AS total FROM insumo WHERE empreendimento_id = ? AND deleted_at IS NULL";
+
+        try (Connection con = ConnectionFactory.conectar(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, empreendimentoId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao contar insumos distintos.", e);
+        }
+        return total;
+    }
 
 }

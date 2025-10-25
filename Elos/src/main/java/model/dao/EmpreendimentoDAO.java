@@ -20,61 +20,68 @@ public class EmpreendimentoDAO {
 	private static final Logger logger = Logger.getLogger(EmpreendimentoDAO.class.getName());
 	
 	/**
-     * Obtém o ID de um empreendimento com base em seu login (campo 'login' na tabela).
-     * @param login Login do empreendimento.
+     * Obtém o ID de um empreendimento com base em seu login ou email.
+     * @param login Login ou Email do empreendimento.
      * @return ID do empreendimento ou -1 caso não seja encontrado.
      */
-    public int obterId(String login) {
-        String sqlObterIdEmpreendimento = "SELECT id FROM empreendimento WHERE login = ?";
+    public int obterId(String loginOuEmail) {
+        String sqlObterIdEmpreendimento = "SELECT id FROM empreendimento WHERE login = ? OR email = ?";
         try (Connection con = ConnectionFactory.conectar();
                 PreparedStatement pst = con.prepareStatement(sqlObterIdEmpreendimento)) {
-            pst.setString(1, login);
+            pst.setString(1, loginOuEmail);
+            pst.setString(2, loginOuEmail);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 return rs.getInt("id");
             }
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Erro ao obter ID do empreendimento para o login: " + login, e);
+            logger.log(Level.WARNING, "Erro ao obter ID do empreendimento para o login: " + loginOuEmail, e);
         }
         return -1;
     }
     
     /**
-     * Verifica se o login (campo 'login' na tabela) existe no banco de dados.
-     * @param login Login a ser verificado.
-     * @return true se o login existe, false caso contrário.
+     * Verifica se um usuário (identificado pelo login ou email) existe no banco de dados.
+     * @param loginOuEmail O login ou o email a ser verificado.
+     * @return true se o usuário existe, false caso contrário.
      */
-    public boolean verificarLogin(String login) {
-        String sqlVerificarLogin = "SELECT 1 FROM empreendimento WHERE login = ?";
+    public boolean verificarUsuarioExistente(String loginOuEmail) {
+        String sql = "SELECT 1 FROM empreendimento WHERE login = ? OR email = ?";
         try (Connection con = ConnectionFactory.conectar();
-                PreparedStatement pst = con.prepareStatement(sqlVerificarLogin)) {
-               pst.setString(1, login);
+             PreparedStatement pst = con.prepareStatement(sql)) {
+               
+               pst.setString(1, loginOuEmail);
+               pst.setString(2, loginOuEmail);
+               
                ResultSet rs = pst.executeQuery();
-               return rs.next();
+               return rs.next(); 
            } catch (SQLException e) {
-               logger.log(Level.WARNING, "Erro ao verificar o login: " + login, e);
+               logger.log(Level.WARNING, "Erro ao verificar a existência do usuário: " + loginOuEmail, e);
            }
-           return false;
+           return false; 
     }
     
     /**
-     * Obtém o hash da senha armazenada no banco de dados para um login.
-     * @param login Login do empreendimento.
+     * Obtém o hash da senha armazenada no banco de dados para um usuário (pelo login ou email).
+     * @param loginOuEmail O login ou o email do empreendimento.
      * @return A senha do empreendimento ou null caso não seja encontrada.
      */
-    public String obterSenhaPorLogin(String login) {
-        String sqlObterSenhaPorLogin = "SELECT senha FROM empreendimento WHERE login = ?";
+    public String obterSenhaPorLoginOuEmail(String loginOuEmail) {
+        String sql = "SELECT senha FROM empreendimento WHERE login = ? OR email = ?";
         try (Connection con = ConnectionFactory.conectar();
-             PreparedStatement pst = con.prepareStatement(sqlObterSenhaPorLogin)) {
-            pst.setString(1, login);
+             PreparedStatement pst = con.prepareStatement(sql)) {
+            
+            pst.setString(1, loginOuEmail);
+            pst.setString(2, loginOuEmail);
+            
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 return rs.getString("senha");
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Erro ao obter hash da senha para o login: " + login, e);
+            logger.log(Level.SEVERE, "Erro ao obter hash da senha para o usuário: " + loginOuEmail, e);
         }
-        return null;
+        return null; 
     }
     
     /**
@@ -83,7 +90,6 @@ public class EmpreendimentoDAO {
      * @return true se o cadastro foi bem-sucedido.
      */
     public boolean incluirEmpreendimento(Empreendimento empreendimento) {
-        // Colunas ajustadas: login, numero_telefone, cidade
         String sqlIncluirEmpreendimento = 
         	"INSERT INTO empreendimento (nome, email, senha, login, tipo, numero_telefone, cidade) " +
         	"VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -106,7 +112,6 @@ public class EmpreendimentoDAO {
             int rowsAffected = pst.executeUpdate();
             
             if (rowsAffected > 0) {
-                // Obtém o ID gerado para uso subsequente (e.g., alunos)
                 try (ResultSet rs = pst.getGeneratedKeys()) {
                     if (rs.next()) {
                         empreendimento.setId(rs.getInt(1)); 
@@ -327,7 +332,6 @@ public class EmpreendimentoDAO {
      * @return true se a remoção for bem-sucedida.
      */
     public boolean removerAssociacaoAluno(int empreendimentoId, int alunoId) {
-        // Esta query é mais segura, pois deleta apenas o vínculo, não o aluno.
         String sql = "DELETE FROM empreendimento_aluno WHERE empreendimento_id = ? AND aluno_id = ?";
         
         try (Connection con = ConnectionFactory.conectar();
