@@ -1,0 +1,300 @@
+@import url("global.css");
+
+.container-admin {
+    margin-top: 100px;
+	margin-left: 360px;
+	margin-right: 20px;
+    padding-bottom: 40px;
+	transition: all 0.3s ease;
+}
+
+body.sidebar-closed .container-admin {
+	margin-left: 180px;
+}
+
+body.sidebar-hovered .container-admin {
+	margin-left: 360px;
+}
+
+.dashboard-title {
+	margin-bottom: 30px;
+}
+
+.dashboard-title h2 {
+	font-size: 2em;
+	font-weight: 700;
+	color: var(--dark-color);
+}
+
+body.dark .dashboard-title h2 {
+	color: var(--white-color);
+}
+
+.card-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px; 
+}
+
+.admin-card {
+    flex-shrink: 0;
+	min-height: 250px;
+	padding: 25px;
+	background-color: var(--white-color);
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	color: var(--dark-color);
+	box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
+}
+
+.admin-card h3 {
+	margin-top: 0;
+	margin-bottom: 20px;
+	color: var(--blue-color);
+    font-size: 1.4rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.admin-card ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	flex-grow: 1; 
+}
+
+.admin-card ul li {
+	margin-bottom: 12px;
+	font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.admin-card ul li strong {
+    font-weight: 600;
+    color: var(--grey-color);
+    margin-right: 10px;
+}
+
+.admin-card ul li .saldo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--green-color); 
+}
+
+body.dark .admin-card {
+	background-color: #2e2e2e;
+	border-color: #444;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	color: #f0f0f0;
+}
+
+body.dark .admin-card h3 {
+	color: var(--blue-color); 
+    border-bottom-color: #444;
+}
+
+body.dark .admin-card ul li strong {
+    color: var(--grey-color); 
+}
+
+body.dark .admin-card ul li .saldo {
+    color: #27ae60; 
+}
+
+.admin-card-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 12px 15px;
+    width: 100%;
+    background-color: transparent;
+    color: var(--blue-color);
+    border: 2px solid var(--blue-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.admin-card-button i {
+    font-size: 1.2rem;
+}
+
+.admin-card-button:hover {
+    background-color: var(--blue-color);
+    color: var(--white-color);
+}
+
+body.dark .admin-card-button {
+    color: var(--white-color);
+    border-color: var(--white-color);
+}
+
+body.dark .admin-card-button:hover {	
+    background-color: var(--white-color);
+    color: #333;
+}
+.filter-bar {
+    width: 100%;
+    padding: 20px 25px;
+    background-color: var(--white-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+body.dark .filter-bar {
+    background-color: #2e2e2e;
+    border-color: #444;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--grey-color);
+    margin-bottom: 5px;
+}
+
+body.dark .filter-group label {
+    color: var(--grey-color-light);
+}
+
+.filter-group select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+body.dark .filter-group select {
+    background-color: #444;
+    border-color: #555;
+    color: var(--white-color);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    padding-bottom: 2px; /* Alinha com os selects */
+}
+
+.filter-button,
+.filter-clear-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.filter-button {
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    border: none;
+}
+
+.filter-button:hover {
+    background-color: #3560e2;
+}
+
+body.dark .filter-button {
+    color: #333;
+    background-color: var(--white-color);
+}
+body.dark .filter-button:hover {
+    background-color: #eee;
+}
+
+.filter-clear-button {
+    background-color: transparent;
+    color: var(--grey-color);
+    border: 1px solid #ccc;
+}
+
+.filter-clear-button:hover {
+    background-color: #f0f0f0;
+}
+
+body.dark .filter-clear-button {
+    color: var(--grey-color-light);
+    border-color: #555;
+}
+
+body.dark .filter-clear-button:hover {
+    background-color: #444;
+}
+
+/* Responsividade para os filtros */
+@media screen and (max-width: 768px) {
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-actions {
+        flex-direction: column;
+        gap: 10px;
+        padding-bottom: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container-admin,
+    body.sidebar-closed .container-admin,
+    body.sidebar-hovered .container-admin {
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-top: 90px;
+    }
+
+    .dashboard-title {
+        margin-bottom: 20px;
+    }
+
+    .dashboard-title h2 {
+        font-size: 1.6em;
+    }
+
+    .card-grid-container {
+        gap: 15px;
+    }
+
+    .admin-card {
+        padding: 20px;
+    }
+}

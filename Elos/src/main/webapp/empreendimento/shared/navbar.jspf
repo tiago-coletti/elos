@@ -1,7 +1,8 @@
 <nav class="navbar">
     <div class="logo_item">
         <i class="bx bx-menu" id="sidebarOpen"></i>
-        <img src="${pageContext.request.contextPath}/empreendimento/assets/img/logo.png" alt="">Elos
+        <img class="logo-light-mode" src="${pageContext.request.contextPath}/empreendimento/assets/img/logo-white.png" alt="Logo Elos">
+        <img class="logo-dark-mode" src="${pageContext.request.contextPath}/empreendimento/assets/img/logo-dark.png" alt="Logo Elos">
     </div>
 
     <div class="navbar_content">
@@ -9,7 +10,7 @@
         <i class='bx bx-sun' id="darkLight"></i>
         
         <a href="${pageContext.request.contextPath}/empreendimento/conta" title="Minha Conta">
-            <img src="${pageContext.request.contextPath}/empreendimento/assets/img/profile.jpg" alt="Acessar perfil" class="profile" />
+            <img src="${pageContext.request.contextPath}/empreendimento/assets/img/favicon.ico" alt="Acessar perfil" class="profile" />
         </a>
     </div>
 </nav>
@@ -21,7 +22,7 @@
         <ul class="menu_items">
             <div class="menu_title menu_dahsboard"></div>
             <li class="item">
-                <a href="/Elos/empreendimento/dashboard-principal" class="nav_link submenu_item">
+                <a href="${pageContext.request.contextPath}/empreendimento/dashboard-principal" class="nav_link submenu_item">
                     <span class="navlink_icon">
                         <i class="bx bx-home-alt"></i>
                     </span>
@@ -29,9 +30,9 @@
                 </a>
             </li>
             <li class="item">
-                <a href="/Elos/empreendimento/dashboard-financeiro" class="nav_link submenu_item">
+                <a href="${pageContext.request.contextPath}/empreendimento/dashboard-financeiro" class="nav_link submenu_item">
                     <span class="navlink_icon">
-                        <i class="bx bx-home-alt"></i>
+                        <i class="bx bx-dollar-circle"></i>
                     </span>
                     <span class="navlink">Financeiro</span>
                 </a>
@@ -83,8 +84,8 @@
                 </div>
 
                 <ul class="menu_items submenu">
-                    <a href="#" class="nav_link sublink">Listar Vendas</a>
-                    <a href="#" class="nav_link sublink">Registar Venda</a>
+                    <a href="${pageContext.request.contextPath}/empreendimento/venda/dashboard" class="nav_link sublink">Painel de Vendas</a>
+                    <a href="${pageContext.request.contextPath}/empreendimento/venda/listagem" class="nav_link sublink">Listar Vendas</a>
                 </ul>
             </li>
             <li class="item">
@@ -119,21 +120,32 @@
 
         <ul class="menu_items">
             <div class="menu_title menu_avaliacao"></div>
+            
             <li class="item">
-                <div href="#" class="nav_link submenu_item" data-submenu="indicador">
+                <a href="${pageContext.request.contextPath}/empreendimento/plano-negocios" class="nav_link submenu_item">
+                    <span class="navlink_icon">
+                        <i class="bx bx-book-content"></i>
+                    </span>
+                    <span class="navlink">Plano de Negócios</span>
+                </a>
+            </li>
+            
+            <li class="item">
+                <a href="${pageContext.request.contextPath}/empreendimento/plano-marketing" class="nav_link submenu_item">
+                    <span class="navlink_icon">
+                        <i class="bx bx-bulb"></i>
+                    </span>
+                    <span class="navlink">Plano de Marketing</span>
+                </a>
+            </li>
+            
+            <li class="item">
+                <a href="${pageContext.request.contextPath}/empreendimento/desenvolvimento.jsp" class="nav_link submenu_item">
                     <span class="navlink_icon">
                         <i class="bx bx-pie-chart-alt"></i>
                     </span>
                     <span class="navlink">Meu Indicador</span>
-                </div>
-            </li>
-            <li class="item">
-                <div href="#" class="nav_link submenu_item" data-submenu="sobre">
-                    <span class="navlink_icon">
-                        <i class="bx bx-info-circle"></i>
-                    </span>
-                    <span class="navlink">Sobre</span>
-                </div>
+                </a>
             </li>
         </ul>
 

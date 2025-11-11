@@ -1,0 +1,102 @@
+<nav class="navbar">
+    <div class="logo_item">
+        <i class="bx bx-menu" id="sidebarOpen"></i>
+        <img class="logo-light-mode" src="${pageContext.request.contextPath}/admin/assets/img/logo-white.png" alt="Logo Elos">
+        <img class="logo-dark-mode" src="${pageContext.request.contextPath}/admin/assets/img/logo-dark.png" alt="Logo Elos">
+    </div>
+
+    <div class="navbar_content">
+        <i class="bi bi-grid"></i>
+        <i class='bx bx-sun' id="darkLight"></i>
+        
+        <a href="${pageContext.request.contextPath}/admin/conta" title="Minha Conta">
+            <img src="${pageContext.request.contextPath}/admin/assets/img/favicon.ico" alt="Acessar perfil" class="profile" />
+        </a>
+    </div>
+</nav>
+
+
+<nav class="sidebar">
+    <div class="menu_content">
+
+        <ul class="menu_items">
+            <div class="menu_title menu_dahsboard"></div>
+            <li class="item">
+                <a href="/Elos/admin/dashboard" class="nav_link submenu_item">
+                    <span class="navlink_icon">
+                        <i class="bx bx-home-alt"></i>
+                    </span>
+                    <span class="navlink">Geral</span>
+                </a>
+            </li>
+            <li class="item">
+                <a href="/Elos/admin/dashboard-ifsc" class="nav_link submenu_item">
+                    <span class="navlink_icon">
+                        <i class="bx bx-buildings"></i>
+                    </span>
+                    <span class="navlink">Alunos IFSC</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="menu_items">
+            <div class="menu_title menu_avaliacao"></div>
+            <li class="item">
+                <a href="/Elos/admin/indicador" class="nav_link submenu_item">
+                    <span class="navlink_icon">
+                        <i class="bx bx-pie-chart-alt"></i>
+                    </span>
+                    <span class="navlink">Indicador</span>
+                </a>
+            </li>
+            <li class="item">
+                <a href="/Elos/admin/plano-negocios/listagem" class="nav_link submenu_item">
+                    <span class="navlink_icon">
+                        <i class="bx bx-briefcase"></i>
+                    </span>
+                    <span class="navlink">Plano de Negócios</span>
+                </a>
+            </li>
+            <li class="item">
+                <a href="/Elos/admin/plano-marketing/listagem" class="nav_link submenu_item">
+                    <span class="navlink_icon">
+                        <i class="bx bx-bulb"></i>
+                    </span>
+                    <span class="navlink">Plano de Marketing</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="bottom_content">
+            <div class="bottom expand_sidebar">
+                <span> Expandir</span>
+                <i class='bx bx-log-in'></i>
+            </div>
+            <div class="bottom collapse_sidebar">
+                <span> Recolher</span>
+                <i class='bx bx-log-out'></i>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<nav class="mobile-nav">
+    <a href="/Elos/admin/dashboard" class="mobile-nav__link">
+        <i class="bx bx-home-alt"></i>
+        <span class="mobile-nav__text">Geral</span>
+    </a>
+    <a href="/Elos/admin/dashboard-ifsc" class="mobile-nav__link">
+        <i class="bx bx-buildings"></i>
+        <span class="mobile-nav__text">IFSC</span>
+    </a>
+    <a href="/Elos/admin/indicador" class="mobile-nav__link">
+        <i class="bx bx-pie-chart-alt"></i>
+        <span class="mobile-nav__text">Indicador</span>
+    </a>
+    <a href="/Elos/admin/plano-marketing/listagem" class="mobile-nav__link"> <i class="bx bx-bulb"></i>
+        <span class="mobile-nav__text">Marketing</span>
+    </a>
+    <a href="/Elos/admin/plano-negocios/listagem" class="mobile-nav__link"> <i class="bx bx-briefcase"></i>
+        <span class="mobile-nav__text">Negócios</span>
+    </a>
+</nav>

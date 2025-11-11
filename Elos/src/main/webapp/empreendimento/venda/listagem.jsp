@@ -12,14 +12,16 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/listagem.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/toast.css" />
 </head>
 
 <body>
+	<%@ include file="/empreendimento/shared/toast.jspf" %>
     <%@ include file="/empreendimento/shared/navbar.jspf"%>
 
     <div class="page-header">
-        <h1>Listagem de Compras</h1>
-        <button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir'">Incluir Compra</button>
+        <h1>Listagem de Vendas</h1>
+        <button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/venda/incluir'">Incluir Venda</button>
     </div>
 
     <div class="search-wrapper">
@@ -40,51 +42,51 @@
         <table>
             <thead>
                 <tr>
-                    <th>Data da Compra</th>
+                    <th>Data da Venda</th>
                     <th>Data do registro</th>
                     <th>Valor Total</th>
-                    <th>Visualizar</th>
+                    <th>Ver</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
             </thead>
-            <tbody id="comprasTable">
+            <tbody id="vendasTable">
                 <c:choose>
-                    <c:when test="${not empty compras}">
-                        <c:forEach var="compra" items="${compras}">
-                            <fmt:parseDate value="${compra.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedCreatedAt" />
+                    <c:when test="${not empty vendas}">
+                        <c:forEach var="venda" items="${vendas}">
+                            <fmt:parseDate value="${venda.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedCreatedAt" />
                             
-                            <tr data-date="<fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy-MM-dd" />">
+                            <tr data-date="${venda.dataVenda}">
                                 <td>
-                                    <fmt:parseDate value="${compra.dataCompra}" pattern="yyyy-MM-dd" var="parsedDataCompra" />
-                                    <fmt:formatDate value="${parsedDataCompra}" pattern="dd/MM/yyyy" />
+                                    <fmt:parseDate value="${venda.dataVenda}" pattern="yyyy-MM-dd" var="parsedDataVenda" />
+                                    <fmt:formatDate value="${parsedDataVenda}" pattern="dd/MM/yyyy" />
                                 </td>
                                 <td>
                                     <fmt:formatDate value="${parsedCreatedAt}" pattern="dd/MM/yyyy HH:mm" />
                                 </td>
                                 <td>
-                                    <fmt:formatNumber value="${compra.valorTotal}" type="currency" currencySymbol="R$ " />
+                                    <fmt:formatNumber value="${venda.valorTotal}" type="currency" currencySymbol="R$ " />
                                 </td>
                                 <td class="action-cell">
-                                    <form action="${pageContext.request.contextPath}/empreendimento/compra/visualizar" method="GET" style="display:inline;">
-                                        <input type="hidden" name="id" value="<c:out value='${compra.id}' />">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/venda/visualizar" method="GET" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${venda.id}' />">
                                         <button type="submit" class="action-icon view-icon" title="Visualizar">
                                             <i class='bx bxs-show'></i>
                                         </button>
                                     </form>
                                 </td>
                                 <td class="action-cell">
-                                    <form action="${pageContext.request.contextPath}/empreendimento/compra/editar" method="GET" style="display:inline;">
-                                        <input type="hidden" name="id" value="<c:out value='${compra.id}' />">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/venda/editar" method="GET" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${venda.id}' />">
                                         <button type="submit" class="action-icon edit-icon" title="Editar">
                                             <i class='bx bxs-edit'></i>
                                         </button>
                                     </form>
                                 </td>
                                 <td class="action-cell">
-                                    <form action="${pageContext.request.contextPath}/empreendimento/compra/excluir" method="POST" style="display:inline;">
-                                        <input type="hidden" name="id" value="<c:out value='${compra.id}' />">
-                                        <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir a compra?');">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/venda/excluir" method="POST" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${venda.id}' />">
+                                        <button type="submit" class="action-icon delete-icon" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta venda?');">
                                             <i class='bx bxs-trash'></i>
                                         </button>
                                     </form>
@@ -94,7 +96,7 @@
                     </c:when>
                     <c:otherwise>
                         <tr id="no-results">
-                            <td colspan="6">Nenhuma compra cadastrada</td>
+                            <td colspan="6">Nenhuma venda cadastrada</td>
                         </tr>
                     </c:otherwise>
                 </c:choose>
@@ -102,6 +104,7 @@
         </table>
     </div>
 
+	<script src="${pageContext.request.contextPath}/empreendimento/assets/js/toast.js"></script>
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -109,7 +112,7 @@
             const startDateInput = document.getElementById('startDateInput');
             const endDateInput = document.getElementById('endDateInput');
             const clearFilterBtn = document.getElementById('clearFilterBtn');
-            const tableBody = document.getElementById('comprasTable');
+            const tableBody = document.getElementById('vendasTable');
             const tableRows = tableBody.getElementsByTagName('tr');
             
             let noResultsRow;

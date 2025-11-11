@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>##QUESTIONARIO_NOME##</title>
+    <style>
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif; /* Use fontes comuns */
+            line-height: 1.6;
+            color: #333;
+            margin: 20px;
+        }
+        h1 {
+            color: #4070f4; /* Cor azul do Elos */
+            border-bottom: 2px solid #4070f4;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .pergunta-bloco {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+        .pergunta-bloco:last-child {
+            border-bottom: none;
+        }
+        .pergunta-texto {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .resposta-texto {
+            margin-left: 15px;
+            white-space: pre-wrap; /* Preserva quebras de linha e espaços */
+            color: #111;
+        }
+        .sem-resposta {
+            margin-left: 15px;
+            font-style: italic;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <h1>##QUESTIONARIO_NOME##</h1>
+
+    ##PERGUNTAS_RESPOSTAS##
+
+</body>
+</html>

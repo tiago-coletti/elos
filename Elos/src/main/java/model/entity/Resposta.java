@@ -1,85 +1,84 @@
 package model.entity;
 
 public class Resposta {
-	private int id;
-	private int resposta;
-	private int avaliacaoId;
-	private int perguntaId;
-	String created_at;
-	String updated_at;
-	String deleted_at;
+	private long id;
+	private int empreendimentoId;
+	private long perguntaId;
+	private String textoResposta;
+	private String createdAt;
+	private String updatedAt;
+	private String deletedAt;
 	
 	public Resposta() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Resposta(int id, int resposta, int avaliacaoId, int perguntaId, String created_at, String updated_at,
-			String deleted_at) {
+
+	public Resposta(long id, int empreendimentoId, long perguntaId, String textoResposta, String createdAt,
+			String updatedAt, String deletedAt) {
 		super();
 		this.id = id;
-		this.resposta = resposta;
-		this.avaliacaoId = avaliacaoId;
+		this.empreendimentoId = empreendimentoId;
 		this.perguntaId = perguntaId;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
-		this.deleted_at = deleted_at;
+		this.textoResposta = textoResposta;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.deletedAt = deletedAt;
 	}
-	
-	public int getId() {
+
+	public long getId() {
 		return id;
 	}
-	
-	public void setId(int id) {
+
+	public void setId(long id) {
 		this.id = id;
 	}
-	
-	public int getResposta() {
-		return resposta;
+
+	public int getEmpreendimentoId() {
+		return empreendimentoId;
 	}
-	
-	public void setResposta(int resposta) {
-		this.resposta = resposta;
+
+	public void setEmpreendimentoId(int empreendimentoId) {
+		this.empreendimentoId = empreendimentoId;
 	}
-	
-	public int getAvaliacaoId() {
-		return avaliacaoId;
-	}
-	
-	public void setAvaliacaoId(int avaliacaoId) {
-		this.avaliacaoId = avaliacaoId;
-	}
-	
-	public int getPerguntaId() {
+
+	public long getPerguntaId() {
 		return perguntaId;
 	}
-	
-	public void setPerguntaId(int perguntaId) {
+
+	public void setPerguntaId(long perguntaId) {
 		this.perguntaId = perguntaId;
 	}
-	
-	public String getCreated_at() {
-		return created_at;
+
+	public String getTextoResposta() {
+		return textoResposta;
 	}
-	
-	public void setCreated_at(String created_at) {
-		this.created_at = created_at;
+
+	public void setTextoResposta(String textoResposta) {
+		this.textoResposta = textoResposta;
 	}
-	
-	public String getUpdated_at() {
-		return updated_at;
+
+	public String getCreatedAt() {
+		return createdAt;
 	}
-	
-	public void setUpdated_at(String updated_at) {
-		this.updated_at = updated_at;
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
 	}
-	
-	public String getDeleted_at() {
-		return deleted_at;
+
+	public String getUpdatedAt() {
+		return updatedAt;
 	}
-	
-	public void setDeleted_at(String deleted_at) {
-		this.deleted_at = deleted_at;
+
+	public void setUpdatedAt(String updatedAt) {
+		this.updatedAt = updatedAt;
 	}
-	
+
+	public String getDeletedAt() {
+		return deletedAt;
+	}
+
+	public void setDeletedAt(String deletedAt) {
+		this.deletedAt = deletedAt;
+	}
 }

@@ -8,6 +8,7 @@ public class CompraInsumo {
 	private int compraId;
 	private int insumoId;
     private String insumoNome;
+    private String dataCompra; 
 	
 	public CompraInsumo() {
 		super();
@@ -79,5 +80,12 @@ public class CompraInsumo {
     public void setInsumoNome(String insumoNome) {
         this.insumoNome = insumoNome;
     }
-	
+    
+	public String getDataCompra() {
+		return dataCompra;
+	}
+
+	public void setDataCompra(String dataCompra) {
+		this.dataCompra = dataCompra;
+	}
 }

@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class CompraServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(CompraServlet.class.getName());
-        
+
     CompraDAO compraDAO = new CompraDAO();
     InsumoDAO insumoDAO = new InsumoDAO();
     CompraHelper compraHelper = new CompraHelper();
@@ -53,7 +53,7 @@ public class CompraServlet extends HttpServlet {
             break;
         case "/empreendimento/compra/incluir":
             visualizarInclusao(request, response);
-            break;    
+            break;
         case "/empreendimento/compra/editar":
             visualizarEdicao(request, response);
             break;
@@ -80,12 +80,13 @@ public class CompraServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Rota não reconhecida.");
         }
     }
-    
+
+    // GET //
     private void visualizarListagem(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         int empreendimentoId = (Integer) session.getAttribute("id");
-        
+
         try {
             ArrayList<Compra> compras = compraDAO.listarCompras(empreendimentoId);
             request.setAttribute("compras", compras);
@@ -101,17 +102,17 @@ public class CompraServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         int empreendimentoId = (Integer) session.getAttribute("id");
-        
+
         try {
             Map<String, Object> dashboardData = compraHelper.prepararDadosDashboard(empreendimentoId);
             request.setAttribute("dashboardData", dashboardData);
-            
+
             ArrayList<Compra> compras = compraDAO.listarCompras(empreendimentoId);
             request.setAttribute("compras", compras);
-            
+
             RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp");
             rd.forward(request, response);
-            
+
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao carregar dados para o dashboard de compras", e);
             response.sendRedirect(request.getContextPath() + "/empreendimento/dashboard-principal");
@@ -120,6 +121,34 @@ public class CompraServlet extends HttpServlet {
 
     private void visualizarCompra(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int empreendimentoId = (Integer) session.getAttribute("id");
+
+        try {
+            String idParam = request.getParameter("id");
+            if (idParam == null || idParam.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID da compra não fornecido.");
+                return;
+            }
+
+            int compraId = Integer.parseInt(idParam);
+            Compra compra = compraDAO.obterCompraPorId(compraId, empreendimentoId);
+
+            if (compra != null) {
+                request.setAttribute("compra", compra);
+                RequestDispatcher rd = request.getRequestDispatcher("visualizar.jsp");
+                rd.forward(request, response);
+            } else {
+                logger.log(Level.SEVERE, "Compra não encontrada.");
+                response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
+            }
+        } catch (NumberFormatException e) {
+            logger.log(Level.WARNING, "ID de compra inválido: " + request.getParameter("id"), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de compra inválido.");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erro ao carregar dados para a página de visualização de compra", e);
+            response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
+        }
     }
 
     private void visualizarInclusao(HttpServletRequest request, HttpServletResponse response)
@@ -132,12 +161,12 @@ public class CompraServlet extends HttpServlet {
             request.setAttribute("insumos", insumos);
             RequestDispatcher rd = request.getRequestDispatcher("incluir.jsp");
             rd.forward(request, response);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao carregar dados para a página de inclusão de compras", e);
             response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
         }
     }
-    
+
     private void visualizarEdicao(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -156,10 +185,10 @@ public class CompraServlet extends HttpServlet {
             if (compra != null) {
                 ArrayList<Insumo> todosInsumos = insumoDAO.listarInsumos(empreendimentoId);
 
-                request.setAttribute("compra", compra);    
+                request.setAttribute("compra", compra);
                 request.setAttribute("insumos", todosInsumos);
 
-                RequestDispatcher rd = request.getRequestDispatcher("editar.jsp");    
+                RequestDispatcher rd = request.getRequestDispatcher("editar.jsp");
                 rd.forward(request, response);
             } else {
                 logger.log(Level.SEVERE, "Compra não encontrada.");
@@ -175,6 +204,7 @@ public class CompraServlet extends HttpServlet {
         }
     }
 
+    // POST //
     private void processarInclusao(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -191,7 +221,7 @@ public class CompraServlet extends HttpServlet {
             if (insumoIds == null || insumoIds.length == 0) {
                 throw new IllegalStateException("Nenhum insumo foi adicionado à compra.");
             }
-            
+
             List<CompraInsumo> insumosDaCompra = new ArrayList<>();
             double valorTotalCalculado = 0.0;
 
@@ -199,15 +229,15 @@ public class CompraServlet extends HttpServlet {
                 int insumoId = Integer.parseInt(insumoIds[i]);
                 double quantidade = Double.parseDouble(quantidades[i]);
                 double precoUnitario = Double.parseDouble(precosUnitarios[i]);
-                
+
                 CompraInsumo insumo = new CompraInsumo();
                 insumo.setInsumoId(insumoId);
                 insumo.setPrecoUnitario(precoUnitario);
                 insumo.setQuantidadeComprada(quantidade);
                 insumo.setQuantidadeRestante(quantidade);
-                
+
                 insumosDaCompra.add(insumo);
-                
+
                 valorTotalCalculado += (quantidade * precoUnitario);
             }
 
@@ -217,8 +247,8 @@ public class CompraServlet extends HttpServlet {
             novaCompra.setDataCompra(dataCompraStr);
 
             CompraDAO compraDAO = new CompraDAO();
-            compraDAO.registrarCompra(novaCompra, insumosDaCompra);    
-            
+            compraDAO.registrarCompra(novaCompra, insumosDaCompra);
+
             mensagem = "Compra incluída com sucesso!";
 
         } catch (Exception e) {
@@ -239,7 +269,7 @@ public class CompraServlet extends HttpServlet {
         try {
             String compraIdStr = request.getParameter("id");
             int compraId = Integer.parseInt(compraIdStr);
-            
+
             String dataCompraStr = request.getParameter("dataCompra");
 
             String[] insumoIds = request.getParameterValues("insumoId");
@@ -249,7 +279,7 @@ public class CompraServlet extends HttpServlet {
             if (insumoIds == null || insumoIds.length == 0) {
                 throw new IllegalStateException("Nenhum insumo foi adicionado à compra.");
             }
-            
+
             List<CompraInsumo> insumosDaCompra = new ArrayList<>();
             double valorTotalCalculado = 0.0;
 
@@ -257,15 +287,15 @@ public class CompraServlet extends HttpServlet {
                 int insumoId = Integer.parseInt(insumoIds[i]);
                 double quantidade = Double.parseDouble(quantidades[i]);
                 double precoUnitario = Double.parseDouble(precosUnitarios[i]);
-                
+
                 CompraInsumo insumo = new CompraInsumo();
                 insumo.setInsumoId(insumoId);
                 insumo.setPrecoUnitario(precoUnitario);
                 insumo.setQuantidadeComprada(quantidade);
                 insumo.setQuantidadeRestante(quantidade);
-                
+
                 insumosDaCompra.add(insumo);
-                
+
                 valorTotalCalculado += (quantidade * precoUnitario);
             }
 
@@ -273,7 +303,7 @@ public class CompraServlet extends HttpServlet {
             compra.setId(compraId);
             compra.setEmpreendimentoId(empreendimentoId);
             compra.setValorTotal(valorTotalCalculado);
-            compra.setDataCompra(dataCompraStr);    
+            compra.setDataCompra(dataCompraStr);
 
             compraDAO.editarCompra(compra, insumosDaCompra);
             mensagem = "Compra editada com sucesso!";
@@ -286,7 +316,7 @@ public class CompraServlet extends HttpServlet {
         session.setAttribute("mensagem", mensagem);
         response.sendRedirect(request.getContextPath() + "/empreendimento/compra/listagem");
     }
-    
+
     private void processarExclusao(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -308,7 +338,7 @@ public class CompraServlet extends HttpServlet {
             if (exclusao) {
                 mensagem = "Compra excluída com sucesso.";
             } else {
-                mensagem = "Não foi possível excluir o compra.";
+                mensagem = "Não foi possível excluir a compra.";
             }
 
         } catch (NumberFormatException e) {

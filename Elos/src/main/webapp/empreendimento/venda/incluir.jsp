@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.entity.Insumo"%>
+<%@ page import="model.entity.Produto"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="com.google.gson.Gson"%>
 <%
     @SuppressWarnings("unchecked")
-    ArrayList<Insumo> insumos = (ArrayList<Insumo>) request.getAttribute("insumos");
+    ArrayList<Produto> produtos = (ArrayList<Produto>) request.getAttribute("produtos");
 
-    String insumosJson = "[]";
-    if (insumos != null) {
-        insumosJson = new Gson().toJson(insumos);
+    String produtosJson = "[]";
+    if (produtos != null) {
+        produtosJson = new Gson().toJson(produtos);
     }
 %>
 	
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/formulario.css" />
 </head>
   
-<body data-insumos='<%= insumosJson %>'>	
+<body data-produtos='<%= produtosJson %>'>	
 	<%@ include file="/empreendimento/shared/navbar.jspf"%>
 	<div class="inclusao-container">
 	
@@ -34,37 +34,37 @@
 	    </a>
 	    
 	    <div class="inclusao-body">
-	        <h2>Inclusão de Compra</h2>
+	        <h2>Inclusão de Venda</h2>
 	        
-	        <form id="compraForm" action="${pageContext.request.contextPath}/empreendimento/compra/incluir" method="post">
+	        <form id="vendaForm" action="${pageContext.request.contextPath}/empreendimento/venda/incluir" method="post">
 	            
                 <div class="form-group">
-                    <label for="dataCompra">Data da Compra</label>
-                    <input type="date" id="dataCompra" name="dataCompra" required>
+                    <label for="dataVenda">Data da Venda</label>
+                    <input type="date" id="dataVenda" name="dataVenda" required>
                 </div>
 				
                 <div class="compra-layout">
                     <div class="selecao-insumos">
-                        <h3>Insumos Disponíveis</h3>
-                        <input type="text" id="searchInput" class="form-group input" placeholder="Pesquisar insumo...">
-                        <div class="insumo-disponivel-list" id="insumoList">
+                        <h3>Produtos Disponíveis</h3>
+                        <input type="text" id="searchInput" class="form-group input" placeholder="Pesquisar produto...">
+                        <div class="insumo-disponivel-list" id="produtoList">
                             </div>
                     </div>
 
                     <div class="itens-compra-container">
-                        <h3>Itens da Compra</h3>
+                        <h3>Itens da Venda</h3>
                         <table class="itens-compra-table">
                             <thead>
                                 <tr>
-                                    <th>Insumo</th>
+                                    <th>Produto</th>
                                     <th>Quantidade</th>
-                                    <th>Valor Unitário</th>
+                                    <th>Preço de Venda</th>
                                     <th>Subtotal</th>
                                     <th>Ação</th>
                                 </tr>
                             </thead>
-                            <tbody id="itensCompraBody">
-                                <tr id="itens-compra-vazio">
+                            <tbody id="itensVendaBody">
+                                <tr id="itens-venda-vazio">
                                     <td colspan="5">Nenhum item adicionado</td>
                                 </tr>
                             </tbody>
@@ -77,7 +77,7 @@
                         Valor Total: <span id="valorTotal">R$ 0,00</span>
                     </div>
                     <div class="form-actions">
-                        <button type="submit">Cadastrar Compra</button>
+                        <button type="submit">Cadastrar Venda</button>
                     </div>
                 </div>
 	        </form>
@@ -85,6 +85,6 @@
 	</div>
 
 	<script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
-    <script src="${pageContext.request.contextPath}/empreendimento/assets/js/compra.js"></script>
+    <script src="${pageContext.request.contextPath}/empreendimento/assets/js/venda.js"></script>
 </body>
 </html>

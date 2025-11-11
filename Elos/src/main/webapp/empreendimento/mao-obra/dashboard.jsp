@@ -33,56 +33,54 @@
 	                    <h3>Mãos de Obra Mais Usadas</h3>
 	                    <p>Mãos de obra que mais contribuíram em horas para os produtos.</p>
 	                    <ul>
-	                        <li><strong>Criação de Artesanato:</strong> 150 horas</li>
-	                        <li><strong>Colheita e Preparo:</strong> 120 horas</li>
+	                    	<c:choose>
+	                    		<c:when test="${not empty dashboardData.maisUtilizadas}">
+			                    	<c:forEach var="item" items="${dashboardData.maisUtilizadas}">
+				                        <li><strong><c:out value="${item.nome}"/>:</strong> <fmt:formatNumber value="${item.total_horas}" maxFractionDigits="1" /> horas</li>
+			                    	</c:forEach>
+	                    		</c:when>
+	                    		<c:otherwise>
+	                    			<li>Nenhuma hora registrada.</li>
+	                    		</c:otherwise>
+	                    	</c:choose>
 	                    </ul>
 	                    <button class="view-details-btn action-button" data-modal-target="mostUsedLaborModal">Ver Detalhes</button>
 	                </div>
-	
+
 	                <div class="card">
 	                    <h3>Mão de Obra de Maior Valor/Hora</h3>
 	                    <p>Lista de trabalhos com o valor mais alto por hora.</p>
 	                    <ul>
-	                        <li><strong>Design Gráfico:</strong> R$ 45,00/h</li>
-	                        <li><strong>Consultoria Financeira:</strong> R$ 60,00/h</li>
+	                    	<c:choose>
+	                    		<c:when test="${not empty dashboardData.maisCaras}">
+			                        <c:forEach var="item" items="${dashboardData.maisCaras}">
+				                        <li><strong><c:out value="${item.nome}"/>:</strong> <fmt:formatNumber value="${item.custoHora}" type="currency" />/h</li>
+			                    	</c:forEach>
+	                    		</c:when>
+	                    		<c:otherwise>
+									<li>Nenhuma mão de obra cadastrada.</li>
+	                    		</c:otherwise>
+	                    	</c:choose>
 	                    </ul>
 	                    <button class="view-details-btn" data-modal-target="highValueLaborModal">Ver Detalhes</button>
 	                </div>
-	
-	                <div class="card">
-	                    <h3>Valor Total de Mão de Obra (Último Mês)</h3>
-	                    <p class="card-value">R$ 5.850,00</p>
-	                    <p>Total monetário de horas de trabalho no período.</p>
-	                </div>
-	
-	                <div class="card">
-	                    <h3>Mãos de Obra com Mais Horas Registradas</h3>
-	                    <p>Período: <select><option>Mês</option><option>Semana</option><option>Trimestre</option></select></p>
-	                    <ul>
-	                        <li><strong>Colheita e Preparo:</strong> 250 horas</li>
-	                        <li><strong>Venda Direta:</strong> 180 horas</li>
-	                    </ul>
-	                </div>
-	
+
 	                <div class="card">
 	                    <h3>Últimas Mãos de Obra Cadastradas</h3>
+	                    <p>Registros mais recentes adicionados ao sistema.</p>
 	                    <ul>
-	                        <li><strong>Embalagem de Doces:</strong> 2025-07-20</li>
-	                        <li><strong>Entrega de Produtos:</strong> 2025-07-18</li>
+	                    	<c:choose>
+	                    		<c:when test="${not empty dashboardData.ultimasCadastradas}">
+			                        <c:forEach var="item" items="${dashboardData.ultimasCadastradas}" end="2">
+			                        	<li><strong><c:out value="${item.nome}"/>:</strong> <c:out value="${item.createdAt}"/></li>
+			                        </c:forEach>
+	                    		</c:when>
+	                    		<c:otherwise>
+	                    			<li>Nenhum cadastro recente.</li>
+	                    		</c:otherwise>
+	                    	</c:choose>
 	                    </ul>
-	                </div>
-	
-	                <div class="card">
-	                    <h3>Oportunidades de Mão de Obra <i class='bx bx-help-circle help-icon' data-modal-target="opportunityHelpModal"></i></h3>
-	                    <p>15 horas de trabalho não associadas a produtos.</p>
-	                    <button class="view-details-btn" data-modal-target="opportunityModal">Ver Detalhes</button>
-	                </div>
-	
-	                <div class="card">
-	                    <h3>Produtividade por Mão de Obra <i class='bx bx-help-circle help-icon' data-modal-target="productivityHelpModal"></i></h3>
-	                    <p><strong>Criação de Artesanato:</strong> ~3 peças/h</p>
-	                    <p><strong>Colheita e Preparo:</strong> ~2 pães/h</p>
-	                    <button class="view-details-btn" data-modal-target="productivityModal">Ver Detalhes</button>
+	                    <button class="view-details-btn" data-modal-target="recentLaborModal">Ver Mais</button>
 	                </div>
 	
 	            </div>

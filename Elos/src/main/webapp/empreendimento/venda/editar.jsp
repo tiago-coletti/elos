@@ -1,21 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page import="model.entity.Insumo" %>
-<%@ page import="model.entity.Compra" %>
+<%@ page import="model.entity.Produto" %>
+<%@ page import="model.entity.Venda" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.google.gson.Gson" %>
 <%
-    // Objeto da compra que está sendo editada (enviado pelo Servlet 'visualizarEdicao')
-    Compra compra = (Compra) request.getAttribute("compra");
-
-    // Lista de TODOS os insumos disponíveis (para a seleção)
+    Venda venda = (Venda) request.getAttribute("venda");
     @SuppressWarnings("unchecked")
-    ArrayList<Insumo> insumos = (ArrayList<Insumo>) request.getAttribute("insumos");
+    ArrayList<Produto> produtos = (ArrayList<Produto>) request.getAttribute("produtos");
 
     Gson gson = new Gson();
-    // Converte o objeto da compra e a lista de insumos para JSON
-    String compraJson = (compra != null) ? gson.toJson(compra) : "null";
-    String insumosJson = (insumos != null) ? gson.toJson(insumos) : "[]";
+    String vendaJson = (venda != null) ? gson.toJson(venda) : "null";
+    String produtosJson = (produtos != null) ? gson.toJson(produtos) : "[]";
 %>
 
 <!DOCTYPE html>
@@ -30,7 +26,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/formulario.css" />
 </head>
   
-<body data-insumos='<%= insumosJson %>' data-compra='<%= compraJson %>'>
+<body data-produtos='<%= produtosJson %>' data-venda='<%= vendaJson %>'>
 	<%@ include file="/empreendimento/shared/navbar.jspf"%>
 	<div class="inclusao-container">
 	
@@ -40,39 +36,39 @@
 	    </a>
 	    
 	    <div class="inclusao-body">
-	        <h2>Edição de Compra</h2>
+	        <h2>Edição de Venda</h2>
 	        
-	        <form id="compraForm" action="${pageContext.request.contextPath}/empreendimento/compra/editar" method="post">
+	        <form id="vendaForm" action="${pageContext.request.contextPath}/empreendimento/venda/editar" method="post">
 	            
-	            <input type="hidden" name="id" value="${compra.id}">
+	            <input type="hidden" name="id" value="${venda.id}">
 
                 <div class="form-group">
-                    <label for="dataCompra">Data da Compra</label>
-				    <input type="date" id="dataCompra" name="dataCompra" value="${fn:substring(compra.dataCompra, 0, 10)}" required>
+                    <label for="dataVenda">Data da Venda</label>
+				    <input type="date" id="dataVenda" name="dataVenda" value="${fn:substring(venda.dataVenda, 0, 10)}" required>
                 </div>
 
                 <div class="compra-layout">
                     <div class="selecao-insumos">
-                        <h3>Insumos Disponíveis</h3>
-                        <input type="text" id="searchInput" class="form-group input" placeholder="Pesquisar insumo...">
-                        <div class="insumo-disponivel-list" id="insumoList">
+                        <h3>Produtos Disponíveis</h3>
+                        <input type="text" id="searchInput" class="form-group input" placeholder="Pesquisar produto...">
+                        <div class="insumo-disponivel-list" id="produtoList">
                             </div>
                     </div>
 
                     <div class="itens-compra-container">
-                        <h3>Itens da Compra</h3>
+                        <h3>Itens da Venda</h3>
                         <table class="itens-compra-table">
                             <thead>
                                 <tr>
-                                    <th>Insumo</th>
+                                    <th>Produto</th>
                                     <th>Quantidade</th>
-                                    <th>Valor Unitário</th>
+                                    <th>Preço de Venda</th>
                                     <th>Subtotal</th>
                                     <th>Ação</th>
                                 </tr>
                             </thead>
-                            <tbody id="itensCompraBody">
-                                <tr id="itens-compra-vazio">
+                            <tbody id="itensVendaBody">
+                                <tr id="itens-venda-vazio">
                                     <td colspan="5">Nenhum item adicionado</td>
                                 </tr>
                             </tbody>
@@ -93,6 +89,6 @@
 	</div>
 
 	<script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
-    <script src="${pageContext.request.contextPath}/empreendimento/assets/js/compra.js"></script>
+    <script src="${pageContext.request.contextPath}/empreendimento/assets/js/venda.js"></script>
 </body>
 </html>

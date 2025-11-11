@@ -184,3 +184,83 @@ body.dark .square-button:hover i {
 body.dark .square-button:hover {
 	color: #1e1e1e;
 }	
+
+@media screen and (max-width: 768px) {
+    body {
+        padding-bottom: 100px;
+    }
+    
+    .welcome-container,
+    body.sidebar-closed .welcome-container,
+    body.sidebar-hovered .welcome-container {
+        display: none;
+    }
+
+    .info-bar-container,
+    body.sidebar-closed .info-bar-container,
+    body.sidebar-hovered .info-bar-container {
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-top: 30px;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info-bar {
+        max-width: 100%;
+        height: auto;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .info-bar i {
+        font-size: 3rem;
+    }
+
+    .info-bar-content {
+        gap: 5px;
+    }
+
+    .info-bar-content span:first-child {
+        font-size: 1.2rem;
+    }
+
+    .info-bar-content span:nth-child(2) {
+        font-size: 1.8rem;
+    }
+    
+    .info-bar-content span:last-child {
+        font-size: 1rem;
+    }
+
+    .button-container,
+    body.sidebar-closed .button-container,
+    body.sidebar-hovered .button-container {
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-top: 90px;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .button-container form {
+        width: 100%;
+    }
+
+    .square-button {
+        width: 100%;
+        height: 100px;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding-left: 25px;
+        gap: 25px;
+    }
+
+    .square-button i {
+        font-size: 2.5rem;
+    }
+    
+    .square-button span {
+        font-size: 1.2rem;
+    }
+}

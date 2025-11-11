@@ -5,7 +5,6 @@ const container = document.querySelector(".container"),
   login = document.querySelector(".login-link"),
   backBtn = document.querySelector(".back-btn button");
 
-// Lógica de alternância de visibilidade da senha
 pwShowHide.forEach((eyeIcon) => {
   eyeIcon.addEventListener("click", () => {
     pwFields.forEach((pwField) => {
@@ -24,7 +23,6 @@ pwShowHide.forEach((eyeIcon) => {
   });
 });
 
-// Lógica de alternância para a tela de Cadastro
 if (signUp) {
   signUp.addEventListener("click", (e) => {
     e.preventDefault();
@@ -39,15 +37,12 @@ if (login) {
   });
 }
 
-// Lógica do botão "Voltar"
 if (backBtn) {
   backBtn.addEventListener("click", (e) => {
     e.preventDefault();
     container.classList.remove("active");
   });
 }
-
-// --- Lógica de Empreendimento Solidário e Alunos ---
 
 const alunoSolidarioCheck = document.getElementById("alunoSolidarioCheck");
 const tipoEmpreendimentoInput = document.getElementById("tipoEmpreendimento");
@@ -59,18 +54,20 @@ let alunoCount = 0;
 function addAlunoField() {
     alunoCount++;
     
+    const isRequired = alunoSolidarioCheck.checked ? 'required' : '';
+
     const alunoDiv = document.createElement('div');
     alunoDiv.classList.add('fields-group', 'aluno-field');
     alunoDiv.innerHTML = `
         <div class="input-field">
             <label for="aluno-nome-${alunoCount}">Nome do Integrante</label>
             <input type="text" id="aluno-nome-${alunoCount}" placeholder="Nome Completo" 
-                   name="alunos[${alunoCount}].nome" required />
+                   name="alunos[${alunoCount}].nome" ${isRequired} />
         </div>
         <div class="input-field">
             <label for="aluno-matricula-${alunoCount}">Matrícula/RA</label>
             <input type="text" id="aluno-matricula-${alunoCount}" placeholder="Matrícula/RA" 
-                   name="alunos[${alunoCount}].matricula" required />
+                   name="alunos[${alunoCount}].matricula" ${isRequired} />
         </div>
         
         <div class="input-field remove-button">
@@ -89,6 +86,7 @@ if (alunoSolidarioCheck) {
     alunoSolidarioCheck.addEventListener("change", function() {
         const cursoGeralId = document.getElementById("cursoGeralId");
         const anoSemestre = document.getElementById("anoSemestre");
+        const allAlunoInputs = alunosList.querySelectorAll('input');
 
         if (this.checked) {
             alunosSection.style.display = "block";
@@ -98,12 +96,16 @@ if (alunoSolidarioCheck) {
             
             if (alunosList.children.length === 0) {
                 addAlunoField(); 
+            } else {
+                allAlunoInputs.forEach(input => input.setAttribute('required', 'required'));
             }
         } else {
             alunosSection.style.display = "none";
             tipoEmpreendimentoInput.value = "PADRAO";
             cursoGeralId.removeAttribute('required');
             anoSemestre.removeAttribute('required');
+            
+            allAlunoInputs.forEach(input => input.removeAttribute('required'));
         }
     });
 }
@@ -118,8 +120,6 @@ if (alunoSolidarioCheck && !alunoSolidarioCheck.checked) {
     document.getElementById("anoSemestre").removeAttribute('required');
 }
 
-// --- CÓDIGO DE FORÇAR MINÚSCULAS NO LOGIN ---
-
 const loginInput = document.getElementById("loginEmpreendimento");
 
 if (loginInput) {
@@ -128,8 +128,6 @@ if (loginInput) {
     });
 }
 
-// --- CÓDIGO DE FORÇAR PADRÃO NO SEMESTRE (YYYY/S) ---
-
 const anoSemestreInput = document.getElementById("anoSemestre");
 const semestreRegex = /\/([1-2])$/; 
 
@@ -137,25 +135,20 @@ if (anoSemestreInput) {
     anoSemestreInput.addEventListener('input', function() {
         let value = this.value;
         
-        // 1. Permite apenas números e a barra (/)
         value = value.replace(/[^0-9/]/g, '');
 
-        // 2. Garante o formato AAAA/S
         if (value.length > 4 && value[4] !== '/') {
             value = value.slice(0, 4) + '/' + value.slice(4).replace('/', '');
         } else if (value.length >= 7) {
-            // Limita a 7 caracteres (AAAA/S)
             value = value.slice(0, 7);
             
-            // Corrige o dígito do semestre
             const match = value.match(semestreRegex);
             if (match) {
                 const semesterDigit = match[1];
                 if (semesterDigit > 2) {
-                    value = value.slice(0, 6) + '2'; // Limita a 2
+                    value = value.slice(0, 6) + '2';
                 }
             } else if (value.length === 6 && value[5] !== '1' && value[5] !== '2') {
-                 // Força o dígito do semestre se houver erro
                  value = value.slice(0, 5) + '1';
             }
         }

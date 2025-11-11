@@ -1,6 +1,5 @@
 @import url("global.css");
 
-/* Container principal da página de visualização */
 .product-view-container {
     margin-top: 60px;
     margin-left: 360px;
@@ -17,7 +16,6 @@ body.sidebar-hovered .product-view-container {
     margin-left: 360px;
 }
 
-/* Cabeçalho com o nome do produto */
 .product-header {
     padding: 20px;
     background-color: var(--white-color);
@@ -33,7 +31,6 @@ body.sidebar-hovered .product-view-container {
     margin: 0;
 }
 
-/* Modo escuro para o cabeçalho */
 body.dark .product-header {
     background-color: #333;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -43,7 +40,6 @@ body.dark .product-header h2 {
     color: var(--white-color);
 }
 
-/* Container para os cards de valores */
 .value-cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -51,7 +47,6 @@ body.dark .product-header h2 {
     margin-bottom: 30px;
 }
 
-/* Estilo individual dos cards de valor */
 .value-card {
     background-color: var(--white-color);
     padding: 20px;
@@ -74,7 +69,6 @@ body.dark .product-header h2 {
     margin: 10px 0;
 }
 
-/* Modo escuro para os cards */
 body.dark .value-card {
     background-color: #333;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -88,7 +82,6 @@ body.dark .value-card .card-main-value {
     color: #5dade2;
 }
 
-/* Título para as seções de tabela */
 .table-section-title {
     font-size: 1.5rem;
     font-weight: 600;
@@ -104,8 +97,218 @@ body.dark .table-section-title {
     border-bottom-color: #555;
 }
 
+.modal-overlay {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+}
 
-/* Responsividade */
+.modal-content {
+  background-color: #ffffff;
+  margin: auto;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slide-down 0.3s ease-out;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-color, #333);
+}
+
+.modal-close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: #333;
+}
+
+.modal-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-color-light, #555);
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+#modal-ajuste .form-group small {
+  font-size: 0.875rem;
+  color: #666;
+  width: 100%;
+  display: block;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-group label {
+  font-weight: 400;
+  color: var(--text-color, #333);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  border-radius: 0 0 8px 8px;
+}
+
+.btn-primary, .btn-secondary {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.btn-primary {
+	background-color: var(--primary-color, #007bff);
+	color: white;
+}
+
+.btn-primary:hover {
+	background-color: var(--primary-color-dark, #0056b3);
+}
+
+.btn-secondary {
+	background-color: #f0f0f0;
+	color: #555;
+	border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+	background-color: #e9e9e9;
+}
+
+.divTable table .btn-primary {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--primary-color, #007bff);
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  appearance: button; 
+  -webkit-appearance: button;
+  -moz-appearance: button;
+}
+
+.divTable table .btn-primary:hover {
+  background-color: var(--primary-color-dark, #0056b3);
+}
+
+body.dark .modal-content {
+  background-color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+body.dark .modal-header {
+  border-bottom-color: #555;
+}
+body.dark .modal-header h4 {
+  color: var(--white-color);
+}
+body.dark .modal-close {
+  color: #aaa;
+}
+body.dark .modal-close:hover {
+  color: #eee;
+}
+body.dark .form-group label {
+  color: var(--grey-color-light);
+}
+body.dark .form-control {
+  background-color: #444;
+  border-color: #666;
+  color: var(--white-color);
+}
+
+body.dark #modal-ajuste .form-group small {
+  color: var(--grey-color-light);
+}
+
+body.dark .radio-group label {
+  color: var(--white-color);
+}
+body.dark .modal-footer {
+  background-color: #2a2a2a;
+  border-top-color: #555;
+}
+body.dark .btn-secondary {
+  background-color: #555;
+  color: #eee;
+  border-color: #777;
+}
+body.dark .btn-secondary:hover {
+  background-color: #666;
+}
+
 @media screen and (max-width: 768px) {
     .product-view-container,
     body.sidebar-closed .product-view-container,

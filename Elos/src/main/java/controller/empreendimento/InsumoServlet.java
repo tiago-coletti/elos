@@ -7,8 +7,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+import model.dao.CompraInsumoDAO;
 import model.dao.InsumoDAO;
+import model.entity.CompraInsumo;
 import model.entity.Insumo;
 import services.InsumoHelper;
 
@@ -20,13 +21,14 @@ import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = { "/empreendimento/insumo/listagem", "/empreendimento/insumo/dashboard",
 		"/empreendimento/insumo/visualizar", "/empreendimento/insumo/incluir", "/empreendimento/insumo/editar",
-		"/empreendimento/insumo/excluir" })
+		"/empreendimento/insumo/excluir", "/empreendimento/insumo/ajustar-estoque" })
 public class InsumoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(InsumoServlet.class.getName());
 
 	private final InsumoDAO insumoDAO = new InsumoDAO();
-
+	private final CompraInsumoDAO compraInsumoDAO = new CompraInsumoDAO();
+	
 	public InsumoServlet() {
 		super();
 	}
@@ -66,6 +68,9 @@ public class InsumoServlet extends HttpServlet {
 			break;
 		case "/empreendimento/insumo/excluir":
 			processarExclusao(request, response);
+			break;
+		case "/empreendimento/insumo/ajustar-estoque":
+			processarAjusteEstoque(request, response);
 			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Rota não reconhecida.");
@@ -112,6 +117,45 @@ public class InsumoServlet extends HttpServlet {
 
 	private void visualizarInsumo(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		int empreendimentoId = (Integer) session.getAttribute("id");
+
+		try {
+			String idParam = request.getParameter("id");
+			if (idParam == null || idParam.isEmpty()) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID do insumo não fornecido.");
+				return;
+			}
+
+			int insumoId = Integer.parseInt(idParam);
+			Insumo insumo = insumoDAO.obterInsumoPorId(insumoId, empreendimentoId);
+
+			if (insumo == null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Insumo não encontrado.");
+				return;
+			}
+
+			ArrayList<CompraInsumo> lotes = compraInsumoDAO.listarLotesPorInsumoId(insumoId, empreendimentoId);
+			
+			double totalEstoque = 0;
+			for(CompraInsumo lote : lotes) {
+				totalEstoque += lote.getQuantidadeRestante();
+			}
+
+			request.setAttribute("insumo", insumo);
+			request.setAttribute("lotes", lotes);
+			request.setAttribute("totalEstoque", totalEstoque);
+
+			RequestDispatcher rd = request.getRequestDispatcher("visualizar.jsp");
+			rd.forward(request, response);
+
+		} catch (NumberFormatException e) {
+			logger.log(Level.WARNING, "ID de insumo inválido: " + request.getParameter("id"), e);
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de insumo inválido.");
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Erro ao carregar dados para a página de visualização de insumo", e);
+			response.sendRedirect(request.getContextPath() + "/empreendimento/insumo/listagem");
+		}
 	}
 
 	private void visualizarEdicao(HttpServletRequest request, HttpServletResponse response)
@@ -248,6 +292,72 @@ public class InsumoServlet extends HttpServlet {
 
 		session.setAttribute("mensagem", mensagem);
 		response.sendRedirect(request.getContextPath() + "/empreendimento/insumo/listagem");
+	}
+	
+	private void processarAjusteEstoque(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		int empreendimentoId = (Integer) session.getAttribute("id");
+		
+		// Já pegamos o ID do insumo aqui, pois ele é usado tanto na lógica quanto no redirect
+		String insumoIdRedirect = request.getParameter("insumoId"); 
+		String mensagem;
+
+		try {
+			// --- Validação dos IDs ---
+			if (insumoIdRedirect == null || insumoIdRedirect.isEmpty()) {
+				throw new Exception("ID do insumo principal não fornecido.");
+			}
+			int insumoId = Integer.parseInt(insumoIdRedirect);
+			int compraInsumoId = Integer.parseInt(request.getParameter("compraInsumoId"));
+			
+			// --- Dados do Formulário ---
+			double quantidade = Double.parseDouble(request.getParameter("quantidade"));
+			String tipoAjuste = request.getParameter("tipoAjuste");
+			
+			if (quantidade <= 0) {
+				throw new Exception("Quantidade deve ser maior que zero.");
+			}
+
+			double deltaQuantidade;
+			switch (tipoAjuste) {
+				case "perda":
+				case "retirada_avulsa": 
+					deltaQuantidade = -quantidade;
+					break;
+				case "entrada_avulsa": 
+					deltaQuantidade = quantidade;
+					break;
+				default:
+					deltaQuantidade = 0; 
+			}
+
+			double custoUnitario = compraInsumoDAO.obterCustoLotePorId(compraInsumoId, empreendimentoId);
+			if (custoUnitario < 0) {
+				throw new Exception("Lote de insumo não encontrado ou não pertence ao empreendimento.");
+			}
+
+			boolean sucessoLote = compraInsumoDAO.ajustarEstoque(compraInsumoId, empreendimentoId, quantidade, tipoAjuste, custoUnitario);
+			
+			if (sucessoLote) {
+				if (deltaQuantidade != 0) {
+					insumoDAO.ajustarEstoqueTotal(insumoId, empreendimentoId, deltaQuantidade);
+				}
+				mensagem = "Estoque ajustado com sucesso!";
+			} else {
+				throw new Exception("Falha ao ajustar estoque do lote, verifique o valor informado.");
+			}
+
+		} catch (NumberFormatException e) {
+			logger.log(Level.WARNING, "Parâmetros inválidos para ajuste de estoque.", e);
+			mensagem = "Erro: Dados inválidos.";
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Erro ao processar ajuste de estoque.", e);
+			mensagem = e.getMessage() != null ? e.getMessage() : "Erro desconhecido ao ajustar estoque.";
+		}
+		
+		session.setAttribute("mensagem", mensagem);
+		response.sendRedirect(request.getContextPath() + "/empreendimento/insumo/visualizar?id=" + insumoIdRedirect);
 	}
 
 }

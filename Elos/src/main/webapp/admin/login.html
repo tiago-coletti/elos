@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    
+    <link rel="stylesheet" href="assets/css/login.css" />
+    <title>Elos</title>
+</head>
+<body>
+    <div class="container">
+        <div class="forms">
+            <div class="form login">
+                <span class="title">Login (Admin)</span>
+                <form action="/Elos/admin/login" method="POST">
+                    <div class="input-field">
+                        <input type="text" placeholder="Digite seu email ou login" required name="login" />
+                        <i class="uil uil-envelope icon"></i>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" class="password" placeholder="Digite sua senha" required name="senha" />
+                        <i class="uil uil-lock icon"></i>
+                        <i class="uil uil-eye-slash showHidePw"></i>
+                    </div>
+                    <div class="input-field button">
+                        <input type="submit" value="Login" />
+                    </div>
+                </form>
+                <div class="login-signup">
+                    <span class="text">Não tem uma conta?
+                        <a href="#" class="text signup-link">Cadastre-se</a>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="form signup">
+                <span class="title">Cadastro (Admin)</span>
+                
+                <form action="/Elos/admin/cadastro" method="POST">
+                    
+                    <h3 class="subtitle">Informações Pessoais</h3>
+                    <div class="fields-group">
+                        <div class="input-field">
+                            <label for="nome">Nome Completo</label>
+                            <input type="text" id="nome" placeholder="Digite seu nome" required name="nome" />
+                        </div>
+                        <div class="input-field">
+                            <label for="email">Email de Contato</label>
+                            <input type="email" id="email" placeholder="Digite o email de contato" required name="email" />
+                        </div>
+                    </div>
+					
+                    <h3 class="subtitle">Informações da Conta</h3>
+                    <div class="fields-group">
+                        <div class="input-field">
+                            <label for="senha">Senha</label>
+                            <input type="password" id="senha" class="password" placeholder="Crie uma senha" required name="senha" />
+                        </div>
+                        <div class="input-field">
+                            <label for="confirmarSenha">Confirme a Senha</label>
+                            <input type="password" id="confirmarSenha" class="password" placeholder="Confirme sua senha" required name="confirmarSenha" />
+                        </div>
+                        <div class="input-field">
+                            <label for="loginAdmin">Login de Admin</label>
+                            <input type="text" 
+                                   id="loginAdmin" 
+                                   placeholder="Crie seu login" 
+                                   required 
+                                   name="loginAdmin" pattern="[a-z0-9_-]{4,20}" 
+                                   title="O login deve ter entre 4 e 20 caracteres e conter apenas letras minúsculas, números, hífens (-) ou underlines (_)."
+                                   />
+                        </div>
+                         <div class="input-field">
+                            <label for="codigoVerificacao">Código de Verificação</label>
+                            <input type="text" 
+                                   id="codigoVerificacao" 
+                                   placeholder="Digite o código de admin" 
+                                   required 
+                                   name="codigoVerificacao"
+                                   />
+                        </div>
+                    </div>
+                   
+                    <div class="input-field button next-btn">
+                        <button type="submit">
+                            <i class="uil uil-message"></i> Submeter Cadastro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="input-field button back-btn">
+            <button type="button">
+                <i class="uil uil-arrow-left"></i> Voltar para Login
+            </button>
+        </div>
+    </div>
+    
+    <script src="assets/js/login.js"></script>
+</body>
+</html>

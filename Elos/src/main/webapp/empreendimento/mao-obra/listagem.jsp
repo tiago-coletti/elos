@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/listagem.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/toast.css" />
 </head>
 
 <body>
+	<%@ include file="/empreendimento/shared/toast.jspf" %>
     <%@ include file="/empreendimento/shared/navbar.jspf"%>
 
     <div class="page-header">
@@ -77,6 +79,7 @@
         </table>
     </div>
 
+	<script src="${pageContext.request.contextPath}/empreendimento/assets/js/toast.js"></script>
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

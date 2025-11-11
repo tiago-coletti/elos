@@ -15,6 +15,7 @@ public class Empreendimento {
 	private String createdAt;
 	private String updatedAt;
 	private String deletedAt;
+	private double saldo;
 	
     private int cursoGeralId;
     private String anoSemestre;
@@ -128,7 +129,11 @@ public class Empreendimento {
 		this.deletedAt = deleted_at;
 	}
 	
-    public boolean isAluno() {
+    public double getSaldo() {
+		return saldo;
+	}
+
+	public boolean isAluno() {
         return "ALUNO".equalsIgnoreCase(this.tipo);
     }
     
@@ -155,4 +160,9 @@ public class Empreendimento {
     public void setAlunos(List<Aluno> alunos) {
         this.alunos = alunos;
     }
+
+	public void setSaldo(double double1) {
+		// TODO Auto-generated method stub
+		
+	}
 }

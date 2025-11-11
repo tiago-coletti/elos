@@ -1,0 +1,86 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<fmt:setLocale value="pt_BR"/>
+
+<div id="totalSalesModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Total Vendido (Faturamento)</h2>
+        <p>Visão geral do faturamento total do empreendimento.</p>
+        <ul class="modal-list">
+            <li>
+                <strong>Este Mês:</strong> 
+                <fmt:formatNumber value="${dashboardData.totalVendidoMes}" type="currency" />
+            </li>
+            <li>
+                <strong>Este Ano:</strong> 
+                <fmt:formatNumber value="${dashboardData.totalVendidoAno}" type="currency" />
+            </li>
+        </ul>
+        <button class="modal-action-button" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/venda/listagem'">Ver Histórico de Vendas</button>
+    </div>
+</div>
+
+<div id="salesCountModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Contagem de Vendas</h2>
+        <p>Número de vendas (pedidos) registrados no sistema.</p>
+        <ul class="modal-list">
+            <li>
+                <strong>Este Mês:</strong> 
+                <c:out value="${dashboardData.contagemVendasMes}"/> Vendas
+            </li>
+            <li>
+                <strong>Este Ano:</strong> 
+                 <c:out value="${dashboardData.contagemVendasAno}"/> Vendas
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="recentSalesModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Últimas Vendas Realizadas</h2>
+        <p>Detalhes das vendas mais recentes do seu empreendimento.</p>
+        <ul class="modal-list">
+             <c:choose>
+                <c:when test="${not empty dashboardData.todasUltimasVendas}">
+                    <c:forEach var="venda" items="${dashboardData.todasUltimasVendas}">
+                        <li>
+                            <strong>Venda #${venda.id} (<fmt:parseDate value="${venda.dataVenda}" pattern="yyyy-MM-dd" var="parsedData" /><fmt:formatDate value="${parsedData}" pattern="dd/MM/yyyy" />)</strong>
+                            <ul>
+                                <li>Valor Total: <fmt:formatNumber value="${venda.valorTotal}" type="currency" /></li>
+                            </ul>
+                        </li>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <li>Nenhuma venda foi realizada recentemente.</li>
+                </c:otherwise>
+            </c:choose>
+        </ul>
+    </div>
+</div>
+
+<div id="topProductsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2>Produtos Mais Vendidos (Mês Atual)</h2>
+        <p>Relatório detalhado dos produtos que geraram maior faturamento no período.</p>
+        <ol class="modal-list">
+            <c:choose>
+                <c:when test="${not empty dashboardData.todosProdutosMaisVendidos}">
+                    <c:forEach var="produto" items="${dashboardData.todosProdutosMaisVendidos}">
+                        <li><strong><c:out value="${produto.nome}"/>:</strong> <fmt:formatNumber value="${produto.total}" type="currency"/></li>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <li>Não há vendas registradas no período.</li>
+                </c:otherwise>
+            </c:choose>
+        </ol>
+    </div>
+</div>

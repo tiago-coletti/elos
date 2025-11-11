@@ -11,9 +11,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/listagem.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/toast.css" />
 </head>
 
 <body>
+	<%@ include file="/empreendimento/shared/toast.jspf" %>
     <%@ include file="/empreendimento/shared/navbar.jspf"%>
 
     <div class="page-header">
@@ -35,6 +37,7 @@
                     <th>Nome</th>
                     <th>Medida</th>
                     <th>Quantidade</th>
+                    <th>Ver</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
@@ -47,6 +50,14 @@
                                 <td><c:out value="${insumo.nome}" /></td>
                                 <td><c:out value="${insumo.unidadeMedida}" /></td>
                                 <td><c:out value="${insumo.quantidade}" /></td>
+                                <td class="action-cell">
+                                    <form action="${pageContext.request.contextPath}/empreendimento/insumo/visualizar" method="GET" style="display:inline;">
+                                        <input type="hidden" name="id" value="<c:out value='${insumo.id}' />">
+                                        <button type="submit" class="action-icon view-icon" title="Visualizar">
+                                            <i class='bx bxs-show'></i>
+                                        </button>
+                                    </form>
+                                </td>
                                 <td class="action-cell">
                                     <form action="${pageContext.request.contextPath}/empreendimento/insumo/editar" method="GET" style="display:inline;">
                                         <input type="hidden" name="id" value="<c:out value='${insumo.id}' />">
@@ -76,6 +87,7 @@
         </table>
     </div>
 
+	<script src="${pageContext.request.contextPath}/empreendimento/assets/js/toast.js"></script>
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

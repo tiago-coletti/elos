@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="card">
-                        <h3>Oportunidade de Troca Solidária <i class='bx bx-help-circle help-icon' data-modal-target="solidarityExchangeHelpModal"></i></h3>
+                        <h3>Oportunidade de Troca<i class='bx bx-help-circle help-icon' data-modal-target="solidarityExchangeHelpModal"></i></h3>
                         <p>Insumos parados podem ser úteis para outros!</p>
                         <ul>
                             <li><strong>Itens sem giro:</strong> <c:out value="${dashboardData.insumosParados.size()}" /></li>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/login.css" />
+    <title>Elos</title>
+</head>
+<body>
+    <div class="container">
+        <div class="forms">
+            <div class="form login">
+                <span class="title">Login</span>
+                <form action="/Elos/empreendimento/login" method="POST">
+                    <div class="input-field">
+                        <input type="text" placeholder="Digite seu email ou login" required name="login" />
+                        <i class="uil uil-envelope icon"></i>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" class="password" placeholder="Digite sua senha" required name="senha" />
+                        <i class="uil uil-lock icon"></i>
+                        <i class="uil uil-eye-slash showHidePw"></i>
+                    </div>
+                    <div class="input-field button">
+                        <input type="submit" value="Login" />
+                    </div>
+                </form>
+                <div class="login-signup">
+                    <span class="text">Não tem uma conta?
+                        <a href="#" class="text signup-link">Cadastre-se</a>
+                    </span>
+                </div>
+            </div>
+            <div class="form signup">
+                <span class="title">Cadastro</span>
+                <form action="/Elos/empreendimento/cadastro" method="POST">
+                    <input type="hidden" name="tipo" value="PADRAO" id="tipoEmpreendimento">
+                    <div class="form-toggle">
+                        <input type="checkbox" id="alunoSolidarioCheck" />
+                        <label for="alunoSolidarioCheck">Este é um Empreendimento de Alunos?</label>
+                    </div>
+                    <h3 class="subtitle">Informações do Empreendimento</h3>
+                    <div class="fields-group">
+                        <div class="input-field">
+                            <label for="nome">Nome do Empreendimento</label>
+                            <input type="text" id="nome" placeholder="Digite o nome do empreendimento" required name="nome" />
+                        </div>
+                        <div class="input-field">
+                            <label for="email">Email de Contato</label>
+                            <input type="email" id="email" placeholder="Digite o email de contato" required name="email" />
+                        </div>
+                        <div class="input-field">
+						    <label for="phoneNumber">Telefone</label>
+						    <input type="tel" 
+						           id="phoneNumber" 
+						           placeholder="(xx) 9 xxxx-xxxx" 
+						           name="phoneNumber" 
+						           maxlength="16" pattern="\(\d{2}\) 9 \d{4}-\d{4}"
+						           title="O telefone deve estar no formato (xx) 9 xxxx-xxxx"
+						    />                       
+						</div>
+                        <div class="input-field">
+                            <label for="city">Cidade</label>
+                            <input type="text" id="city" placeholder="Digite a cidade" name="city" />
+                        </div>
+                    </div>
+					<h3 class="subtitle">Informações da Conta</h3>
+                    <div class="fields-group">
+                        <div class="input-field">
+                            <label for="senha">Senha</label>
+                            <input type="password" id="senha" class="password" placeholder="Crie uma senha" required name="senha" />
+                        </div>
+                        <div class="input-field">
+                            <label for="confirmarSenha">Confirme a Senha</label>
+                            <input type="password" id="confirmarSenha" class="password" placeholder="Confirme sua senha" required name="confirmarSenha" />
+                        </div>
+                        <div class="input-field">
+                            <label for="loginEmpreendimento">Login do Empreendimento</label>
+                            <input type="text" 
+                                   id="loginEmpreendimento" 
+                                   placeholder="Crie seu login" 
+                                   required 
+                                   name="loginEmpreendimento"
+                                   pattern="[a-z0-9_-]{4,20}" 
+                                   title="O login deve ter entre 4 e 20 caracteres e conter apenas letras minÃºsculas, nÃºmeros, hÃ­fens (-) ou underlines (_)."
+                                   />
+                        </div>
+                    </div>
+                    <div id="alunos-section" style="display: none;">
+                        <h3 class="subtitle">Integrantes do Empreendimento</h3>
+                        <div class="fields-group course-semester-group">
+                            <div class="input-field">
+                                <label for="cursoGeralId">Curso do Empreendimento Solidário</label>
+                                <select id="cursoGeralId" name="cursoGeralId" required>
+                                    <option value="" disabled selected>Selecione o Curso</option>
+                                    <option value="1">Desenvolvimento de Sistemas</option>
+                                    <option value="2">Energias Renováveis</option>
+                                </select>
+                            </div>
+                            <div class="input-field">
+                                <label for="anoSemestre">Ano/Semestre</label>
+                                <input type="text" 
+                                       id="anoSemestre" 
+                                       name="anoSemestre" 
+                                       placeholder="Ex: 2024/1" 
+                                       required 
+                                       maxlength="6"
+                                       pattern="\d{4}\/[1-2]"
+                                       title="O Semestre deve seguir o padrÃ£o AAAA/S (ex: 2024/1 ou 2023/2)"
+                                       />
+                            </div>
+                        </div>
+                        <div id="alunos-list">
+                        </div>
+                        <div class="input-field button add-button">
+                             <button type="button" id="add-aluno-btn">
+                                 Adicionar Integrante
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-field button next-btn">
+                        <button type="submit">
+                            <i class="uil uil-message"></i> Submeter Cadastro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="input-field button back-btn">
+            <button type="button">
+                <i class="uil uil-arrow-left"></i> Voltar para Login
+            </button>
+        </div>
+    </div>
+    <script src="${pageContext.request.contextPath}/empreendimento/assets/js/login.js"></script>
+</body>
+</html>

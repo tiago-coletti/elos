@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Elos/src/main/java"/>
+	<classpathentry kind="lib" path="Elos/src/main/webapp/WEB-INF/lib/gson-2.13.1.jar"/>
+	<classpathentry kind="lib" path="Elos/src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-3.0.1.jar"/>
+	<classpathentry kind="lib" path="Elos/src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Elos/src/main/webapp/WEB-INF/lib/jBCrypt-0.4.jar"/>
+	<classpathentry kind="lib" path="Elos/src/main/webapp/WEB-INF/lib/mysql-connector-j-9.0.0.jar"/>
+	<classpathentry kind="output" path="Elos/build/classes"/>
+</classpath>

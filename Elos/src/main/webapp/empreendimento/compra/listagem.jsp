@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/global.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/navbar.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/listagem.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/empreendimento/assets/css/toast.css" />
 </head>
 
 <body>
+	<%@ include file="/empreendimento/shared/toast.jspf" %>
     <%@ include file="/empreendimento/shared/navbar.jspf"%>
 
     <div class="page-header">
@@ -43,7 +45,7 @@
                     <th>Data da Compra</th>
                     <th>Data do registro</th>
                     <th>Valor Total</th>
-                    <th>Visualizar</th>
+                    <th>Ver</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
@@ -103,6 +105,7 @@
     </div>
 
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
+    <script src="${pageContext.request.contextPath}/empreendimento/assets/js/toast.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             

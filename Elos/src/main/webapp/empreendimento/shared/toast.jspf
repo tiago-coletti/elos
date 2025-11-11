@@ -1,0 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+
+<%-- 
+  1. DIV GATILHO: 
+  Se a mensagem existir na session, este div será criado.
+  O JS vai procurar por ele.
+--%>
+<c:if test="${not empty sessionScope.mensagem}">
+    <div id="sessionMessage" 
+         data-message="<c:out value='${sessionScope.mensagem}' />" 
+         style="display: none;">
+    </div>
+    
+    <%-- 2. LIMPEZA: Remove a mensagem da session --%>
+    <c:remove var="mensagem" scope="session" />
+</c:if>
+
+<%-- 
+  3. HTML DO TOAST:
+  Este é o container que o JS vai mostrar/esconder.
+  Ele fica sempre no HTML, mas escondido pelo CSS.
+--%>
+<div id="toast-container" class="toast-container" role="alert" aria-live="assertive">
+    <p id="toast-message-content"></p>
+    <button id="toast-close-btn" class="toast-close-btn" aria-label="Fechar">&times;</button>
+</div>

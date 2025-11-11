@@ -1,0 +1,114 @@
+/* empreendimento/assets/css/toast.css */
+
+.toast-container {
+    position: fixed;
+    top: 20px; /* Distância do topo */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001; /* Acima da navbar */
+    
+    /* Escondido por padrão */
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -20px); /* Começa um pouco acima */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+
+    /* Estilo */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 22px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    
+    /* Responsivo */
+    width: 90%;
+    max-width: 450px;
+
+    /* Cores padrão (Light Mode) */
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+/* Estado visível */
+.toast-container.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0); /* Desliza para a posição final */
+}
+
+/* --- Tipos de Mensagem (Light Mode) --- */
+
+.toast-container.info {
+    background-color: var(--blue-color);
+    color: var(--white-color);
+}
+.toast-container.success {
+    background-color: var(--green-color);
+    color: var(--white-color);
+}
+.toast-container.error {
+    background-color: var(--red-color);
+    color: var(--white-color);
+}
+
+/* --- Dark Mode --- */
+
+body.dark .toast-container {
+    background-color: var(--dark-color); /* No dark mode, --dark-color é #333 */
+    color: var(--grey-color-light); /* No dark mode, é #f2f2f2 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Para os tipos, as cores de fundo já são fortes, 
+   podemos manter o texto branco */
+body.dark .toast-container.info {
+    /* No dark mode, --blue-color vira #fff. 
+       Então, usamos o valor original da cor. */
+    background-color: #4070f4; 
+    color: var(--white-color);
+}
+body.dark .toast-container.success {
+    background-color: var(--green-color);
+    color: var(--white-color);
+}
+body.dark .toast-container.error {
+    background-color: var(--red-color);
+    color: var(--white-color);
+}
+
+
+/* --- Conteúdo Interno --- */
+
+.toast-container #toast-message-content {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.toast-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+    color: inherit; /* Pega a cor do texto (ex: branco) */
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.toast-close-btn:hover {
+    opacity: 1;
+}
+
+/* Ajuste fino para telas pequenas */
+@media (max-width: 600px) {
+    .toast-container {
+        padding: 12px 18px;
+    }
+    .toast-container #toast-message-content {
+        font-size: 0.85rem;
+    }
+}

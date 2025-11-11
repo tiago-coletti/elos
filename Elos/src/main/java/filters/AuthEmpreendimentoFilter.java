@@ -27,14 +27,14 @@ public class AuthEmpreendimentoFilter extends HttpFilter implements Filter {
 
 		String path = req.getRequestURI().substring(req.getContextPath().length());
 		if (path.equals("/empreendimento/login") || path.equals("/empreendimento/cadastro")
-				|| path.equals("/empreendimento/login.html") || path.startsWith("/empreendimento/assets/")) {
+				|| path.equals("/empreendimento/login.jsp") || path.startsWith("/empreendimento/assets/")) {
 			chain.doFilter(req, res);
 			return;
 		}
 
 		// Verifica se está logado (como empreendimento)
 		if (session == null || session.getAttribute("id") == null) {
-			res.sendRedirect(req.getContextPath() + "/empreendimento/login.html?sessao_expirada");
+			res.sendRedirect(req.getContextPath() + "/empreendimento/login.jsp?sessao_expirada");
 			return;
 		}
 

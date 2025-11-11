@@ -21,7 +21,7 @@
 
     <main class="container">
 	    <div class="dashboard-title">
-	        <h2>Painel de Compras</h2>
+	        <h2>Painel de Vendas</h2>
 	    </div>
 	
 	    <section class="carousel-container">
@@ -29,70 +29,39 @@
 	            <div class="carousel-track">
 	
 	                <div class="card">
-	                    <h3>Total Gasto em Compras</h3>
-	                    <p>Período: <select><option>Este Mês</option><option>Últimos 3 meses</option><option>Ano</option></select></p>
-	                    <p class="card-value">R$ 4.850,00</p>
-	                    <p>Valor total investido na aquisição de insumos.</p>
+	                    <h3>Total Vendido (Este Mês)</h3>
+	                    <p>Faturamento total das vendas realizadas no mês corrente.</p>
+	                    <p class="card-value"><fmt:formatNumber value="${dashboardData.totalVendidoMes}" type="currency" /></p>
+	                    <button class="view-details-btn" data-modal-target="totalSalesModal">Ver Anual</button>
 	                </div>
 	
 	                <div class="card">
-	                    <h3>Últimas Compras Realizadas</h3>
-	                    <p>Acompanhe as entradas de insumo mais recentes.</p>
-	                    <ul>
-	                        <li><strong>Compra #102:</strong> Valor Total R$ 350,00</li>
-	                        <li><strong>Compra #101:</strong> Valor Total R$ 1.200,00</li>
-	                    </ul>
-	                    <button class="view-details-btn" data-modal-target="recentPurchasesModal">Ver Detalhes</button>
+	                    <h3>Vendas Realizadas (Este Mês)</h3>
+	                    <p>Número total de pedidos e vendas registradas no mês.</p>
+	                    <p class="card-value"><c:out value="${dashboardData.contagemVendasMes}" /> Vendas</p>
+	                    <button class="view-details-btn" data-modal-target="salesCountModal">Ver Anual</button>
 	                </div>
 	
 	                <div class="card">
-	                    <h3>Variação de Preços <i class='bx bx-help-circle help-icon' data-modal-target="priceVariationHelpModal"></i></h3>
-	                    <p>Itens com maiores alterações de custo.</p>
+	                    <h3>Últimas Vendas Realizadas</h3>
+	                    <p>Acompanhe as saídas mais recentes.</p>
 	                    <ul>
-	                        <li><strong>Farinha de Trigo:</strong> <span style="color: #c0392b;">▲ 8%</span> na última compra</li>
-	                        <li><strong>Embalagem Pote:</strong> <span style="color: #27ae60;">▼ 5%</span> na última compra</li>
+	                    	<c:forEach var="venda" items="${dashboardData.ultimasVendas}">
+		                        <li><strong>Venda #${venda.id}:</strong> Valor Total <fmt:formatNumber value="${venda.valorTotal}" type="currency" /></li>
+	                    	</c:forEach>
 	                    </ul>
-	                    <button class="view-details-btn" data-modal-target="priceVariationModal">Analisar Histórico</button>
+	                    <button class="view-details-btn" data-modal-target="recentSalesModal">Ver Detalhes</button>
 	                </div>
 	
 	                <div class="card">
-	                    <h3>Sugestões de Compra</h3>
-	                    <p>Itens que precisam de reposição urgente.</p>
+	                    <h3>Produtos Mais Vendidos (Mês)</h3>
+	                    <p>Itens que mais geraram faturamento no período.</p>
 	                    <ul>
-	                        <li><strong>Estoque Baixo:</strong> 4 itens</li>
-	                        <li><strong>Itens Críticos:</strong> 1 item zerado</li>
+	                        <c:forEach var="produto" items="${dashboardData.produtosMaisVendidos}">
+		                        <li><strong><c:out value="${produto.nome}"/>:</strong> <fmt:formatNumber value="${produto.total}" type="currency" /></li>
+	                    	</c:forEach>
 	                    </ul>
-	                    <button class="view-details-btn action-button" data-modal-target="purchaseSuggestionModal">Ver Lista de Compras</button>
-	                </div>
-	
-	                <div class="card">
-	                    <h3>Maiores Despesas (Mês)</h3>
-	                    <p>Insumos que mais consumiram o orçamento de compras.</p>
-	                    <ul>
-	                        <li><strong>Chocolate em Barra:</strong> R$ 950,00</li>
-	                        <li><strong>Leite Condensado:</strong> R$ 720,00</li>
-	                    </ul>
-	                    <button class="view-details-btn" data-modal-target="topExpensesModal">Ver Relatório Completo</button>
-	                </div>
-	                
-	                <div class="card">
-	                    <h3>Origem dos Insumos</h3>
-	                    <p>Distribuição das compras por tipo de produtor.</p>
-	                     <ul>
-	                        <li><strong>Cooperativas/Locais:</strong> 55%</li>
-	                        <li><strong>Grandes Atacadistas:</strong> 45%</li>
-	                    </ul>
-	                    <button class="view-details-btn" data-modal-target="insumoOriginModal">Ver Análise</button>
-	                </div>
-	
-	                <div class="card">
-	                    <h3>Nível de Estoque Atual</h3>
-	                    <p>Visão geral dos insumos armazenados.</p>
-	                    <ul>
-	                        <li><strong>Valor em Estoque:</strong> R$ 3.120,00</li>
-	                        <li><strong>Itens distintos:</strong> 28 tipos</li>
-	                    </ul>
-	                    <button class="view-details-btn" data-modal-target="stockLevelModal">Detalhar Estoque</button>
+	                    <button class="view-details-btn" data-modal-target="topProductsModal">Ver Relatório Completo</button>
 	                </div>
 	
 	            </div>
@@ -103,35 +72,35 @@
 	</main>
     
     <div class="header">
-		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/compra/incluir'">Incluir</button>
+		<button id="new" onclick="window.location.href='${pageContext.request.contextPath}/empreendimento/venda/incluir'">Incluir Venda</button>
 	</div>
 	
 	<div class="divTable">
 		<table>		
 			<thead>
 				<tr>
-					<th>Data da Compra</th>
+					<th>Data da Venda</th>
 					<th>Data do registro</th>
 					<th>Valor Total</th>
 				</tr>
 			</thead>
 			
-			<tbody id="comprasTable">
+			<tbody id="vendasTable">
 				<c:choose>
-					<c:when test="${not empty compras}">
-						<c:forEach var="compra" items="${compras}" varStatus="status">
+					<c:when test="${not empty vendas}">
+						<c:forEach var="venda" items="${vendas}" varStatus="status">
 							<c:if test="${status.count <= 3}">
 								<tr>
 									<td>
-										<fmt:parseDate value="${compra.dataCompra}" pattern="yyyy-MM-dd" var="parsedDataCompra" />
-										<fmt:formatDate value="${parsedDataCompra}" pattern="dd/MM/yyyy" />
+										<fmt:parseDate value="${venda.dataVenda}" pattern="yyyy-MM-dd" var="parsedDataVenda" />
+										<fmt:formatDate value="${parsedDataVenda}" pattern="dd/MM/yyyy" />
 									</td>
 									<td>
-										<fmt:parseDate value="${compra.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedCreatedAt" />
+										<fmt:parseDate value="${venda.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedCreatedAt" />
 										<fmt:formatDate value="${parsedCreatedAt}" pattern="dd/MM/yyyy HH:mm" />
 									</td>
 									<td>
-										<fmt:formatNumber value="${compra.valorTotal}" type="currency" currencySymbol="R$ " />
+										<fmt:formatNumber value="${venda.valorTotal}" type="currency" currencySymbol="R$ " />
 									</td>
 								</tr>
 							</c:if>
@@ -139,19 +108,19 @@
 					</c:when>
 					<c:otherwise>
 						<tr>
-							<td colspan="3">Nenhuma compra cadastrada</td>
+							<td colspan="3">Nenhuma venda cadastrada</td>
 						</tr>
 					</c:otherwise>
 				</c:choose>
 			</tbody>
 		</table>
 		
-		<c:if test="${not empty compras}">
-			<a href="${pageContext.request.contextPath}/empreendimento/compra/listagem" class="ver-todos-btn">Ver todas as compras</a>
+		<c:if test="${not empty vendas}">
+			<a href="${pageContext.request.contextPath}/empreendimento/venda/listagem" class="ver-todos-btn">Ver todas as vendas</a>
 		</c:if>
 	</div>
     
-    <%@ include file="/empreendimento/shared/modals/compra.jspf"%>
+    <%@ include file="/empreendimento/shared/modals/venda.jspf"%>
 
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/carrossel.js"></script>
     <script src="${pageContext.request.contextPath}/empreendimento/assets/js/navbar.js"></script>
