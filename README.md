@@ -31,14 +31,14 @@ O sistema foi estruturado para ser robusto e escalável:
 
 **Pré-requisitos**
 * Java JDK instalado (versão compatível com Jakarta EE).
-* Servidor Tomcat.
+* Servidor de Aplicação (ex: Tomcat, WildFly).
 * MySQL rodando na porta 3306.
 
 **Passos**
 1. Clone este repositório: `git clone https://github.com/seu-usuario/elos.git`
 2. Configure as credenciais do banco de dados MySQL no arquivo de configuração do projeto.
 3. Compile e construa o projeto utilizando o Maven.
-4. Faça o deploy do arquivo `.war` gerado diretamente no Tomcat (seja no seu ambiente local ou em uma VPS).
+4. Faça o deploy do arquivo `.war` gerado diretamente no seu servidor.
 5. Acesse a aplicação através do navegador.
 
 ## Autores
@@ -49,5 +49,6 @@ O sistema foi estruturado para ser robusto e escalável:
 
 ## Licença
 
-Este projeto é licenciado sob a [GNU General Public License v3.0 (GPLv3)](LICENSE).
-Isso garante que o software será sempre livre e de código aberto para a comunidade.
+Este projeto é licenciado sob a [GNU Affero General Public License v3.0 (AGPLv3)](LICENSE).
+
+A AGPLv3 é uma licença de software livre ("copyleft") projetada especificamente para garantir a cooperação com a comunidade em softwares de servidor de rede. Isso significa que você tem a liberdade de usar, estudar, compartilhar e modificar este software. No entanto, qualquer versão modificada que seja disponibilizada na rede (Software como Serviço - SaaS) deve, obrigatoriamente, oferecer o seu código-fonte modificado aos usuários, mantendo o ecossistema sempre aberto e gratuito.
